@@ -533,52 +533,38 @@
             
             <!-- Navigation Menu -->
             <nav>
-                <div class="frostdark-app-nav-item active" onclick="setActiveNav(this)">
-                    <span style="font-size: 1.1rem;">🏠</span>
-                    <span>Dashboard</span>
-                </div>
-                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
+                <div class="frostdark-app-nav-item active" onclick="showPage('components')">
                     <span style="font-size: 1.1rem;">📦</span>
                     <span>Components</span>
                 </div>
-                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
-                    <span style="font-size: 1.1rem;">🎨</span>
-                    <span>Typography</span>
+                <div class="frostdark-app-nav-item" onclick="showPage('code-examples')">
+                    <span style="font-size: 1.1rem;">📝</span>
+                    <span>Code Examples</span>
                 </div>
-                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
-                    <span style="font-size: 1.1rem;">💬</span>
-                    <span>Conversations</span>
-                </div>
-                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
-                    <span style="font-size: 1.1rem;">⚙️</span>
-                    <span>Settings</span>
-                </div>
-                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
-                    <span style="font-size: 1.1rem;">📊</span>
-                    <span>Analytics</span>
+                <div class="frostdark-app-nav-item" onclick="showPage('button-builder')">
+                    <span style="font-size: 1.1rem;">🔨</span>
+                    <span>Button Builder</span>
                 </div>
             </nav>
             
             <!-- Sidebar Footer -->
             <div style="margin-top: auto; padding-top: 2rem; border-top: 1px solid transparent; border-image: var(--dark-divider-gradient) 1;">
-                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
+                <div class="frostdark-app-nav-item" onclick="showHelpPopup()">
                     <span style="font-size: 1.1rem;">❓</span>
-                    <span>Help &amp; Support</span>
-                </div>
-                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
-                    <span style="font-size: 1.1rem;">👤</span>
-                    <span>Profile</span>
+                    <span>Help & Support</span>
                 </div>
             </div>
         </div>
         
         <!-- Main Content Area -->
         <div class="frostdark-app-content">
-            <!-- Main Header -->
-            <div class="frostdark-app-main-header">
-                <h1 class="frostdark-app-main-title">Frost Glass CSS Components</h1>
-                <p class="frostdark-app-main-subtitle">Comprehensive dark theme glassmorphism component library with modern design patterns</p>
-            </div>
+            <!-- Components Page -->
+            <div id="components-page" class="page-content" style="display: block;">
+                <!-- Main Header -->
+                <div class="frostdark-app-main-header">
+                    <h1 class="frostdark-app-main-title">Frost Glass CSS Components</h1>
+                    <p class="frostdark-app-main-subtitle">Comprehensive dark theme glassmorphism component library with modern design patterns</p>
+                </div>
             
             
             <!-- Content Cards Section -->
@@ -606,7 +592,7 @@
                         </div>
                     </div>
                     
-                    <div class="standard-glass-card">
+                    <div class="frostdark-standard-glass-card">
                         <div class="demo-card-header">
                             <h3>Standard Glass Card</h3>
                             <p class="demo-card-description">
@@ -672,24 +658,24 @@
                         
                         <div class="demo-input-group">
                             <label class="text-label">Email Address</label>
-                            <div class="input-container">
-                                <input type="email" class="input-field" placeholder="Enter your email address...">
+                            <div class="frostdark-input-container">
+                                <input type="email" class="frostdark-input-field" placeholder="Enter your email address...">
                             </div>
                         </div>
                         
                         <div class="demo-input-group">
                             <label class="text-label">Search Query</label>
-                            <div class="input-container">
-                                <input type="text" class="input-field" placeholder="Search components and features...">
+                            <div class="frostdark-input-container">
+                                <input type="text" class="frostdark-input-field" placeholder="Search components and features...">
                                 <span class="text-accent" style="margin-left: 0.75rem; font-size: 1.1rem;">🔍</span>
                             </div>
                         </div>
                         
                         <div class="demo-input-group">
                             <label class="text-label">Message Input</label>
-                            <div class="conv-input-container">
-                                <textarea class="conv-input" placeholder="Type your message here..." rows="2"></textarea>
-                                <button class="conv-send-btn">
+                            <div class="frostdark-conv-input-container">
+                                <textarea class="frostdark-conv-input" placeholder="Type your message here..." rows="2"></textarea>
+                                <button class="frostdark-conv-send-btn">
                                     <span style="font-size: 1.2rem;">→</span>
                                 </button>
                             </div>
@@ -898,25 +884,498 @@
                     </div>
                 </div>
             </div>
+            </div>
             
+            <!-- Code Examples Page -->
+            <div id="code-examples-page" class="page-content" style="display: none;">
+                <div class="frostdark-app-main-header">
+                    <h1 class="frostdark-app-main-title">Code Examples</h1>
+                    <p class="frostdark-app-main-subtitle">Copy-ready code snippets for all Frost Glass CSS components</p>
+                </div>
+                
+                <!-- Code Examples Content -->
+                <div class="demo-section">
+                    <h2>Button Components</h2>
+                    <div class="demo-grid">
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <button class="frostdark-button-action">Primary Action</button>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Primary Button</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;button class="frostdark-button-action"&gt;Primary Action&lt;/button&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <button class="frostdark-button-raised">Success Button</button>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Success Button</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;button class="frostdark-button-raised"&gt;Success Button&lt;/button&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <button class="frostdark-button-action-danger">Delete</button>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Danger Button</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;button class="frostdark-button-action-danger"&gt;Delete&lt;/button&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2>Card Components</h2>
+                    <div class="demo-grid">
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div class="frostdark-app-content-card" style="max-width: 300px;">
+                                    <h3>Content Card</h3>
+                                    <p class="text-content">Sample glassmorphism card with content.</p>
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Content Card</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;div class="frostdark-app-content-card"&gt;
+    &lt;h3&gt;Card Title&lt;/h3&gt;
+    &lt;p class="text-content"&gt;Your content here.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div class="frostdark-standard-glass-card" style="max-width: 300px;">
+                                    <h3>Glass Card</h3>
+                                    <p class="text-subtle">Standard glassmorphism styling.</p>
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Standard Glass Card</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;div class="frostdark-standard-glass-card"&gt;
+    &lt;h3&gt;Card Title&lt;/h3&gt;
+    &lt;p class="text-subtle"&gt;Your content here.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-section">
+                    <h2>Form Elements</h2>
+                    <div class="demo-grid">
+                        <!-- Labeled Form Elements -->
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 400px;">
+                                    <div class="demo-input-group">
+                                        <label class="text-label">Email Address</label>
+                                        <div class="frostdark-input-container">
+                                            <input type="email" class="frostdark-input-field" placeholder="Enter your email address...">
+                                        </div>
+                                    </div>
+
+                                    <div class="demo-input-group">
+                                        <label class="text-label">Search Query</label>
+                                        <div class="frostdark-input-container">
+                                            <input type="text" class="frostdark-input-field" placeholder="Search components and features...">
+                                            <span class="text-accent" style="margin-left: 0.75rem; font-size: 1.1rem;">🔍</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="demo-input-group">
+                                        <label class="text-label">Message</label>
+                                        <div class="frostdark-conv-input-container">
+                                            <textarea class="frostdark-conv-input" placeholder="Type your message here..." rows="2"></textarea>
+                                            <button class="frostdark-conv-send-btn">
+                                                <span style="font-size: 1.2rem;">→</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Labeled Form Elements</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;!-- Labeled Input --&gt;
+&lt;div class="demo-input-group"&gt;
+    &lt;label class="text-label"&gt;Email Address&lt;/label&gt;
+    &lt;div class="frostdark-input-container"&gt;
+        &lt;input type="email" class="frostdark-input-field" placeholder="Enter your email address..."&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Search Input with Icon --&gt;
+&lt;div class="demo-input-group"&gt;
+    &lt;label class="text-label"&gt;Search Query&lt;/label&gt;
+    &lt;div class="frostdark-input-container"&gt;
+        &lt;input type="text" class="frostdark-input-field" placeholder="Search..."&gt;
+        &lt;span class="text-accent" style="margin-left: 0.75rem; font-size: 1.1rem;"&gt;🔍&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Message Input --&gt;
+&lt;div class="demo-input-group"&gt;
+    &lt;label class="text-label"&gt;Message&lt;/label&gt;
+    &lt;div class="frostdark-conv-input-container"&gt;
+        &lt;textarea class="frostdark-conv-input" placeholder="Type your message here..." rows="2"&gt;&lt;/textarea&gt;
+        &lt;button class="frostdark-conv-send-btn"&gt;→&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Simple Text Input -->
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div class="input-container">
+                                    <input type="text" class="input-field" placeholder="Enter text...">
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Simple Text Input</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;div class="input-container"&gt;
+    &lt;input type="text" class="input-field" placeholder="Enter text..."&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dialog Interface -->
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div style="position: relative; height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); border-radius: 8px;">
+                                    <div class="frostdark-dialog-danger" style="max-width: 480px; position: relative;">
+                                        <h2 class="text-danger" style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem;">Confirm Action</h2>
+                                        <p class="text-content" style="margin-bottom: 2rem; line-height: 1.5;">
+                                            Are you sure you want to perform this action? This cannot be undone.
+                                        </p>
+                                        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                                            <button class="frostdark-button-action">Cancel</button>
+                                            <button class="frostdark-button-action-danger">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Dialog Interface</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;div class="frostdark-dialog-danger"&gt;
+    &lt;h2 class="text-danger"&gt;Confirm Action&lt;/h2&gt;
+    &lt;p class="text-content"&gt;Dialog content...&lt;/p&gt;
+    &lt;div&gt;
+        &lt;button class="frostdark-button-action"&gt;Cancel&lt;/button&gt;
+        &lt;button class="frostdark-button-action-danger"&gt;Confirm&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Interface -->
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div class="frostdark-conv-chat" style="max-height: 300px; overflow-y: auto; padding: 1rem; background: rgba(0,0,0,0.05); border-radius: 8px;">
+                                    <div class="frostdark-conv-messages">
+                                        <div class="frostdark-conv-message assistant">
+                                            <div class="frostdark-conv-message-avatar assistant">A</div>
+                                            <div class="frostdark-conv-message-bubble">
+                                                <div class="frostdark-conv-message-text">
+                                                    Welcome to the chat interface! This demonstrates glassmorphism message bubbles.
+                                                </div>
+                                                <div class="frostdark-conv-message-time">5 minutes ago</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="frostdark-conv-message user">
+                                            <div class="frostdark-conv-message-avatar user">U</div>
+                                            <div class="frostdark-conv-message-bubble">
+                                                <div class="frostdark-conv-message-text">
+                                                    This looks great! The glassmorphism effect is beautiful.
+                                                </div>
+                                                <div class="frostdark-conv-message-time">3 minutes ago</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Chat Interface</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;div class="frostdark-conv-chat"&gt;
+    &lt;div class="frostdark-conv-messages"&gt;
+        &lt;div class="frostdark-conv-message assistant"&gt;
+            &lt;div class="frostdark-conv-message-avatar assistant"&gt;A&lt;/div&gt;
+            &lt;div class="frostdark-conv-message-bubble"&gt;
+                &lt;div class="frostdark-conv-message-text"&gt;
+                    Welcome to the chat interface!
+                &lt;/div&gt;
+                &lt;div class="frostdark-conv-message-time"&gt;5 minutes ago&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="frostdark-conv-message user"&gt;
+            &lt;div class="frostdark-conv-message-avatar user"&gt;U&lt;/div&gt;
+            &lt;div class="frostdark-conv-message-bubble"&gt;
+                &lt;div class="frostdark-conv-message-text"&gt;
+                    This looks great!
+                &lt;/div&gt;
+                &lt;div class="frostdark-conv-message-time"&gt;3 minutes ago&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Items -->
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; width: 100%; max-width: 280px;">
+                                    <div class="frostdark-app-nav-item active">
+                                        <span>🏠</span>
+                                        <span>Dashboard</span>
+                                    </div>
+                                    <div class="frostdark-app-nav-item">
+                                        <span>⚙️</span>
+                                        <span>Settings</span>
+                                    </div>
+                                    <div class="frostdark-app-nav-item">
+                                        <span>📊</span>
+                                        <span>Analytics</span>
+                                    </div>
+                                    <div class="frostdark-app-nav-item">
+                                        <span>📁</span>
+                                        <span>Files</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Navigation Items</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;!-- Active Navigation Item --&gt;
+&lt;div class="frostdark-app-nav-item active"&gt;
+    &lt;span&gt;🏠&lt;/span&gt;
+    &lt;span&gt;Dashboard&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- Regular Navigation Item --&gt;
+&lt;div class="frostdark-app-nav-item"&gt;
+    &lt;span&gt;⚙️&lt;/span&gt;
+    &lt;span&gt;Settings&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- Another Navigation Item --&gt;
+&lt;div class="frostdark-app-nav-item"&gt;
+    &lt;span&gt;📊&lt;/span&gt;
+    &lt;span&gt;Analytics&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Utilities -->
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div style="max-width: 400px; line-height: 1.6;">
+                                    <p class="text-primary" style="margin-bottom: 0.75rem;">Primary text - High contrast for important content and headings</p>
+                                    <p class="text-secondary" style="margin-bottom: 0.75rem;">Secondary text - Medium contrast for supporting information</p>
+                                    <p class="text-muted" style="margin-bottom: 0.75rem;">Muted text - Lower contrast for metadata and captions</p>
+                                    <p class="text-content">Content text - Optimized for long-form reading with balanced contrast</p>
+                                    <p class="text-accent" style="margin-bottom: 0.75rem;">Accent text - Special highlighting for important elements</p>
+                                    <p class="text-success">Success text - Green styling for positive actions</p>
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Text Utilities</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;p class="text-primary"&gt;Primary text&lt;/p&gt;
+&lt;p class="text-secondary"&gt;Secondary text&lt;/p&gt;
+&lt;p class="text-muted"&gt;Muted text&lt;/p&gt;
+&lt;p class="text-content"&gt;Content text&lt;/p&gt;
+&lt;p class="text-accent"&gt;Accent text&lt;/p&gt;
+&lt;p class="text-success"&gt;Success text&lt;/p&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Typography Hierarchy -->
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div style="max-width: 500px;">
+                                    <h1 style="margin-bottom: 0.5rem;">Heading 1 - Main Page Title</h1>
+                                    <h2 style="margin-bottom: 0.5rem;">Heading 2 - Section Title</h2>
+                                    <h3 style="margin-bottom: 0.5rem;">Heading 3 - Subsection Title</h3>
+                                    <h4 style="margin-bottom: 0.5rem;">Heading 4 - Minor Section</h4>
+                                    <h5 style="margin-bottom: 0.5rem;">Heading 5 - Small Section</h5>
+                                    <h6>Heading 6 - Smallest Section</h6>
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Typography Hierarchy</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;h1&gt;Heading 1 - Main Page Title&lt;/h1&gt;
+&lt;h2&gt;Heading 2 - Section Title&lt;/h2&gt;
+&lt;h3&gt;Heading 3 - Subsection Title&lt;/h3&gt;
+&lt;h4&gt;Heading 4 - Minor Section&lt;/h4&gt;
+&lt;h5&gt;Heading 5 - Small Section&lt;/h5&gt;
+&lt;h6&gt;Heading 6 - Smallest Section&lt;/h6&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.875rem; opacity: 0.8;">Off State:</label>
+                                        <div class="frostdark-settings-toggle" onclick="toggleSwitch(this)">
+                                            <div class="frostdark-settings-toggle-thumb"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.875rem; opacity: 0.8;">On State:</label>
+                                        <div class="frostdark-settings-toggle" data-state="checked" onclick="toggleSwitch(this)">
+                                            <div class="frostdark-settings-toggle-thumb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Toggle Switch</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;!-- Off State --&gt;
+&lt;div class="frostdark-settings-toggle" onclick="toggleSwitch(this)"&gt;
+    &lt;div class="frostdark-settings-toggle-thumb"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- On State --&gt;
+&lt;div class="frostdark-settings-toggle" data-state="checked" onclick="toggleSwitch(this)"&gt;
+    &lt;div class="frostdark-settings-toggle-thumb"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+function toggleSwitch(element) {
+    const isChecked = element.dataset.state === 'checked';
+    element.dataset.state = isChecked ? '' : 'checked';
+    element.classList.toggle('active', !isChecked);
+}
+&lt;/script&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Button Builder Page -->
+            <div id="button-builder-page" class="page-content" style="display: none;">
+                <div class="frostdark-app-main-header">
+                    <h1 class="frostdark-app-main-title">Button Builder</h1>
+                    <p class="frostdark-app-main-subtitle">Create custom buttons with our interactive builder</p>
+                </div>
+                
+                <div class="demo-section">
+                    <div class="frostdark-app-content-card" style="max-width: 600px; margin: 0 auto; text-align: center; padding: 4rem 2rem;">
+                        <div style="font-size: 4rem; margin-bottom: 1.5rem;">🚧</div>
+                        <h2 style="margin-bottom: 1rem;">Coming Soon</h2>
+                        <p class="text-content" style="font-size: 1.1rem; line-height: 1.8; max-width: 400px; margin: 0 auto;">
+                            Our interactive button builder is currently under development. 
+                            Soon you'll be able to customize buttons with different styles, 
+                            sizes, colors, and effects - then export the code instantly.
+                        </p>
+                        <div style="margin-top: 2rem;">
+                            <button class="frostdark-button-action">Notify Me When Ready</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
-    <!-- Code Block Examples Section -->
-    <div class="demo-section">
-        <h2>Code Examples &amp; Implementation</h2>
-        <p class="demo-section-subtitle">
-            Copy-ready code snippets for all components with live previews and syntax highlighting
-        </p>
-        
-        <div class="demo-grid">
+    <!-- Code Examples Page -->
+    <div id="code-examples-page" class="page-content" style="display: none;">
+        <div class="frostdark-app-main-header">
+            <h1 class="frostdark-app-main-title">Code Examples</h1>
+            <p class="frostdark-app-main-subtitle">Interactive code examples with live previews</p>
+        </div>
+
+        <div class="demo-section">
+            <h2>Code Examples &amp; Implementation</h2>
+            <p class="demo-section-subtitle">
+                Copy-ready code snippets for all components with live previews and syntax highlighting
+            </p>
             <!-- Button Code Example -->
             <div class="frostdark-code-example">
                 <div class="frostdark-code-preview">
-                    <div class="demo-button-group">
-                        <button class="frostdark-button-action">Primary Action</button>
-                        <button class="frostdark-button-raised">Success Button</button>
-                        <button class="frostdark-button-action-danger">Delete Item</button>
+                    <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start;">
+                        <div class="demo-button-group">
+                            <button class="frostdark-button-action">Primary Action</button>
+                            <button class="frostdark-button-raised">Success Button</button>
+                            <button class="frostdark-button-action-danger">Delete Item</button>
+                        </div>
+                        <div class="demo-button-group">
+                            <button class="frostdark-button-action frostdark-button-action-sm">Small</button>
+                            <button class="frostdark-button-action frostdark-button-action-icon">⚙️</button>
+                            <button class="frostdark-button-raised frostdark-button-action-sm">Small Success</button>
+                        </div>
                     </div>
                 </div>
                 <div class="frostdark-code-block">
@@ -932,7 +1391,11 @@
 &lt;button class="frostdark-button-raised"&gt;Success Button&lt;/button&gt;
 
 &lt;!-- Danger Button --&gt;
-&lt;button class="frostdark-button-action-danger"&gt;Delete Item&lt;/button&gt;</code></pre>
+&lt;button class="frostdark-button-action-danger"&gt;Delete Item&lt;/button&gt;
+
+&lt;!-- Small Buttons --&gt;
+&lt;button class="frostdark-button-action frostdark-button-action-sm"&gt;Small&lt;/button&gt;
+&lt;button class="frostdark-button-action frostdark-button-action-icon"&gt;⚙️&lt;/button&gt;</code></pre>
                     </div>
                 </div>
             </div>
@@ -940,20 +1403,202 @@
             <!-- Card Code Example -->
             <div class="frostdark-code-example">
                 <div class="frostdark-code-preview">
-                    <div class="frostdark-app-content-card" style="max-width: 300px;">
-                        <h3>Sample Card</h3>
-                        <p class="text-content">This is a sample content card with glassmorphism styling.</p>
+                    <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                        <div class="frostdark-app-content-card" style="max-width: 300px;">
+                            <h3>Content Card</h3>
+                            <p class="text-content">This is a sample content card with glassmorphism styling.</p>
+                        </div>
+                        <div class="frostdark-standard-glass-card" style="max-width: 300px;">
+                            <h3>Glass Card</h3>
+                            <p class="text-subtle">Standard glassmorphism styling.</p>
+                        </div>
                     </div>
                 </div>
                 <div class="frostdark-code-block">
                     <div class="frostdark-code-header">
-                        <span class="frostdark-code-title">Content Card</span>
+                        <span class="frostdark-code-title">Card Components</span>
                         <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
                     </div>
                     <div class="frostdark-code-content">
-                        <pre><code>&lt;div class="frostdark-app-content-card"&gt;
+                        <pre><code>&lt;!-- Content Card --&gt;
+&lt;div class="frostdark-app-content-card"&gt;
     &lt;h3&gt;Card Title&lt;/h3&gt;
     &lt;p class="text-content"&gt;Card content goes here with proper typography.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- Standard Glass Card --&gt;
+&lt;div class="frostdark-standard-glass-card"&gt;
+    &lt;h3&gt;Card Title&lt;/h3&gt;
+    &lt;p class="text-subtle"&gt;Card content here.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Block Code Example -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="frostdark-app-text-block" style="max-width: 400px;">
+                        <div class="frostdark-app-text-block-title">📊 Analytics Dashboard</div>
+                        <div class="frostdark-app-text-block-content">
+                            Monitor your key metrics and performance indicators with real-time data visualization.
+                        </div>
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Text Block</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;div class="frostdark-app-text-block"&gt;
+    &lt;div class="frostdark-app-text-block-title"&gt;📊 Analytics Dashboard&lt;/div&gt;
+    &lt;div class="frostdark-app-text-block-content"&gt;
+        Monitor your key metrics and performance indicators with real-time data visualization.
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logo Components Code Example -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="frostdark-app-logo">
+                        <div class="frostdark-app-logo-icon">
+                            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">❄️</div>
+                        </div>
+                        <div>
+                            <div class="frostdark-app-title">Frost Glass</div>
+                            <div class="frostdark-app-subtitle">CSS Library</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Logo Components</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;div class="frostdark-app-logo"&gt;
+    &lt;div class="frostdark-app-logo-icon"&gt;
+        &lt;div style="width: 60px; height: 60px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;"&gt;❄️&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;div class="frostdark-app-title"&gt;Frost Glass&lt;/div&gt;
+        &lt;div class="frostdark-app-subtitle"&gt;CSS Library&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Header Code Example -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="frostdark-app-main-header">
+                        <h1 class="frostdark-app-main-title">Dashboard Overview</h1>
+                        <p class="frostdark-app-main-subtitle">Monitor your key metrics and performance indicators</p>
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Main Header</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;div class="frostdark-app-main-header"&gt;
+    &lt;h1 class="frostdark-app-main-title"&gt;Dashboard Overview&lt;/h1&gt;
+    &lt;p class="frostdark-app-main-subtitle"&gt;Monitor your key metrics and performance indicators&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State Panel Code Example -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="frostdark-empty-panel" style="max-width: 400px;">
+                        <div class="empty-icon" style="font-size: 3.5rem; margin-bottom: 1rem;">📁</div>
+                        <div class="empty-text" style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.5rem;">No Items Found</div>
+                        <p class="text-subtle" style="font-size: 0.875rem; line-height: 1.4; text-align: center; max-width: 280px; margin: 0 auto;">
+                            This empty state panel provides a gentle glassmorphism background for content areas with no data.
+                        </p>
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Empty State Panel</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;div class="frostdark-empty-panel"&gt;
+    &lt;div class="empty-icon"&gt;📁&lt;/div&gt;
+    &lt;div class="empty-text"&gt;No Items Found&lt;/div&gt;
+    &lt;p class="text-subtle"&gt;Description text...&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversation Input Code Example -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="frostdark-conv-input-container" style="max-width: 400px; margin: 0 auto;">
+                        <textarea class="frostdark-conv-input" placeholder="Type your message..." style="min-height: 20px; border: none; background: transparent; resize: none;"></textarea>
+                        <button class="frostdark-conv-send-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Conversation Input</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;div class="frostdark-conv-input-container"&gt;
+    &lt;textarea class="frostdark-conv-input"
+              placeholder="Type your message..."&gt;
+    &lt;/textarea&gt;
+    &lt;button class="frostdark-conv-send-btn"&gt;
+        Send
+    &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dialog Components Code Example -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="frostdark-dialog-danger" style="max-width: 480px; margin: 0 auto;">
+                        <h2 class="text-danger" style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem;">Confirm Action</h2>
+                        <p class="text-content" style="margin-bottom: 2rem; line-height: 1.5;">
+                            Are you sure you want to perform this action? This cannot be undone.
+                        </p>
+                        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                            <button class="frostdark-button-action">Cancel</button>
+                            <button class="frostdark-button-action-danger">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Danger Dialog</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;div class="frostdark-dialog-danger"&gt;
+    &lt;h2 class="text-danger"&gt;Confirm Action&lt;/h2&gt;
+    &lt;p class="text-content"&gt;Dialog content...&lt;/p&gt;
+    &lt;div&gt;
+        &lt;button class="frostdark-button-action"&gt;Cancel&lt;/button&gt;
+        &lt;button class="frostdark-button-action-danger"&gt;Confirm&lt;/button&gt;
+    &lt;/div&gt;
 &lt;/div&gt;</code></pre>
                     </div>
                 </div>
@@ -962,8 +1607,8 @@
             <!-- Input Code Example -->
             <div class="frostdark-code-example">
                 <div class="frostdark-code-preview">
-                    <div class="input-container">
-                        <input type="text" class="input-field" placeholder="Enter text here...">
+                    <div class="frostdark-input-container">
+                        <input type="text" class="frostdark-input-field" placeholder="Enter text here...">
                     </div>
                 </div>
                 <div class="frostdark-code-block">
@@ -972,8 +1617,8 @@
                         <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
                     </div>
                     <div class="frostdark-code-content">
-                        <pre><code>&lt;div class="input-container"&gt;
-    &lt;input type="text" class="input-field" placeholder="Enter text here..."&gt;
+                        <pre><code>&lt;div class="frostdark-input-container"&gt;
+    &lt;input type="text" class="frostdark-input-field" placeholder="Enter text here..."&gt;
 &lt;/div&gt;</code></pre>
                     </div>
                 </div>
@@ -1021,6 +1666,42 @@ function toggleSwitch(element) {
                 <button class="frostdark-button-action" onclick="hideDangerDialog()">Cancel</button>
                 <button class="frostdark-button-action-danger" onclick="hideDangerDialog()">Delete Permanently</button>
             </div>
+        </div>
+    </div>
+    
+    <!-- Help & Support Popup -->
+    <div id="help-popup-backdrop" class="frostdark-dialog-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="hideHelpPopup()">
+        <div class="frostdark-app-content-card" style="max-width: 500px; margin: 2rem; padding: 2rem;" onclick="event.stopPropagation()">
+            <h2 style="margin-bottom: 1.5rem;">Help & Support</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">About Frost Glass CSS</h3>
+                <p class="text-content" style="line-height: 1.6;">
+                    A modern CSS framework featuring beautiful glassmorphism effects with both dark and light themes. 
+                    Perfect for creating elegant, semi-transparent UI components with backdrop blur effects.
+                </p>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Quick Start</h3>
+                <p class="text-content" style="line-height: 1.6;">
+                    1. Browse components in the Components page<br>
+                    2. Copy code snippets from Code Examples<br>
+                    3. Toggle between dark/light themes using the switch<br>
+                    4. Button Builder coming soon!
+                </p>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Resources</h3>
+                <p class="text-content" style="line-height: 1.6;">
+                    • Documentation: Coming soon<br>
+                    • GitHub: github.com/yourrepo<br>
+                    • Version: 1.0.0
+                </p>
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+                <button class="frostdark-button-action" onclick="hideHelpPopup()">Close</button>
+            </div>
+        </div>
+    </div>
         </div>
     </div>
 
@@ -1085,10 +1766,43 @@ function toggleSwitch(element) {
             }, 2000);
         }
 
-        // Navigation active state management
+        // Page switching functionality
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.style.display = 'none';
+            });
+            
+            // Show selected page
+            const selectedPage = document.getElementById(pageName + '-page');
+            if (selectedPage) {
+                selectedPage.style.display = 'block';
+            }
+            
+            // Update active nav item
+            document.querySelectorAll('.frostdark-app-nav-item, .frostlight-app-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Set active class on clicked nav item
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Help popup functionality
+        function showHelpPopup() {
+            document.getElementById('help-popup-backdrop').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function hideHelpPopup() {
+            document.getElementById('help-popup-backdrop').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Navigation active state management (for backward compatibility)
         function setActiveNav(element) {
             // Remove active class from all nav items
-            document.querySelectorAll('.frostdark-app-nav-item').forEach(item => {
+            document.querySelectorAll('.frostdark-app-nav-item, .frostlight-app-nav-item').forEach(item => {
                 item.classList.remove('active');
             });
             
@@ -1124,6 +1838,13 @@ function toggleSwitch(element) {
                 // Update all frostdark- classes to frostlight-
                 switchAllClasses('frostdark-', 'frostlight-');
                 
+                // Also update help popup classes
+                const helpCard = document.querySelector('#help-popup-backdrop .frostdark-app-content-card');
+                if (helpCard) {
+                    helpCard.classList.remove('frostdark-app-content-card');
+                    helpCard.classList.add('frostlight-app-content-card');
+                }
+                
                 // Update icon to light version
                 if (logoImage) {
                     logoImage.src = '../public/frost_light_iced.png';
@@ -1132,6 +1853,8 @@ function toggleSwitch(element) {
                 
                 // Update subtitle text
                 document.querySelector('.frostlight-app-subtitle').textContent = 'LIGHT THEME';
+                // Update code examples to show frostlight-* classes
+                updateCodeExamples('frostlight');
             } else {
                 // Switch to dark theme - change body class AND all element classes
                 body.classList.remove('frost_light');
@@ -1142,6 +1865,13 @@ function toggleSwitch(element) {
                 // Update all frostlight- classes to frostdark-
                 switchAllClasses('frostlight-', 'frostdark-');
                 
+                // Also update help popup classes back
+                const helpCard2 = document.querySelector('#help-popup-backdrop .frostlight-app-content-card');
+                if (helpCard2) {
+                    helpCard2.classList.remove('frostlight-app-content-card');
+                    helpCard2.classList.add('frostdark-app-content-card');
+                }
+                
                 // Update icon to dark version
                 if (logoImage) {
                     logoImage.src = '../public/frost_dark_iced.png';
@@ -1150,13 +1880,15 @@ function toggleSwitch(element) {
                 
                 // Update subtitle text
                 document.querySelector('.frostdark-app-subtitle').textContent = 'DARK THEME';
+                // Update code examples to show frostdark-* classes
+                updateCodeExamples('frostdark');
             }
         }
 
         // Helper function to switch all class prefixes
         function switchAllClasses(fromPrefix, toPrefix) {
             const allElements = document.querySelectorAll('*');
-            
+
             allElements.forEach(element => {
                 const classList = Array.from(element.classList);
                 classList.forEach(className => {
@@ -1167,16 +1899,32 @@ function toggleSwitch(element) {
                     }
                 });
             });
-            
-            // Also update code block classes
-            document.querySelectorAll('.code-example').forEach(block => {
-                if (fromPrefix === 'frostdark-') {
-                    block.classList.add('frostlight-code-example');
-                    block.classList.remove('frostdark-code-example');
-                } else if (fromPrefix === 'frostlight-') {
-                    block.classList.add('frostdark-code-example');
-                    block.classList.remove('frostlight-code-example');
-                }
+
+            // Also update code block classes - these should be handled by the main loop above,
+            // but let's make sure they're properly switched
+            document.querySelectorAll('[class*="code-"]').forEach(block => {
+                const classList = Array.from(block.classList);
+                classList.forEach(className => {
+                    if (className.startsWith(fromPrefix) && className.includes('code')) {
+                        const newClassName = className.replace(fromPrefix, toPrefix);
+                        block.classList.remove(className);
+                        block.classList.add(newClassName);
+                    }
+                });
+            });
+        }
+
+        // Update all <code> blocks to reflect current theme class prefixes
+        function updateCodeExamples(themePrefix) {
+            const targetPrefix = themePrefix === 'frostlight' ? 'frostlight-' : 'frostdark-';
+            const otherPrefix  = themePrefix === 'frostlight' ? 'frostdark-'  : 'frostlight-';
+
+            document.querySelectorAll('pre code').forEach(codeEl => {
+                // Use innerHTML to preserve escaping already present in examples
+                let html = codeEl.innerHTML;
+                html = html.replaceAll(otherPrefix, targetPrefix);
+                // In case examples were mixed previously, normalize double swaps
+                codeEl.innerHTML = html;
             });
         }
 
@@ -1192,7 +1940,7 @@ function toggleSwitch(element) {
         }
 
         // Auto-resize chat input
-        const chatInput = document.querySelector('.conv-input');
+        const chatInput = document.querySelector('.frostdark-conv-input');
         if (chatInput) {
             chatInput.addEventListener('input', function() {
                 this.style.height = 'auto';
@@ -1230,6 +1978,7 @@ function toggleSwitch(element) {
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
                 hideDangerDialog();
+                hideHelpPopup();
             }
         });
 

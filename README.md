@@ -105,7 +105,7 @@ Use `frost_light` class on the body or container:
 </div>
 
 <!-- Standard Glass Card -->
-<div class="standard-glass-card">
+<div class="frostdark-standard-glass-card">
     <h3>Standard Card</h3>
     <p>Classic glassmorphism styling</p>
 </div>
@@ -115,14 +115,14 @@ Use `frost_light` class on the body or container:
 
 ```html
 <!-- Input Container -->
-<div class="input-container">
-    <input type="text" class="input-field" placeholder="Enter text...">
+<div class="frostdark-input-container">
+    <input type="text" class="frostdark-input-field" placeholder="Enter text...">
 </div>
 
 <!-- Textarea with Send Button -->
-<div class="conv-input-container">
-    <textarea class="conv-input" placeholder="Type your message..."></textarea>
-    <button class="conv-send-btn">→</button>
+<div class="frostdark-conv-input-container">
+    <textarea class="frostdark-conv-input" placeholder="Type your message..."></textarea>
+    <button class="frostdark-conv-send-btn">→</button>
 </div>
 ```
 

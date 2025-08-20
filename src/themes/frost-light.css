@@ -1533,6 +1533,11 @@
   color: rgba(20, 184, 166, 0.9);
 }
 
+.frost_light .text-success,
+.frost_light.text-success {
+  color: rgba(13, 148, 136, 0.9);
+}
+
 .frost_light .text-danger,
 .frost_light.text-danger {
   color: rgba(153, 27, 27, 0.9);
@@ -1559,8 +1564,8 @@
   line-height: 1.5;
 }
 
-/* Standard glass card for light theme */
-.frost_light .standard-glass-card {
+  /* Standard glass card for light theme */
+.frost_light .frostlight-standard-glass-card {
   background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
   backdrop-filter: blur(12px) saturate(150%) contrast(1.02);
   -webkit-backdrop-filter: blur(12px) saturate(150%) contrast(1.02);
@@ -1610,8 +1615,8 @@
   margin-bottom: 1.5rem;
 }
 
-/* Unified input styling for light theme */
-.frost_light .input-container {
+  /* Unified input styling for light theme */
+.frost_light .frostlight-input-container {
   background: linear-gradient(135deg, rgba(167, 202, 218, 0.35) 0%, rgba(139, 115, 226, 0.2) 50%, rgba(162, 196, 235, 0.53) 100%);
   backdrop-filter: blur(0px) saturate(150%);
   -webkit-backdrop-filter: blur(0px) saturate(150%);
@@ -1628,14 +1633,14 @@
   transition: all 0.3s ease;
 }
 
-.frost_light .input-container:focus-within {
+.frost_light .frostlight-input-container:focus-within {
   box-shadow:
     inset 0 2px 4px rgba(15, 23, 42, 0.8),
     inset 0 -1px 0 rgba(6, 182, 212, 0.3),
     0 0 0 2px rgba(6, 182, 212, 0.2);
 }
 
-.frost_light .input-field {
+.frost_light .frostlight-input-field {
   flex: 1;
   background: transparent;
   border: none;
@@ -1644,12 +1649,12 @@
   font-size: 0.875rem;
 }
 
-.frost_light .input-field::placeholder {
+.frost_light .frostlight-input-field::placeholder {
   color: rgba(148, 163, 184, 1);
 }
 
 /* Unified conversation input styles for light theme - restored original */
-.frost_light .conv-input-container {
+.frost_light .frostlight-conv-input-container {
   display: flex;
   align-items: flex-end;
   gap: 0rem;
@@ -1666,14 +1671,14 @@
     inset -1px 0 0 rgba(106, 182, 233, 0.52);
 }
 
-.frost_light .conv-input-container:focus-within {
+.frost_light .frostlight-conv-input-container:focus-within {
   box-shadow:
     inset 0 2px 4px rgba(15, 23, 42, 0.8),
     inset 0 -1px 0 rgba(6, 182, 212, 0.3),
     0 0 0 2px rgba(6, 182, 212, 0.2);
 }
 
-.frost_light .conv-input {
+.frost_light .frostlight-conv-input {
   flex: 1;
   background: transparent !important;
   background-color: transparent !important;
@@ -1692,11 +1697,11 @@
   appearance: none;
 }
 
-.frost_light .conv-input::placeholder {
+.frost_light .frostlight-conv-input::placeholder {
   color: rgba(148, 163, 184, 1);
 }
 
-.frost_light .conv-send-btn {
+.frost_light .frostlight-conv-send-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -1714,14 +1719,14 @@
     0 4px 12px rgba(20, 184, 166, 0.2);
 }
 
-.frost_light .conv-send-btn:hover {
+.frost_light .frostlight-conv-send-btn:hover {
   transform: scale(1.05);
   box-shadow:
     0 6px 16px rgba(20, 184, 166, 0.3),
     0 3px 6px rgba(6, 182, 212, 0.2);
 }
 
-.frost_light .conv-send-btn:active {
+.frost_light .frostlight-conv-send-btn:active {
   transform: scale(0.95);
 }
 
@@ -2207,4 +2212,13 @@
   .frostlight-code-content pre {
     font-size: 0.8125rem;
   }
+}
+
+/* ========================================= */
+/* FROST LIGHT HEADING STYLES */
+/* ========================================= */
+
+.frost_light h2 {
+  color: #0f766e !important; /* Darker teal for light theme */
+  font-weight: 600;
 }

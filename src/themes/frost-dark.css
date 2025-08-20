@@ -486,7 +486,7 @@
   backdrop-filter: blur(8px) saturate(120%);
   -webkit-backdrop-filter: blur(8px) saturate(120%);
   border: 0px solid transparent;
-  border-image: linear-gradient(135deg, rgba(239, 68, 68, 0.5) 0%, rgba(185, 28, 28, 0.6) 100%) 1;
+  border-image: linear-gradient(135deg, rgba(239, 68, 68, 0.425) 0%, rgba(185, 28, 28, 0.6) 100%) 1;
   border-radius: 12px;
   padding: 0.75rem 1.5rem;
   color: rgba(255, 255, 255, 1);
@@ -1097,6 +1097,11 @@
   color: rgba(103, 232, 249, 0.9);
 }
 
+.frost_dark .text-success,
+.frost_dark.text-success {
+  color: rgba(20, 184, 166, 0.9);
+}
+
 .frost_dark .text-danger,
 .frost_dark.text-danger {
   color: rgba(248, 113, 113, 1);
@@ -1123,8 +1128,8 @@
   line-height: 1.5;
 }
 
-/* Standard glass card for dark theme */
-.frost_dark .standard-glass-card {
+  /* Standard glass card for dark theme */
+.frost_dark .frostdark-standard-glass-card {
   background: rgba(15, 23, 42, 0.4);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -1138,8 +1143,8 @@
     inset 0 -1px 0 rgba(51, 65, 85, 0.5);
 }
 
-/* Unified input styling for dark theme */
-.frost_dark .input-container {
+  /* Unified input styling for dark theme */
+.frost_dark .frostdark-input-container {
   background: rgba(51, 65, 85, 0.3);
   backdrop-filter: blur(8px) saturate(120%);
   -webkit-backdrop-filter: blur(8px) saturate(120%);
@@ -1154,7 +1159,7 @@
   transition: all 0.3s ease;
 }
 
-.frost_dark .input-container:focus-within {
+.frost_dark .frostdark-input-container:focus-within {
   border-color: rgba(6, 182, 212, 0.5);
   box-shadow:
     inset 0 2px 4px rgba(15, 23, 42, 0.8),
@@ -1162,7 +1167,7 @@
     0 0 0 2px rgba(6, 182, 212, 0.2);
 }
 
-.frost_dark .input-field {
+.frost_dark .frostdark-input-field {
   flex: 1;
   background: transparent;
   border: none;
@@ -1171,12 +1176,12 @@
   font-size: 0.875rem;
 }
 
-.frost_dark .input-field::placeholder {
+.frost_dark .frostdark-input-field::placeholder {
   color: rgba(148, 163, 184, 0.7);
 }
 
 /* Unified conversation input styles for dark theme - restored original */
-.frost_dark .conv-input-container {
+.frost_dark .frostdark-conv-input-container {
   display: flex;
   align-items: flex-end;
   gap: 0rem;
@@ -1193,7 +1198,7 @@
     inset -2px 0 0 rgba(51, 65, 85, 0.6);
 }
 
-.frost_dark .conv-input-container:focus-within {
+.frost_dark .frostdark-conv-input-container:focus-within {
   box-shadow:
     inset 0 3px 0 rgba(15, 23, 42, 0.8),
     inset 0 -2px 0 rgba(6, 182, 212, 0.4),
@@ -1202,7 +1207,7 @@
     0 0 0 2px rgba(6, 182, 212, 0.2);
 }
 
-.frost_dark .conv-input {
+.frost_dark .frostdark-conv-input {
   flex: 1;
   background: transparent !important;
   background-color: transparent !important;
@@ -1221,11 +1226,11 @@
   appearance: none;
 }
 
-.frost_dark .conv-input::placeholder {
+.frost_dark .frostdark-conv-input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.frost_dark .conv-send-btn {
+.frost_dark .frostdark-conv-send-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -1243,14 +1248,14 @@
     0 4px 12px rgba(135, 80, 236, 0.3);
 }
 
-.frost_dark .conv-send-btn:hover {
+.frost_dark .frostdark-conv-send-btn:hover {
   transform: scale(1.05);
   box-shadow:
     0 6px 16px rgba(135, 80, 236, 0.4),
     0 3px 6px rgba(59, 130, 246, 0.3);
 }
 
-.frost_dark .conv-send-btn:active {
+.frost_dark .frostdark-conv-send-btn:active {
   transform: scale(0.95);
 }
 
@@ -1697,6 +1702,15 @@
   .frostdark-code-content pre {
     font-size: 0.8125rem;
   }
+}
+
+/* ========================================= */
+/* FROST DARK HEADING STYLES */
+/* ========================================= */
+
+.frost_dark h2 {
+  color: #14b8a6 !important; /* Bright teal color */
+  font-weight: 600;
 }
 
 /* ========================================= */

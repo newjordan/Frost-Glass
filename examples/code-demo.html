@@ -14,79 +14,44 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
-        
+        /* Minimal custom styles - using theme classes for everything else */
         .demo-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 2.5rem;
         }
-        
+
         .demo-header {
             text-align: center;
             margin-bottom: 3rem;
         }
-        
+
         .demo-header h1 {
-            font-size: 3rem;
-            font-weight: 700;
             margin-bottom: 1rem;
         }
-        
+
         .demo-header p {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.8);
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.6;
         }
-        
+
         .theme-toggle {
             margin: 2rem 0;
             text-align: center;
         }
-        
-        .theme-toggle button {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.8) 0%, rgba(20, 184, 166, 0.7) 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 1rem 2rem;
-            color: white;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .theme-toggle button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
-        }
-        
+
         .demo-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
-        
+
         @media (max-width: 768px) {
             .demo-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
-            }
-            
-            .demo-header h1 {
-                font-size: 2rem;
-            }
-            
-            .demo-header p {
-                font-size: 1rem;
             }
         }
     </style>
@@ -94,11 +59,11 @@
 <body class="frost_dark">
     <div class="demo-container">
         <div class="demo-header">
-            <h1>Code Examples Demo</h1>
-            <p>Interactive code examples with live previews and copy-to-clipboard functionality. Switch between themes to see how the code blocks adapt.</p>
-            
+            <h1 class="frostdark-app-main-title">Code Examples Demo</h1>
+            <p class="frostdark-app-main-subtitle">Interactive code examples with live previews and copy-to-clipboard functionality. Switch between themes to see how the code blocks adapt.</p>
+
             <div class="theme-toggle">
-                <button onclick="toggleTheme()">Switch to Light Theme</button>
+                <button class="frostdark-button-action" onclick="toggleTheme()">Switch to Light Theme</button>
             </div>
         </div>
         
@@ -166,12 +131,12 @@
             <div class="frostdark-code-example">
                 <div class="frostdark-code-preview">
                     <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
-                        <div class="input-container">
-                            <input type="text" class="input-field" placeholder="Enter your name...">
+                        <div class="frostdark-input-container">
+                            <input type="text" class="frostdark-input-field" placeholder="Enter your name...">
                         </div>
-                        <div class="conv-input-container">
-                            <textarea class="conv-input" placeholder="Type your message..." rows="2"></textarea>
-                            <button class="conv-send-btn">→</button>
+                        <div class="frostdark-conv-input-container">
+                            <textarea class="frostdark-conv-input" placeholder="Type your message..." rows="2"></textarea>
+                            <button class="frostdark-conv-send-btn">→</button>
                         </div>
                     </div>
                 </div>
@@ -182,14 +147,14 @@
                     </div>
                     <div class="frostdark-code-content">
                         <pre><code>&lt;!-- Text Input --&gt;
-&lt;div class="input-container"&gt;
-    &lt;input type="text" class="input-field" placeholder="Enter your name..."&gt;
+&lt;div class="frostdark-input-container"&gt;
+    &lt;input type="text" class="frostdark-input-field" placeholder="Enter your name..."&gt;
 &lt;/div&gt;
 
 &lt;!-- Textarea with Send Button --&gt;
-&lt;div class="conv-input-container"&gt;
-    &lt;textarea class="conv-input" placeholder="Type your message..." rows="2"&gt;&lt;/textarea&gt;
-    &lt;button class="conv-send-btn"&gt;→&lt;/button&gt;
+&lt;div class="frostdark-conv-input-container"&gt;
+    &lt;textarea class="frostdark-conv-input" placeholder="Type your message..." rows="2"&gt;&lt;/textarea&gt;
+    &lt;button class="frostdark-conv-send-btn"&gt;→&lt;/button&gt;
 &lt;/div&gt;</code></pre>
                     </div>
                 </div>
@@ -318,7 +283,7 @@ function toggleSwitch(element) {
         // Copy code function
         function copyCode(button) {
             const codeBlock = button.closest('.frostdark-code-example, .frostlight-code-example');
-            const codeContent = codeBlock.querySelector('code');
+            const codeContent = codeBlock?.querySelector('code');
             
             if (codeContent) {
                 const textToCopy = codeContent.textContent || codeContent.innerText;
@@ -385,30 +350,135 @@ function toggleSwitch(element) {
         function toggleTheme() {
             const body = document.body;
             const button = document.querySelector('.theme-toggle button');
-            
+
             if (body.classList.contains('frost_dark')) {
                 // Switch to light theme
                 body.classList.remove('frost_dark');
                 body.classList.add('frost_light');
                 button.textContent = 'Switch to Dark Theme';
-                
+
+                // Update theme toggle button
+                button.classList.remove('frostdark-button-action');
+                button.classList.add('frostlight-button-action');
+
+                // Update header classes
+                document.querySelector('h1').classList.remove('frostdark-app-main-title');
+                document.querySelector('h1').classList.add('frostlight-app-main-title');
+                document.querySelector('p').classList.remove('frostdark-app-main-subtitle');
+                document.querySelector('p').classList.add('frostlight-app-main-subtitle');
+
                 // Update all code block classes
-                document.querySelectorAll('.frostdark-code-example').forEach(block => {
-                    block.classList.remove('frostdark-code-example');
-                    block.classList.add('frostlight-code-example');
-                });
+                switchAllClasses('frostdark-code-example', 'frostlight-code-example');
+                switchAllClasses('frostdark-code-preview', 'frostlight-code-preview');
+                switchAllClasses('frostdark-code-block', 'frostlight-code-block');
+                switchAllClasses('frostdark-code-header', 'frostlight-code-header');
+                switchAllClasses('frostdark-code-title', 'frostlight-code-title');
+                switchAllClasses('frostdark-copy-button', 'frostlight-copy-button');
+                switchAllClasses('frostdark-code-content', 'frostlight-code-content');
+
+                // Update component classes inside previews
+                switchAllClasses('frostdark-button-action', 'frostlight-button-action');
+                switchAllClasses('frostdark-button-raised', 'frostlight-button-raised');
+                switchAllClasses('frostdark-button-action-danger', 'frostlight-button-action-danger');
+                switchAllClasses('frostdark-button-action-sm', 'frostlight-button-action-sm');
+                switchAllClasses('frostdark-app-content-card', 'frostlight-app-content-card');
+                switchAllClasses('frostdark-input-container', 'frostlight-input-container');
+                switchAllClasses('frostdark-input-field', 'frostlight-input-field');
+                switchAllClasses('frostdark-conv-input-container', 'frostlight-conv-input-container');
+                switchAllClasses('frostdark-conv-input', 'frostlight-conv-input');
+                switchAllClasses('frostdark-conv-send-btn', 'frostlight-conv-send-btn');
+                switchAllClasses('frostdark-settings-toggle', 'frostlight-settings-toggle');
+                switchAllClasses('frostdark-settings-toggle-thumb', 'frostlight-settings-toggle-thumb');
+                switchAllClasses('frostdark-app-nav-item', 'frostlight-app-nav-item');
+                switchAllClasses('frostdark-app-logo', 'frostlight-app-logo');
+                switchAllClasses('frostdark-app-logo-icon', 'frostlight-app-logo-icon');
+                switchAllClasses('frostdark-app-title', 'frostlight-app-title');
+                switchAllClasses('frostdark-app-subtitle', 'frostlight-app-subtitle');
+
+                // Update text classes
+                switchAllClasses('text-content', 'text-content');
+                switchAllClasses('text-primary', 'text-primary');
+                switchAllClasses('text-secondary', 'text-secondary');
+                switchAllClasses('text-muted', 'text-muted');
+
+                // Update code examples to show current theme classes
+                updateCodeExamples('frostlight');
+
             } else {
                 // Switch to dark theme
                 body.classList.remove('frost_light');
                 body.classList.add('frost_dark');
                 button.textContent = 'Switch to Light Theme';
-                
+
+                // Update theme toggle button
+                button.classList.remove('frostlight-button-action');
+                button.classList.add('frostdark-button-action');
+
+                // Update header classes
+                document.querySelector('h1').classList.remove('frostlight-app-main-title');
+                document.querySelector('h1').classList.add('frostdark-app-main-title');
+                document.querySelector('p').classList.remove('frostlight-app-main-subtitle');
+                document.querySelector('p').classList.add('frostdark-app-main-subtitle');
+
                 // Update all code block classes
-                document.querySelectorAll('.frostlight-code-example').forEach(block => {
-                    block.classList.remove('frostlight-code-example');
-                    block.classList.add('frostdark-code-example');
-                });
+                switchAllClasses('frostlight-code-example', 'frostdark-code-example');
+                switchAllClasses('frostlight-code-preview', 'frostdark-code-preview');
+                switchAllClasses('frostlight-code-block', 'frostdark-code-block');
+                switchAllClasses('frostlight-code-header', 'frostdark-code-header');
+                switchAllClasses('frostlight-code-title', 'frostdark-code-title');
+                switchAllClasses('frostlight-copy-button', 'frostdark-copy-button');
+                switchAllClasses('frostlight-code-content', 'frostdark-code-content');
+
+                // Update component classes inside previews
+                switchAllClasses('frostlight-button-action', 'frostdark-button-action');
+                switchAllClasses('frostlight-button-raised', 'frostdark-button-raised');
+                switchAllClasses('frostlight-button-action-danger', 'frostdark-button-action-danger');
+                switchAllClasses('frostlight-button-action-sm', 'frostdark-button-action-sm');
+                switchAllClasses('frostlight-app-content-card', 'frostdark-app-content-card');
+                switchAllClasses('frostlight-input-container', 'frostdark-input-container');
+                switchAllClasses('frostlight-input-field', 'frostdark-input-field');
+                switchAllClasses('frostlight-conv-input-container', 'frostdark-conv-input-container');
+                switchAllClasses('frostlight-conv-input', 'frostdark-conv-input');
+                switchAllClasses('frostlight-conv-send-btn', 'frostdark-conv-send-btn');
+                switchAllClasses('frostlight-settings-toggle', 'frostdark-settings-toggle');
+                switchAllClasses('frostlight-settings-toggle-thumb', 'frostdark-settings-toggle-thumb');
+                switchAllClasses('frostlight-app-nav-item', 'frostdark-app-nav-item');
+                switchAllClasses('frostlight-app-logo', 'frostdark-app-logo');
+                switchAllClasses('frostlight-app-logo-icon', 'frostdark-app-logo-icon');
+                switchAllClasses('frostlight-app-title', 'frostdark-app-title');
+                switchAllClasses('frostlight-app-subtitle', 'frostdark-app-subtitle');
+
+                // Update text classes
+                switchAllClasses('text-content', 'text-content');
+                switchAllClasses('text-primary', 'text-primary');
+                switchAllClasses('text-secondary', 'text-secondary');
+                switchAllClasses('text-muted', 'text-muted');
+
+                // Update code examples to show current theme classes
+                updateCodeExamples('frostdark');
             }
+        }
+
+        // Helper function to switch all classes
+        function switchAllClasses(fromClass, toClass) {
+            document.querySelectorAll(`.${fromClass}`).forEach(element => {
+                element.classList.remove(fromClass);
+                element.classList.add(toClass);
+            });
+        }
+
+        // Function to update code examples with current theme classes
+        function updateCodeExamples(theme) {
+            const prefix = theme === 'frostlight' ? 'frostlight' : 'frostdark';
+
+            // Update button examples
+            const buttonExamples = document.querySelectorAll('code');
+            buttonExamples.forEach(code => {
+                let html = code.innerHTML;
+                html = html.replace(/frostdark-/g, `${prefix}-`);
+                html = html.replace(/frostlight-/g, `${prefix}-`);
+                code.innerHTML = html;
+            });
         }
     </script>
 </body>
