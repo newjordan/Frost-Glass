@@ -1,0 +1,189 @@
+/**
+ * Frost Glass CSS - Animations
+ * =============================
+ * 
+ * All keyframes and animation effects for frost glass themes.
+ */
+
+/* ================================
+ * DARK THEME ANIMATIONS
+ * ================================ */
+
+@keyframes frost-dark-glow {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@keyframes dark-logo-glow {
+  0% {
+    box-shadow:
+      inset 0 1px 1px rgba(14, 149, 212, 0.4),
+      inset 0 -2px 1px rgba(15, 73, 139, 0.53),
+      0 5px 12px rgba(61, 15, 145, 0.42),
+      0 0 50px rgba(23, 30, 129, 0.34);
+  }
+  100% {
+    box-shadow:
+      inset 0 1px 1px rgba(14, 149, 212, 0.5),
+      inset 0 -2px 1px rgba(15, 73, 139, 0.6),
+      0 8px 16px rgba(61, 15, 145, 0.5),
+      0 0 60px rgba(23, 30, 129, 0.4);
+  }
+}
+
+/* ================================
+ * LIGHT THEME ANIMATIONS
+ * ================================ */
+
+@keyframes sidebarGlow {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+@keyframes logoGlow {
+  0% {
+    box-shadow:
+      inset 0 2px 4px rgba(255, 255, 255, 0.8),
+      inset 0 -2px 4px rgba(20, 184, 166, 0.1),
+      0 8px 32px rgba(6, 182, 212, 0.15),
+      0 0 50px rgba(20, 184, 166, 0.1);
+  }
+  100% {
+    box-shadow:
+      inset 0 2px 4px rgba(255, 255, 255, 0.9),
+      inset 0 -2px 4px rgba(20, 184, 166, 0.15),
+      0 12px 48px rgba(6, 182, 212, 0.25),
+      0 0 60px rgba(20, 184, 166, 0.15);
+  }
+}
+
+@keyframes logoBorderRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ================================
+ * SHARED ANIMATIONS
+ * ================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ================================
+ * UTILITY ANIMATION CLASSES
+ * ================================ */
+
+.frost-animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.frost-animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+.frost-animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.frost-animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.frost-animate-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* ================================
+ * ACCESSIBILITY OVERRIDES
+ * ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .frost-animate-fade-in,
+  .frost-animate-slide-up,
+  .frost-animate-pulse,
+  .frost-animate-shimmer::before {
+    animation: none !important;
+  }
+  
+  @keyframes frost-dark-glow {
+    0%, 100% { opacity: 0.75; }
+  }
+  
+  @keyframes dark-logo-glow {
+    0%, 100% {
+      box-shadow:
+        inset 0 1px 1px rgba(14, 149, 212, 0.45),
+        inset 0 -2px 1px rgba(15, 73, 139, 0.55),
+        0 6px 14px rgba(61, 15, 145, 0.45),
+        0 0 55px rgba(23, 30, 129, 0.37);
+    }
+  }
+  
+  @keyframes sidebarGlow {
+    0%, 100% { opacity: 0.8; }
+  }
+  
+  @keyframes logoGlow {
+    0%, 100% {
+      box-shadow:
+        inset 0 2px 4px rgba(255, 255, 255, 0.85),
+        inset 0 -2px 4px rgba(20, 184, 166, 0.125),
+        0 10px 40px rgba(6, 182, 212, 0.2),
+        0 0 55px rgba(20, 184, 166, 0.125);
+    }
+  }
+  
+  @keyframes logoBorderRotate {
+    0%, 100% { transform: rotate(0deg); }
+  }
+}

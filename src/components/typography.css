@@ -1,0 +1,441 @@
+/**
+ * Frost Glass CSS - Typography
+ * ============================
+ * 
+ * Typography styles and text utilities for frost glass themes.
+ */
+
+/* ================================
+ * BASE TYPOGRAPHY
+ * ================================ */
+
+.frost-text {
+  line-height: 1.6;
+  letter-spacing: var(--frost-letter-spacing-normal);
+}
+
+.frost-heading {
+  line-height: 1.2;
+  letter-spacing: var(--frost-letter-spacing-tight);
+  font-weight: var(--frost-font-weight-bold);
+}
+
+/* ================================
+ * FROST LIGHT TEXT COLORS
+ * ================================ */
+
+.frost_light .frost-text-primary,
+.frost_light .text-primary {
+  color: var(--frost-light-text-primary);
+}
+
+.frost_light .frost-text-secondary,
+.frost_light .text-secondary {
+  color: var(--frost-light-text-secondary);
+}
+
+.frost_light .frost-text-muted,
+.frost_light .text-muted {
+  color: var(--frost-light-text-muted);
+}
+
+.frost_light .frost-text-nav,
+.frost_light .text-nav {
+  color: var(--frost-light-text-nav);
+}
+
+.frost_light .frost-text-nav-hover,
+.frost_light .text-nav-hover {
+  color: var(--frost-light-text-nav-hover);
+}
+
+.frost_light .frost-text-nav-active,
+.frost_light .text-nav-active {
+  color: var(--frost-light-text-nav-active);
+}
+
+.frost_light .frost-text-feature,
+.frost_light .text-feature {
+  background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ================================
+ * FROST DARK TEXT COLORS
+ * ================================ */
+
+.frost_dark .frost-text-primary,
+.frost_dark .text-primary {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(194, 245, 245, 0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.frost_dark .frost-text-secondary,
+.frost_dark .text-secondary {
+  color: var(--frost-dark-text-secondary);
+}
+
+.frost_dark .frost-text-muted,
+.frost_dark .text-muted {
+  color: var(--frost-dark-text-muted);
+}
+
+.frost_dark .frost-text-nav,
+.frost_dark .text-nav {
+  color: var(--frost-dark-text-nav);
+}
+
+.frost_dark .frost-text-nav-hover,
+.frost_dark .text-nav-hover {
+  color: var(--frost-dark-text-nav-hover);
+}
+
+.frost_dark .frost-text-nav-active,
+.frost_dark .text-nav-active {
+  color: var(--frost-dark-text-nav-active);
+}
+
+/* ================================
+ * HEADING STYLES
+ * ================================ */
+
+.frost-h1 {
+  font-size: 2.5rem;
+  font-weight: var(--frost-font-weight-bold);
+  letter-spacing: var(--frost-letter-spacing-tight);
+  line-height: 1.1;
+  margin-bottom: var(--frost-spacing-lg);
+}
+
+.frost-h2 {
+  font-size: 2rem;
+  font-weight: var(--frost-font-weight-bold);
+  letter-spacing: var(--frost-letter-spacing-tight);
+  line-height: 1.2;
+  margin-bottom: var(--frost-spacing-md);
+}
+
+.frost-h3 {
+  font-size: 1.5rem;
+  font-weight: var(--frost-font-weight-semibold);
+  letter-spacing: var(--frost-letter-spacing-tight);
+  line-height: 1.3;
+  margin-bottom: var(--frost-spacing-md);
+}
+
+.frost-h4 {
+  font-size: 1.25rem;
+  font-weight: var(--frost-font-weight-semibold);
+  line-height: 1.4;
+  margin-bottom: var(--frost-spacing-sm);
+}
+
+.frost-h5 {
+  font-size: 1.125rem;
+  font-weight: var(--frost-font-weight-medium);
+  line-height: 1.4;
+  margin-bottom: var(--frost-spacing-sm);
+}
+
+.frost-h6 {
+  font-size: 1rem;
+  font-weight: var(--frost-font-weight-medium);
+  line-height: 1.5;
+  margin-bottom: var(--frost-spacing-xs);
+}
+
+/* ================================
+ * TEXT SIZES
+ * ================================ */
+
+.frost-text-xs {
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.frost-text-sm {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.frost-text-base {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.frost-text-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.frost-text-xl {
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.frost-text-2xl {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+.frost-text-3xl {
+  font-size: 1.875rem;
+  line-height: 1.3;
+}
+
+.frost-text-4xl {
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+/* ================================
+ * FONT WEIGHTS
+ * ================================ */
+
+.frost-font-light {
+  font-weight: 300;
+}
+
+.frost-font-normal {
+  font-weight: var(--frost-font-weight-normal);
+}
+
+.frost-font-medium {
+  font-weight: var(--frost-font-weight-medium);
+}
+
+.frost-font-semibold {
+  font-weight: var(--frost-font-weight-semibold);
+}
+
+.frost-font-bold {
+  font-weight: var(--frost-font-weight-bold);
+}
+
+/* ================================
+ * LETTER SPACING
+ * ================================ */
+
+.frost-tracking-tight {
+  letter-spacing: var(--frost-letter-spacing-tight);
+}
+
+.frost-tracking-normal {
+  letter-spacing: var(--frost-letter-spacing-normal);
+}
+
+.frost-tracking-wide {
+  letter-spacing: var(--frost-letter-spacing-wide);
+}
+
+.frost-tracking-wider {
+  letter-spacing: var(--frost-letter-spacing-wider);
+}
+
+/* ================================
+ * SPECIALIZED TEXT STYLES
+ * ================================ */
+
+.frost-text-gradient {
+  background: linear-gradient(135deg, var(--current-text-primary), var(--current-text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.frost_light .frost-text-gradient {
+  background: linear-gradient(135deg, #1f2937 0%, #6b7280 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.frost_dark .frost-text-gradient {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(194, 245, 245, 0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.frost-text-glow {
+  text-shadow: 0 0 10px currentColor;
+}
+
+.frost_light .frost-text-glow {
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+}
+
+.frost_dark .frost-text-glow {
+  text-shadow: 0 0 10px rgba(194, 245, 245, 0.5);
+}
+
+.frost-text-shadow {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.frost_dark .frost-text-shadow {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ================================
+ * TITLE AND SUBTITLE STYLES
+ * ================================ */
+
+.frost-title {
+  font-size: 2.5rem;
+  font-weight: var(--frost-font-weight-bold);
+  letter-spacing: var(--frost-letter-spacing-tight);
+  line-height: 1.1;
+  margin-bottom: var(--frost-spacing-xs);
+}
+
+.frost-subtitle {
+  font-size: 1.125rem;
+  font-weight: var(--frost-font-weight-normal);
+  letter-spacing: var(--frost-letter-spacing-normal);
+  opacity: 0.8;
+}
+
+.frost_light .frost-title,
+.frost_light.app-title {
+  color: var(--frost-light-text-primary);
+}
+
+.frost_light .frost-subtitle,
+.frost_light.app-subtitle {
+  color: var(--frost-light-text-secondary);
+}
+
+.frost_dark .frost-title,
+.frost_dark.app-title {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(194, 245, 245, 0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.frost_dark .frost-subtitle,
+.frost_dark.app-subtitle {
+  color: var(--frost-dark-text-nav);
+}
+
+/* ================================
+ * CONTENT TEXT BLOCKS
+ * ================================ */
+
+.frost-text-block-title {
+  color: var(--current-text-primary);
+  font-weight: var(--frost-font-weight-medium);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: var(--frost-spacing-xs);
+  display: block;
+  min-width: 0;
+  white-space: normal;
+}
+
+.frost_dark .frost-text-block-title {
+  color: rgba(255, 255, 255, 1);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.frost-text-block-content {
+  color: var(--current-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.frost_dark .frost-text-block-content {
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ================================
+ * UTILITY CLASSES
+ * ================================ */
+
+.frost-uppercase {
+  text-transform: uppercase;
+}
+
+.frost-lowercase {
+  text-transform: lowercase;
+}
+
+.frost-capitalize {
+  text-transform: capitalize;
+}
+
+.frost-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.frost-text-center {
+  text-align: center;
+}
+
+.frost-text-left {
+  text-align: left;
+}
+
+.frost-text-right {
+  text-align: right;
+}
+
+.frost-text-justify {
+  text-align: justify;
+}
+
+/* ================================
+ * RESPONSIVE TYPOGRAPHY
+ * ================================ */
+
+@media (max-width: 768px) {
+  .frost-h1,
+  .frost-title {
+    font-size: 2rem;
+  }
+  
+  .frost-h2 {
+    font-size: 1.75rem;
+  }
+  
+  .frost-h3 {
+    font-size: 1.25rem;
+  }
+  
+  .frost-text-4xl {
+    font-size: 1.875rem;
+  }
+  
+  .frost-text-3xl {
+    font-size: 1.5rem;
+  }
+  
+  .frost-text-2xl {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .frost-h1,
+  .frost-title {
+    font-size: 1.75rem;
+  }
+  
+  .frost-h2 {
+    font-size: 1.5rem;
+  }
+  
+  .frost-h3 {
+    font-size: 1.125rem;
+  }
+}

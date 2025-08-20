@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frost Glass CSS - Dark Theme Demo</title>
+    <link rel="stylesheet" href="../src/core/variables.css">
+    <link rel="stylesheet" href="../src/core/base.css">
+    <link rel="stylesheet" href="../src/core/utilities.css">
+    <link rel="stylesheet" href="../src/components/code-blocks.css">
+    <link rel="stylesheet" href="../src/themes/frost-dark.css">
+    <link rel="stylesheet" href="../src/themes/frost-light.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Demo layout styling with proper typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Dark theme inset effects for conversation messages */
+        .frostdark-inset_down {
+            box-shadow:
+                inset 0 3px 0 rgba(15, 23, 42, 0.6),
+                inset 0 -2px 0 rgba(71, 85, 105, 0.4),
+                inset 2px 0 0 rgba(30, 41, 59, 0.5),
+                inset -2px 0 0 rgba(51, 65, 85, 0.6);
+        }
+        
+        .frostdark-inset_up {
+            box-shadow:
+                inset 0 2px 0 rgba(103, 232, 249, 0.3),
+                inset 0 -1px 0 rgba(4, 75, 80, 0.5),
+                inset 1px 0 0 rgba(194, 245, 245, 0.2),
+                inset -1px 0 0 rgba(6, 182, 212, 0.3);
+        }
+        
+        /* Light theme inset effects for conversation messages */
+        .frostlight-inset_down {
+            box-shadow:
+                inset 0 2px 0 rgba(74, 49, 214, 0.3),
+                inset 0 -1px 0 rgba(205, 232, 243, 0.88),
+                inset 1px 0 0 rgba(129, 95, 223, 0.37),
+                inset -1px 0 0 rgba(106, 182, 233, 0.52);
+        }
+
+        .frostlight-inset_up {
+            box-shadow:
+                inset 0 2px 0 rgba(238, 255, 254, 0.9),
+                inset 0 -1px 0 rgba(108, 44, 192, 0.4),
+                inset 1px 0 0 rgba(255, 255, 255, 0.7),
+                inset -1px 0 0 rgba(224, 242, 254, 0.4);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Fix main content scrolling and ensure proper sidebar styling */
+        .sidebar {
+            width: 280px;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .frost_dark.sidebar {
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .frostdark-app-content {
+            overflow-y: auto;
+            height: 100vh;
+        }
+        
+        .frostlight-app-content {
+            overflow-y: auto;
+            height: 100vh;
+        }
+        
+        /* Typography System - Standardized for frost_dark theme */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.2;
+            margin: 0;
+        }
+        
+        .frost_dark h1 { 
+            font-size: 2.25rem; 
+            font-weight: 700; 
+            color: rgba(255, 255, 255, 1);
+            letter-spacing: -0.025em;
+        }
+        .frost_light h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, rgba(71, 85, 105, 1) 0%, rgba(20, 184, 166, 0.9) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .frost_dark h2 { 
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            color: rgba(194, 245, 245, 0.9);
+            letter-spacing: -0.025em;
+        }
+        .frost_light h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, rgba(71, 85, 105, 1) 0%, rgba(20, 184, 166, 0.9) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .frost_dark h3 { 
+            font-size: 1.25rem; 
+            font-weight: 600; 
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .frost_light h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: rgba(71, 85, 105, 1);
+        }
+        .frost_dark h4 { 
+            font-size: 1.125rem; 
+            font-weight: 500; 
+            color: rgba(194, 245, 245, 0.85);
+        }
+        .frost_dark h5 { 
+            font-size: 1rem; 
+            font-weight: 500; 
+            color: rgba(194, 245, 245, 0.8);
+        }
+        .frost_dark h6 { 
+            font-size: 0.875rem; 
+            font-weight: 500; 
+            color: rgba(194, 245, 245, 0.7);
+        }
+        .frost_light h4 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: rgba(71, 85, 105, 0.9);
+        }
+        .frost_light h5 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(71, 85, 105, 0.85);
+        }
+        .frost_light h6 {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgba(100, 116, 139, 0.9);
+        }
+        
+        p {
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        /* Section styling */
+        .demo-section {
+            margin-bottom: 3rem;
+        }
+        
+        
+        .demo-section-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        .frost_light .demo-section-subtitle {
+            color: rgba(134, 96, 168, 0.8);
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .demo-button-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1.25rem;
+        }
+        
+        .demo-input-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .demo-input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .demo-toggle-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin: 1.25rem 0;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .demo-toggle-row:last-child {
+            border-bottom: none;
+        }
+        
+        .demo-toggle-content {
+            flex: 1;
+            margin-right: 1rem;
+        }
+        
+        .demo-toggle-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .demo-toggle-description {
+            font-size: 0.875rem;
+            line-height: 1.4;
+            opacity: 0.7;
+        }
+        
+        /* Enhanced conversation UI styles for demo */
+        .frostdark-conv-chat {
+            display: flex;
+            flex-direction: column;
+            height: 520px; /* demo height */
+        }
+
+        .frostdark-conv-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .frostdark-conv-message {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            max-width: 80%;
+        }
+
+        .frostdark-conv-message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .frostdark-conv-message.assistant {
+            align-self: flex-start;
+        }
+
+        .frostdark-conv-message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+
+        .frostdark-conv-message.user .frostdark-conv-message-avatar {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.8) 0%, rgba(147, 51, 234, 0.8) 100%);
+            box-shadow: inset 0 3px 0 rgba(15, 23, 42, 0.6), inset 0 -2px 0 rgba(71, 85, 105, 0.4), inset 2px 0 0 rgba(30, 41, 59, 0.5), inset -2px 0 0 rgba(51, 65, 85, 0.6);
+        }
+
+        .frostdark-conv-message.assistant .frostdark-conv-message-avatar {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.8) 0%, rgba(6, 182, 212, 0.8) 100%);
+            box-shadow: inset 0 2px 0 rgba(103, 232, 249, 0.3), inset 0 -1px 0 rgba(4, 75, 80, 0.5), inset 1px 0 0 rgba(194, 245, 245, 0.2), inset -1px 0 0 rgba(6, 182, 212, 0.3);
+        }
+
+        .frostdark-conv-message-bubble {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(8px) saturate(120%);
+            -webkit-backdrop-filter: blur(8px) saturate(120%);
+            border: 1px solid rgba(100, 116, 139, 0.25);
+            border-radius: 18px;
+            padding: 1rem 1.25rem;
+            position: relative;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 0 1px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .frostdark-conv-message.user .frostdark-conv-message-bubble {
+            background: rgba(51, 65, 85, 0.5);
+            border-color: rgba(100, 116, 139, 0.3);
+        }
+
+        .frostdark-conv-message-bubble::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 8px solid transparent;
+        }
+
+        .frostdark-conv-message.user .frostdark-conv-message-bubble::before {
+            right: -15px;
+            top: 12px;
+            border-left-color: rgba(100, 116, 139, 0.3);
+        }
+
+        .frostdark-conv-message.assistant .frostdark-conv-message-bubble::before {
+            left: -15px;
+            top: 12px;
+            border-right-color: rgba(100, 116, 139, 0.25);
+        }
+
+        .frostdark-conv-message-text {
+            color: rgba(226, 232, 240, 1);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .frostdark-conv-message-time {
+            color: rgba(148, 163, 184, 0.7);
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .frostdark-conv-input-area {
+            padding: 1.5rem 0 0;
+            border-top: 1px solid transparent;
+            border-image: var(--dark-divider-gradient) 1;
+            margin-top: 1.5rem;
+        }
+        
+        .frostdark-conv-input-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(100, 116, 139, 0.25);
+            border-radius: 20px;
+            padding: 0.75rem 1rem;
+            box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.5);
+        }
+
+        .frostdark-conv-input-container:focus-within {
+            border-color: rgba(103, 232, 249, 0.4);
+            box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.6), 0 0 0 2px rgba(103, 232, 249, 0.15);
+        }
+
+        .frostdark-conv-input {
+            flex: 1;
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            color: rgba(226, 232, 240, 1);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            resize: none;
+            min-height: 24px;
+            max-height: 120px;
+        }
+        
+        .frostdark-conv-input::placeholder {
+            color: rgba(148, 163, 184, 0.7);
+        }
+
+        .frostdark-conv-send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.8) 0%, rgba(6, 182, 212, 0.7) 100%);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            box-shadow: inset 0 1px 0 rgba(103, 232, 249, 0.3), inset 0 -2px 0 rgba(4, 75, 80, 0.5), 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .frostdark-conv-send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.3), 0 3px 6px rgba(20, 184, 166, 0.2);
+        }
+        
+        .frostdark-conv-send-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Card headers */
+        .demo-card-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        
+        .demo-card-description {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+        .frost_light .demo-card-description {
+            color: rgba(100, 116, 139, 0.9);
+        }
+        
+        /* Logo styling */
+        .logo-icon-container {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .logo-icon-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                font-size: 13px;
+            }
+            
+            .app-layout {
+                flex-direction: column;
+            }
+            
+            .frost_dark.sidebar {
+                width: 100% !important;
+                height: auto !important;
+                padding: 1.5rem !important;
+            }
+            
+            .frostdark-app-content {
+                padding: 1.5rem !important;
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            h1 { font-size: 1.875rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.25rem; }
+            
+            .demo-section {
+                margin-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .demo-button-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .demo-toggle-row {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .demo-toggle-content {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body class="frost_dark">
+    <div class="app-layout">
+        <!-- Left Sidebar Navigation -->
+        <div class="sidebar">
+            <!-- Header with Logo -->
+            <div class="frostdark-app-header">
+                <div class="frostdark-app-logo">
+                    <div class="frostdark-app-logo-icon">
+                        <div class="logo-icon-container">
+                            <img src="../public/frost_dark_iced.png" alt="Frost Dark Theme" class="logo-icon-image">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="frostdark-app-title">Frost Glass CSS</div>
+                        <div class="frostdark-app-subtitle">DARK THEME</div>
+                        <div style="margin-top: 0.75rem;">
+                            <div class="frostdark-settings-toggle" data-state="checked" onclick="toggleTheme(this)">
+                                <div class="frostdark-settings-toggle-thumb"></div>
+                            </div>
+                            <span class="text-subtitle" style="margin-left: 0.5rem; font-size: 0.75rem;">Light Mode</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav>
+                <div class="frostdark-app-nav-item active" onclick="setActiveNav(this)">
+                    <span style="font-size: 1.1rem;">🏠</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
+                    <span style="font-size: 1.1rem;">📦</span>
+                    <span>Components</span>
+                </div>
+                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
+                    <span style="font-size: 1.1rem;">🎨</span>
+                    <span>Typography</span>
+                </div>
+                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
+                    <span style="font-size: 1.1rem;">💬</span>
+                    <span>Conversations</span>
+                </div>
+                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
+                    <span style="font-size: 1.1rem;">⚙️</span>
+                    <span>Settings</span>
+                </div>
+                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
+                    <span style="font-size: 1.1rem;">📊</span>
+                    <span>Analytics</span>
+                </div>
+            </nav>
+            
+            <!-- Sidebar Footer -->
+            <div style="margin-top: auto; padding-top: 2rem; border-top: 1px solid transparent; border-image: var(--dark-divider-gradient) 1;">
+                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
+                    <span style="font-size: 1.1rem;">❓</span>
+                    <span>Help &amp; Support</span>
+                </div>
+                <div class="frostdark-app-nav-item" onclick="setActiveNav(this)">
+                    <span style="font-size: 1.1rem;">👤</span>
+                    <span>Profile</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="frostdark-app-content">
+            <!-- Main Header -->
+            <div class="frostdark-app-main-header">
+                <h1 class="frostdark-app-main-title">Frost Glass CSS Components</h1>
+                <p class="frostdark-app-main-subtitle">Comprehensive dark theme glassmorphism component library with modern design patterns</p>
+            </div>
+            
+            
+            <!-- Content Cards Section -->
+            <div class="demo-section">
+                <h2>Content Cards &amp; Layouts</h2>
+                <p class="demo-section-subtitle">
+                    Flexible card components with enhanced glassmorphism effects for featuring content, products, and key information
+                </p>
+                
+                <div class="demo-grid">
+                    <div class="frostdark-app-content-card">
+                        <div class="demo-card-header">
+                            <h3>Primary Feature Card</h3>
+                            <p class="demo-card-description">
+                                Enhanced content card with premium glassmorphism effects and interactive elements
+                            </p>
+                        </div>
+                        <p class="text-content" style="line-height: 1.6; margin-bottom: 1.25rem;">
+                            This primary feature card showcases advanced glassmorphism styling with backdrop filters, 
+                            subtle animations, and optimized typography for maximum visual impact and user engagement.
+                        </p>
+                        <div class="demo-button-group">
+                            <button class="frostdark-button-action">Get Started</button>
+                            <button class="frostdark-button-raised">Learn More</button>
+                        </div>
+                    </div>
+                    
+                    <div class="standard-glass-card">
+                        <div class="demo-card-header">
+                            <h3>Standard Glass Card</h3>
+                            <p class="demo-card-description">
+                                Classic frost glass styling with subtle blur effects
+                            </p>
+                        </div>
+                        <p class="text-content" style="line-height: 1.6; margin-bottom: 1.25rem;">
+                            A versatile standard card component featuring elegant glassmorphism design patterns, 
+                            perfect for general content display and user interface elements.
+                        </p>
+                        <div class="demo-button-group">
+                            <button class="frostdark-button-action frostdark-button-action-sm">View Details</button>
+                        </div>
+                    </div>
+                    
+                    <div class="frostdark-empty-panel">
+                        <div class="empty-icon" style="font-size: 3.5rem; margin-bottom: 1rem;">📁</div>
+                        <div class="empty-text" style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.5rem;">Empty State Panel</div>
+                        <p class="text-subtle" style="font-size: 0.875rem; line-height: 1.4; text-align: center; max-width: 280px; margin: 0 auto;">
+                            This subtle glassmorphism panel style is perfect for empty states, content areas, and informational sections that need a gentle background treatment.
+                        </p>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- Interactive Components Section -->
+            <div class="demo-section">
+                <h2>Interactive Components</h2>
+                <p class="demo-section-subtitle">
+                    Comprehensive button system, form controls, and interactive elements with glassmorphism styling
+                </p>
+                
+                <div class="demo-grid">
+                    <!-- Button System -->
+                    <div class="frostdark-app-content-card">
+                        <div class="demo-card-header">
+                            <h3>Button System</h3>
+                            <p class="demo-card-description">
+                                Multi-variant button components with hover and active states
+                            </p>
+                        </div>
+                        <div class="demo-button-group">
+                            <button class="frostdark-button-action">Primary Action</button>
+                            <button class="frostdark-button-action frostdark-button-action-sm">Small Action</button>
+                            <button class="frostdark-button-raised">Success Button</button>
+                            <button class="frostdark-button-action-danger">Delete Item</button>
+                            <button class="frostdark-button-action frostdark-button-action-icon">🔍</button>
+                        </div>
+                        <p class="text-very-muted" style="font-size: 0.875rem; margin-top: 1rem; font-style: italic;">
+                            Hover and click buttons to experience glassmorphism interaction effects
+                        </p>
+                    </div>
+                    
+                    <!-- Form Inputs -->
+                    <div class="frostdark-app-content-card">
+                        <div class="demo-card-header">
+                            <h3>Form Controls</h3>
+                            <p class="demo-card-description">
+                                Input fields with inset styling and focus states
+                            </p>
+                        </div>
+                        
+                        <div class="demo-input-group">
+                            <label class="text-label">Email Address</label>
+                            <div class="input-container">
+                                <input type="email" class="input-field" placeholder="Enter your email address...">
+                            </div>
+                        </div>
+                        
+                        <div class="demo-input-group">
+                            <label class="text-label">Search Query</label>
+                            <div class="input-container">
+                                <input type="text" class="input-field" placeholder="Search components and features...">
+                                <span class="text-accent" style="margin-left: 0.75rem; font-size: 1.1rem;">🔍</span>
+                            </div>
+                        </div>
+                        
+                        <div class="demo-input-group">
+                            <label class="text-label">Message Input</label>
+                            <div class="conv-input-container">
+                                <textarea class="conv-input" placeholder="Type your message here..." rows="2"></textarea>
+                                <button class="conv-send-btn">
+                                    <span style="font-size: 1.2rem;">→</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dialog Interface -->
+                    <div class="frostdark-app-content-card">
+                        <div class="demo-card-header">
+                            <h3>Dialog Interface</h3>
+                            <p class="demo-card-description">
+                                Modal dialogs with glassmorphism backgrounds and interactions
+                            </p>
+                        </div>
+                        <p class="text-subtle" style="margin-bottom: 1.25rem; line-height: 1.5;">
+                            Test our modal dialog system featuring glassmorphism backdrops, smooth animations, 
+                            and accessible keyboard navigation for enhanced user experience.
+                        </p>
+                        <button class="frostdark-button-action-danger" onclick="showDangerDialog()">
+                            Show Danger Dialog
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings & Toggles Section -->
+            <div class="demo-section">
+                <h2>Settings &amp; Toggle Controls</h2>
+                <p class="demo-section-subtitle">
+                    Interactive toggle components with smooth animations and glassmorphism styling for settings and preferences
+                </p>
+                
+                <div class="frostdark-app-content-card">
+                    <div class="demo-card-header">
+                        <h3>Application Settings</h3>
+                        <p class="demo-card-description">
+                            Configure your application preferences with interactive toggle controls
+                        </p>
+                    </div>
+                    
+                    <div class="demo-toggle-row">
+                        <div class="demo-toggle-content">
+                            <div class="demo-toggle-title">Enable Push Notifications</div>
+                            <div class="demo-toggle-description">
+                                Receive real-time notifications about important updates, messages, and system events
+                            </div>
+                        </div>
+                        <div class="frostdark-settings-toggle" onclick="toggleSwitch(this)">
+                            <div class="frostdark-settings-toggle-thumb"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-toggle-row">
+                        <div class="demo-toggle-content">
+                            <div class="demo-toggle-title">Dark Mode Interface</div>
+                            <div class="demo-toggle-description">
+                                Use the dark theme interface with enhanced glassmorphism effects and optimized contrast
+                            </div>
+                        </div>
+                        <div class="frostdark-settings-toggle" data-state="checked" onclick="toggleSwitch(this)">
+                            <div class="frostdark-settings-toggle-thumb"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-toggle-row">
+                        <div class="demo-toggle-content">
+                            <div class="demo-toggle-title">Auto-Save Documents</div>
+                            <div class="demo-toggle-description">
+                                Automatically save your work in progress to prevent data loss and improve workflow efficiency
+                            </div>
+                        </div>
+                        <div class="frostdark-settings-toggle" data-state="checked" onclick="toggleSwitch(this)">
+                            <div class="frostdark-settings-toggle-thumb"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-toggle-row">
+                        <div class="demo-toggle-content">
+                            <div class="demo-toggle-title">Advanced Analytics</div>
+                            <div class="demo-toggle-description">
+                                Enable detailed usage analytics and performance monitoring for enhanced insights
+                            </div>
+                        </div>
+                        <div class="frostdark-settings-toggle" onclick="toggleSwitch(this)">
+                            <div class="frostdark-settings-toggle-thumb"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Conversation Interface Section -->
+            <div class="demo-section">
+                <h2>Conversation Interface</h2>
+                <p class="demo-section-subtitle">
+                    Modern chat interface with glassmorphism message containers and auto-resizing input controls
+                </p>
+                
+                <div class="frostdark-app-content-card">
+                    <div class="demo-card-header">
+                        <h3>Chat Demo Interface</h3>
+                        <p class="demo-card-description">
+                            Interactive conversation UI with glassmorphism message bubbles
+                        </p>
+                    </div>
+                    
+                    <div class="frostdark-conv-chat">
+                        <div class="frostdark-conv-messages">
+                            <div class="frostdark-conv-message assistant">
+                                <div class="frostdark-conv-message-avatar assistant">A</div>
+                                <div class="frostdark-conv-message-bubble">
+                                    <div class="frostdark-conv-message-text">
+                                        Welcome to the Frost Glass CSS demonstration! This interface showcases our comprehensive glassmorphism conversation components with modern styling and interactive features.
+                                    </div>
+                                    <div class="frostdark-conv-message-time">5 minutes ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="frostdark-conv-message user">
+                                <div class="frostdark-conv-message-avatar user">U</div>
+                                <div class="frostdark-conv-message-bubble">
+                                    <div class="frostdark-conv-message-text">
+                                        This dark theme implementation looks fantastic! The blur effects and transparency create such an elegant, modern interface. The glassmorphism effects are perfectly balanced.
+                                    </div>
+                                    <div class="frostdark-conv-message-time">4 minutes ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="frostdark-conv-message assistant">
+                                <div class="frostdark-conv-message-avatar assistant">A</div>
+                                <div class="frostdark-conv-message-bubble">
+                                    <div class="frostdark-conv-message-text">
+                                        Thank you! The design focuses on creating depth and visual hierarchy while maintaining excellent readability and user experience across all components. The inset effect on avatars creates a distinct look.
+                                    </div>
+                                    <div class="frostdark-conv-message-time">3 minutes ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="frostdark-conv-message user">
+                                <div class="frostdark-conv-message-avatar user">U</div>
+                                <div class="frostdark-conv-message-bubble">
+                                    <div class="frostdark-conv-message-text">
+                                        I see the message bubbles now have tails, which improves the conversational flow. It's a great improvement!
+                                    </div>
+                                    <div class="frostdark-conv-message-time">2 minutes ago</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="frostdark-conv-input-area">
+                            <div class="frostdark-conv-input-container">
+                                <textarea class="frostdark-conv-input conv-input" placeholder="Type your message here..." rows="1"></textarea>
+                                <button class="frostdark-conv-send-btn">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Typography Showcase Section -->
+            <div class="demo-section">
+                <h2>Typography &amp; Color System</h2>
+                <p class="demo-section-subtitle">
+                    Comprehensive typography hierarchy and color utilities optimized for glassmorphism interfaces
+                </p>
+                
+                <div class="demo-grid">
+                    <div class="frostdark-app-content-card">
+                        <div class="demo-card-header">
+                            <h3>Heading Hierarchy</h3>
+                            <p class="demo-card-description">
+                                Typography scale with gradient effects and proper contrast
+                            </p>
+                        </div>
+                        
+                        <h1 style="margin-bottom: 0.75rem;">H1 - Main Title with Gradient</h1>
+                        <h2 style="margin-bottom: 0.5rem;">H2 - Section Title</h2>
+                        <h3 style="margin-bottom: 0.5rem;">H3 - Card Title</h3>
+                        <h4 style="margin-bottom: 0.5rem;">H4 - Subsection Title</h4>
+                        <h5 style="margin-bottom: 0.5rem;">H5 - Component Title</h5>
+                        <h6>H6 - Minor Heading</h6>
+                    </div>
+                    
+                    <div class="frostdark-app-content-card">
+                        <div class="demo-card-header">
+                            <h3>Text Color System</h3>
+                            <p class="demo-card-description">
+                                Semantic color utilities for consistent text styling
+                            </p>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                            <p class="text-primary">Primary text - High contrast for important content</p>
+                            <p class="text-secondary">Secondary text - Medium contrast for supporting content</p>
+                            <p class="text-muted">Muted text - Lower contrast for metadata and captions</p>
+                            <p class="text-content">Content text - Optimized for long-form reading</p>
+                            <p class="text-nav">Navigation text - Sidebar and menu styling</p>
+                            <p class="text-nav-hover">Navigation hover - Interactive state styling</p>
+                            <p class="text-nav-active">Navigation active - Selected state styling</p>
+                            <p class="text-card-title">Card title text - Header styling for cards</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- Code Block Examples Section -->
+    <div class="demo-section">
+        <h2>Code Examples &amp; Implementation</h2>
+        <p class="demo-section-subtitle">
+            Copy-ready code snippets for all components with live previews and syntax highlighting
+        </p>
+        
+        <div class="demo-grid">
+            <!-- Button Code Example -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="demo-button-group">
+                        <button class="frostdark-button-action">Primary Action</button>
+                        <button class="frostdark-button-raised">Success Button</button>
+                        <button class="frostdark-button-action-danger">Delete Item</button>
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Button Components</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;!-- Primary Action Button --&gt;
+&lt;button class="frostdark-button-action"&gt;Primary Action&lt;/button&gt;
+
+&lt;!-- Success Button --&gt;
+&lt;button class="frostdark-button-raised"&gt;Success Button&lt;/button&gt;
+
+&lt;!-- Danger Button --&gt;
+&lt;button class="frostdark-button-action-danger"&gt;Delete Item&lt;/button&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card Code Example -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="frostdark-app-content-card" style="max-width: 300px;">
+                        <h3>Sample Card</h3>
+                        <p class="text-content">This is a sample content card with glassmorphism styling.</p>
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Content Card</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;div class="frostdark-app-content-card"&gt;
+    &lt;h3&gt;Card Title&lt;/h3&gt;
+    &lt;p class="text-content"&gt;Card content goes here with proper typography.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Input Code Example -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="input-container">
+                        <input type="text" class="input-field" placeholder="Enter text here...">
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Input Field</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;div class="input-container"&gt;
+    &lt;input type="text" class="input-field" placeholder="Enter text here..."&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Toggle Code Example -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="frostdark-settings-toggle" onclick="toggleSwitch(this)">
+                        <div class="frostdark-settings-toggle-thumb"></div>
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Toggle Switch</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;div class="frostdark-settings-toggle" onclick="toggleSwitch(this)"&gt;
+    &lt;div class="frostdark-settings-toggle-thumb"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+function toggleSwitch(element) {
+    const isChecked = element.dataset.state === 'checked';
+    element.dataset.state = isChecked ? '' : 'checked';
+    element.classList.toggle('active', !isChecked);
+}
+&lt;/script&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Danger Dialog Modal -->
+    <div id="danger-dialog-backdrop" class="frostdark-dialog-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="hideDangerDialog()">
+        <div class="frostdark-dialog-danger" style="max-width: 480px; margin: 2rem;" onclick="event.stopPropagation()">
+            <h2 class="text-danger" style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem;">Confirm Deletion</h2>
+            <p class="dialog-description text-danger-muted" style="margin-bottom: 2rem; line-height: 1.5;">
+                Are you sure you want to delete this item? This action cannot be undone and will permanently remove 
+                all associated data, configurations, and related resources from the system.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="frostdark-button-action" onclick="hideDangerDialog()">Cancel</button>
+                <button class="frostdark-button-action-danger" onclick="hideDangerDialog()">Delete Permanently</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="code-utils.js"></script>
+    <script>
+        // Copy code function for code blocks
+        function copyCode(button) {
+            const codeBlock = button.closest('.frostdark-code-example, .frostlight-code-example');
+            const codeContent = codeBlock.querySelector('code');
+            
+            if (codeContent) {
+                const textToCopy = codeContent.textContent || codeContent.innerText;
+                
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        showCopySuccess(button);
+                    }).catch(() => {
+                        showCopyError(button);
+                    });
+                } else {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textToCopy;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-999999px';
+                    textArea.style.top = '-999999px';
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    
+                    try {
+                        document.execCommand('copy');
+                        showCopySuccess(button);
+                    } catch (err) {
+                        showCopyError(button);
+                    }
+                    
+                    textArea.remove();
+                }
+            }
+        }
+        
+        function showCopySuccess(button) {
+            const originalText = button.innerHTML;
+            button.innerHTML = '✅ Copied!';
+            button.classList.add('copied');
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('copied');
+            }, 2000);
+        }
+        
+        function showCopyError(button) {
+            const originalText = button.innerHTML;
+            button.innerHTML = '❌ Failed';
+            button.style.background = 'linear-gradient(135deg, rgba(239, 68, 68, 0.8) 0%, rgba(220, 38, 38, 0.7) 100%)';
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.background = '';
+            }, 2000);
+        }
+
+        // Navigation active state management
+        function setActiveNav(element) {
+            // Remove active class from all nav items
+            document.querySelectorAll('.frostdark-app-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item
+            element.classList.add('active');
+        }
+
+        // Toggle switch functionality
+        function toggleSwitch(element) {
+            const isChecked = element.dataset.state === 'checked';
+            element.dataset.state = isChecked ? '' : 'checked';
+            
+            if (isChecked) {
+                element.classList.remove('active');
+            } else {
+                element.classList.add('active');
+            }
+        }
+
+        // Theme toggle functionality
+        function toggleTheme(element) {
+            const isLightMode = element.dataset.state === 'checked';
+            const body = document.body;
+            const logoImage = document.querySelector('.logo-icon-image');
+            
+            if (isLightMode) {
+                // Switch to light theme - change body class AND all element classes
+                body.classList.remove('frost_dark');
+                body.classList.add('frost_light');
+                element.dataset.state = '';
+                element.classList.remove('active');
+                
+                // Update all frostdark- classes to frostlight-
+                switchAllClasses('frostdark-', 'frostlight-');
+                
+                // Update icon to light version
+                if (logoImage) {
+                    logoImage.src = '../public/frost_light_iced.png';
+                    logoImage.alt = 'Frost Light Theme';
+                }
+                
+                // Update subtitle text
+                document.querySelector('.frostlight-app-subtitle').textContent = 'LIGHT THEME';
+            } else {
+                // Switch to dark theme - change body class AND all element classes
+                body.classList.remove('frost_light');
+                body.classList.add('frost_dark');
+                element.dataset.state = 'checked';
+                element.classList.add('active');
+                
+                // Update all frostlight- classes to frostdark-
+                switchAllClasses('frostlight-', 'frostdark-');
+                
+                // Update icon to dark version
+                if (logoImage) {
+                    logoImage.src = '../public/frost_dark_iced.png';
+                    logoImage.alt = 'Frost Dark Theme';
+                }
+                
+                // Update subtitle text
+                document.querySelector('.frostdark-app-subtitle').textContent = 'DARK THEME';
+            }
+        }
+
+        // Helper function to switch all class prefixes
+        function switchAllClasses(fromPrefix, toPrefix) {
+            const allElements = document.querySelectorAll('*');
+            
+            allElements.forEach(element => {
+                const classList = Array.from(element.classList);
+                classList.forEach(className => {
+                    if (className.startsWith(fromPrefix)) {
+                        const newClassName = className.replace(fromPrefix, toPrefix);
+                        element.classList.remove(className);
+                        element.classList.add(newClassName);
+                    }
+                });
+            });
+            
+            // Also update code block classes
+            document.querySelectorAll('.code-example').forEach(block => {
+                if (fromPrefix === 'frostdark-') {
+                    block.classList.add('frostlight-code-example');
+                    block.classList.remove('frostdark-code-example');
+                } else if (fromPrefix === 'frostlight-') {
+                    block.classList.add('frostdark-code-example');
+                    block.classList.remove('frostlight-code-example');
+                }
+            });
+        }
+
+        // Dialog functionality
+        function showDangerDialog() {
+            document.getElementById('danger-dialog-backdrop').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideDangerDialog() {
+            document.getElementById('danger-dialog-backdrop').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Auto-resize chat input
+        const chatInput = document.querySelector('.conv-input');
+        if (chatInput) {
+            chatInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+        }
+
+        // Enhanced hover animations
+        document.querySelectorAll('.frostdark-app-text-block, .frostdark-app-content-card, .frost_dark.card').forEach(element => {
+            element.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            
+            element.addEventListener('mouseenter', () => {
+                element.style.transform = 'translateY(-3px) scale(1.01)';
+                element.style.filter = 'brightness(1.05)';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                element.style.transform = 'translateY(0) scale(1)';
+                element.style.filter = 'brightness(1)';
+            });
+        });
+
+        // Button hover enhancements
+        document.querySelectorAll('[class*="dark-button"]').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'translateY(-1px) scale(1.02)';
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Keyboard accessibility
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                hideDangerDialog();
+            }
+        });
+
+        // Smooth scrolling for better UX
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+/**
+ * Frost Glass CSS - Buttons
+ * =========================
+ * 
+ * Button components and variations for frost glass themes.
+ */
+
+/* ================================
+ * BASE BUTTON STYLES
+ * ================================ */
+
+.frost-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--frost-spacing-xs);
+  padding: var(--frost-spacing-sm) var(--frost-spacing-lg);
+  border-radius: var(--frost-radius-md);
+  font-weight: var(--frost-font-weight-medium);
+  font-size: 0.875rem;
+  line-height: 1.25;
+  transition: var(--frost-transition);
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.frost-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ================================
+ * BUTTON SIZES
+ * ================================ */
+
+.frost-btn-sm {
+  padding: var(--frost-spacing-xs) var(--frost-spacing-md);
+  font-size: 0.75rem;
+  border-radius: var(--frost-radius-sm);
+}
+
+.frost-btn-lg {
+  padding: var(--frost-spacing-md) var(--frost-spacing-xl);
+  font-size: 1rem;
+  border-radius: var(--frost-radius-lg);
+}
+
+.frost-btn-xl {
+  padding: var(--frost-spacing-lg) var(--frost-spacing-2xl);
+  font-size: 1.125rem;
+  border-radius: var(--frost-radius-lg);
+}
+
+/* ================================
+ * FROST LIGHT BUTTONS
+ * ================================ */
+
+/* Primary Button */
+.frost_light .frost-btn-primary {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: var(--frost-blur-light);
+  -webkit-backdrop-filter: var(--frost-blur-light);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  color: var(--frost-light-text-primary);
+  box-shadow:
+    0 4px 16px rgba(6, 182, 212, 0.1),
+    0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.frost_light .frost-btn-primary:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(6, 182, 212, 0.4);
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 32px rgba(6, 182, 212, 0.15),
+    0 2px 4px rgba(20, 184, 166, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.frost_light .frost-btn-primary:active {
+  transform: translateY(0);
+  box-shadow:
+    0 2px 8px rgba(6, 182, 212, 0.2),
+    inset 0 1px 2px rgba(20, 184, 166, 0.1);
+}
+
+/* Secondary Button */
+.frost_light .frost-btn-secondary {
+  background: rgba(249, 250, 251, 0.8);
+  backdrop-filter: var(--frost-blur-light);
+  -webkit-backdrop-filter: var(--frost-blur-light);
+  border: 1px solid rgba(209, 213, 219, 0.5);
+  color: var(--frost-light-text-secondary);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.frost_light .frost-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(20, 184, 166, 0.2);
+  color: var(--frost-light-text-primary);
+  transform: translateY(-1px);
+}
+
+/* Outline Button */
+.frost_light .frost-btn-outline {
+  background: transparent;
+  border: 2px solid rgba(20, 184, 166, 0.3);
+  color: var(--frost-light-text-primary);
+}
+
+.frost_light .frost-btn-outline:hover {
+  background: rgba(20, 184, 166, 0.1);
+  border-color: rgba(20, 184, 166, 0.5);
+  backdrop-filter: var(--frost-blur-light);
+  -webkit-backdrop-filter: var(--frost-blur-light);
+}
+
+/* Ghost Button */
+.frost_light .frost-btn-ghost {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--frost-light-text-secondary);
+}
+
+.frost_light .frost-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(20, 184, 166, 0.2);
+  color: var(--frost-light-text-primary);
+  backdrop-filter: var(--frost-blur-light);
+  -webkit-backdrop-filter: var(--frost-blur-light);
+}
+
+/* ================================
+ * FROST DARK BUTTONS
+ * ================================ */
+
+/* Primary Button */
+.frost_dark .frost-btn-primary {
+  background: rgba(36, 30, 54, 0.8);
+  backdrop-filter: var(--frost-blur-light);
+  -webkit-backdrop-filter: var(--frost-blur-light);
+  border: 1px solid rgba(0, 153, 255, 0.3);
+  color: var(--frost-dark-text-primary);
+  box-shadow:
+    0 4px 16px rgba(59, 36, 187, 0.3),
+    0 1px 1px rgba(36, 127, 180, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.frost_dark .frost-btn-primary:hover {
+  background: rgba(29, 32, 49, 0.9);
+  border-color: rgba(4, 75, 80, 0.4);
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 32px rgba(59, 36, 187, 0.4),
+    0 2px 4px rgba(36, 127, 180, 0.3),
+    inset 0 1px 0 rgba(194, 245, 245, 0.2);
+}
+
+.frost_dark .frost-btn-primary:active {
+  transform: translateY(0);
+  box-shadow:
+    0 2px 8px rgba(59, 36, 187, 0.5),
+    inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Secondary Button */
+.frost_dark .frost-btn-secondary {
+  background: rgba(18, 18, 18, 0.8);
+  backdrop-filter: var(--frost-blur-light);
+  -webkit-backdrop-filter: var(--frost-blur-light);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  color: var(--frost-dark-text-secondary);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.frost_dark .frost-btn-secondary:hover {
+  background: rgba(36, 30, 54, 0.6);
+  border-color: rgba(4, 75, 80, 0.3);
+  color: var(--frost-dark-text-primary);
+  transform: translateY(-1px);
+}
+
+/* Outline Button */
+.frost_dark .frost-btn-outline {
+  background: transparent;
+  border: 2px solid rgba(4, 75, 80, 0.3);
+  color: var(--frost-dark-text-primary);
+}
+
+.frost_dark .frost-btn-outline:hover {
+  background: rgba(4, 75, 80, 0.1);
+  border-color: rgba(4, 75, 80, 0.5);
+  backdrop-filter: var(--frost-blur-light);
+  -webkit-backdrop-filter: var(--frost-blur-light);
+}
+
+/* Ghost Button */
+.frost_dark .frost-btn-ghost {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--frost-dark-text-secondary);
+}
+
+.frost_dark .frost-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(4, 75, 80, 0.2);
+  color: var(--frost-dark-text-primary);
+  backdrop-filter: var(--frost-blur-light);
+  -webkit-backdrop-filter: var(--frost-blur-light);
+}
+
+/* ================================
+ * SPECIALIZED BUTTONS
+ * ================================ */
+
+/* Danger Button */
+.frost-btn-danger {
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+.frost_light .frost-btn-danger {
+  background: rgba(254, 242, 242, 0.9);
+  color: #dc2626;
+}
+
+.frost_light .frost-btn-danger:hover {
+  background: rgba(254, 226, 226, 0.9);
+  border-color: rgba(220, 38, 38, 0.5) !important;
+}
+
+.frost_dark .frost-btn-danger {
+  background: rgba(127, 29, 29, 0.3);
+  color: #fca5a5;
+}
+
+.frost_dark .frost-btn-danger:hover {
+  background: rgba(127, 29, 29, 0.5);
+  border-color: rgba(239, 68, 68, 0.6) !important;
+}
+
+/* Success Button */
+.frost-btn-success {
+  border-color: rgba(34, 197, 94, 0.4) !important;
+}
+
+.frost_light .frost-btn-success {
+  background: rgba(240, 253, 244, 0.9);
+  color: #059669;
+}
+
+.frost_light .frost-btn-success:hover {
+  background: rgba(220, 252, 231, 0.9);
+  border-color: rgba(5, 150, 105, 0.5) !important;
+}
+
+.frost_dark .frost-btn-success {
+  background: rgba(20, 83, 45, 0.3);
+  color: #86efac;
+}
+
+.frost_dark .frost-btn-success:hover {
+  background: rgba(20, 83, 45, 0.5);
+  border-color: rgba(34, 197, 94, 0.6) !important;
+}
+
+/* ================================
+ * BUTTON GROUPS
+ * ================================ */
+
+.frost-btn-group {
+  display: inline-flex;
+  border-radius: var(--frost-radius-md);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.frost-btn-group .frost-btn {
+  border-radius: 0;
+  border-right: 0;
+}
+
+.frost-btn-group .frost-btn:first-child {
+  border-top-left-radius: var(--frost-radius-md);
+  border-bottom-left-radius: var(--frost-radius-md);
+}
+
+.frost-btn-group .frost-btn:last-child {
+  border-top-right-radius: var(--frost-radius-md);
+  border-bottom-right-radius: var(--frost-radius-md);
+  border-right: 1px solid;
+}
+
+/* ================================
+ * ICON BUTTONS
+ * ================================ */
+
+.frost-btn-icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: var(--frost-radius-full);
+}
+
+.frost-btn-icon-sm {
+  width: 32px;
+  height: 32px;
+}
+
+.frost-btn-icon-lg {
+  width: 48px;
+  height: 48px;
+}
+
+/* ================================
+ * FLOATING ACTION BUTTON
+ * ================================ */
+
+.frost-fab {
+  position: fixed;
+  bottom: var(--frost-spacing-xl);
+  right: var(--frost-spacing-xl);
+  width: 56px;
+  height: 56px;
+  border-radius: var(--frost-radius-full);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: var(--frost-z-modal);
+}
+
+.frost_light .frost-fab {
+  background: var(--frost-light-card-bg);
+  backdrop-filter: var(--frost-blur-medium);
+  -webkit-backdrop-filter: var(--frost-blur-medium);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  color: var(--frost-light-text-primary);
+}
+
+.frost_dark .frost-fab {
+  background: var(--frost-dark-card-bg);
+  backdrop-filter: var(--frost-blur-medium);
+  -webkit-backdrop-filter: var(--frost-blur-medium);
+  border: 1px solid var(--frost-dark-border);
+  color: var(--frost-dark-text-primary);
+}
+
+/* ================================
+ * RESPONSIVE BUTTONS
+ * ================================ */
+
+@media (max-width: 768px) {
+  .frost-btn {
+    padding: var(--frost-spacing-md) var(--frost-spacing-lg);
+  }
+  
+  .frost-btn-sm {
+    padding: var(--frost-spacing-xs) var(--frost-spacing-sm);
+  }
+  
+  .frost-btn-lg {
+    padding: var(--frost-spacing-lg) var(--frost-spacing-xl);
+  }
+  
+  .frost-fab {
+    bottom: var(--frost-spacing-lg);
+    right: var(--frost-spacing-lg);
+    width: 48px;
+    height: 48px;
+  }
+  
+  .frost-btn-group {
+    flex-direction: column;
+  }
+  
+  .frost-btn-group .frost-btn {
+    border-right: 1px solid;
+    border-bottom: 0;
+  }
+  
+  .frost-btn-group .frost-btn:last-child {
+    border-bottom: 1px solid;
+    border-radius: 0;
+    border-bottom-left-radius: var(--frost-radius-md);
+    border-bottom-right-radius: var(--frost-radius-md);
+  }
+  
+  .frost-btn-group .frost-btn:first-child {
+    border-radius: 0;
+    border-top-left-radius: var(--frost-radius-md);
+    border-top-right-radius: var(--frost-radius-md);
+  }
+}

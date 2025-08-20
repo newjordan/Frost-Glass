@@ -1,0 +1,78 @@
+{
+  "name": "frost-glass-css",
+  "version": "1.0.0",
+  "description": "A modern glassmorphism CSS library with dual theme support",
+  "main": "src/themes/frost-glass.css",
+  "files": [
+    "src/",
+    "dist/",
+    "examples/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "npm run build:css && npm run minify",
+    "build:css": "cat src/core/variables.css src/core/base.css src/core/utilities.css src/components/*.css src/effects/*.css src/themes/frost-light.css src/themes/frost-dark.css > dist/frost-glass.css",
+    "minify": "npx csso dist/frost-glass.css --output dist/frost-glass.min.css",
+    "dev": "npx live-server examples/ --port=3000 --host=localhost",
+    "serve": "npm run dev",
+    "lint": "npx stylelint 'src/**/*.css'",
+    "format": "npx prettier --write 'src/**/*.css'",
+    "validate": "npm run lint && npm run build",
+    "clean": "rm -rf dist/*.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frost-glass-css/frost-glass-css.git"
+  },
+  "keywords": [
+    "css",
+    "glassmorphism",
+    "frost-glass",
+    "ui",
+    "components",
+    "themes",
+    "light-theme",
+    "dark-theme",
+    "blur-effects",
+    "backdrop-filter",
+    "modern-css",
+    "web-design",
+    "frontend",
+    "responsive",
+    "accessibility"
+  ],
+  "author": "Frost Glass CSS Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frost-glass-css/frost-glass-css/issues"
+  },
+  "homepage": "https://github.com/frost-glass-css/frost-glass-css#readme",
+  "devDependencies": {
+    "csso-cli": "^4.0.1",
+    "live-server": "^1.2.2",
+    "prettier": "^3.0.0",
+    "stylelint": "^15.0.0",
+    "stylelint-config-standard": "^34.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "browserslist": [
+    "Chrome >= 76",
+    "Firefox >= 72", 
+    "Safari >= 13",
+    "Edge >= 79",
+    "iOS >= 13",
+    "Android >= 76"
+  ],
+  "cdn": {
+    "jsdelivr": "https://cdn.jsdelivr.net/npm/frost-glass-css@1.0.0/dist/frost-glass.min.css",
+    "unpkg": "https://unpkg.com/frost-glass-css@1.0.0/dist/frost-glass.min.css"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/frost-glass-css"
+  }
+}

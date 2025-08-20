@@ -1,0 +1,88 @@
+/**
+ * Frost Glass CSS - Complete Library
+ * ==================================
+ * 
+ * A comprehensive glassmorphism CSS library with dual theme support.
+ * Features frost_light and frost_dark themes with complete component sets.
+ * 
+ * @version 1.0.0
+ * @author Frost Glass CSS Team
+ * @license MIT
+ * @url https://github.com/frost-glass-css/frost-glass-css
+ */
+
+/* ================================
+ * CORE IMPORTS
+ * ================================ */
+
+@import url('../core/variables.css');
+@import url('../core/base.css');
+@import url('../core/utilities.css');
+
+/* ================================
+ * COMPONENT IMPORTS
+ * ================================ */
+
+@import url('../components/typography.css');
+@import url('../components/cards.css');
+@import url('../components/navigation.css');
+@import url('../components/buttons.css');
+
+/* ================================
+ * EFFECTS IMPORTS
+ * ================================ */
+
+@import url('../effects/animations.css');
+
+/* ================================
+ * THEME IMPORTS
+ * ================================ */
+
+@import url('./frost-light.css');
+@import url('./frost-dark.css');
+
+/* ================================
+ * LIBRARY INFORMATION
+ * ================================ */
+
+/*! 
+ * Frost Glass CSS v1.0.0
+ * 
+ * A modern glassmorphism CSS library featuring:
+ * - Dual theme support (light & dark)
+ * - Comprehensive component library
+ * - CSS custom properties for easy theming
+ * - Accessibility features built-in
+ * - Browser compatibility with fallbacks
+ * - Responsive design patterns
+ * 
+ * Components included:
+ * - Cards & content areas
+ * - Navigation & sidebars  
+ * - Buttons & form controls
+ * - Typography & text utilities
+ * - Layout & spacing utilities
+ * - Animation & transition effects
+ * 
+ * Browser support:
+ * - Chrome 76+
+ * - Firefox 72+
+ * - Safari 13+
+ * - Edge 79+
+ * 
+ * Accessibility features:
+ * - Reduced motion support
+ * - High contrast mode support
+ * - Focus indicators
+ * - Screen reader utilities
+ * 
+ * Installation:
+ * <link rel="stylesheet" href="frost-glass.css">
+ * 
+ * Usage:
+ * <div class="frost_light frost-card">Light theme card</div>
+ * <div class="frost_dark frost-card">Dark theme card</div>
+ * 
+ * For more information visit:
+ * https://github.com/frost-glass-css/frost-glass-css
+ */

@@ -1,0 +1,153 @@
+/**
+ * Frost Glass CSS Variables
+ * ========================
+ * 
+ * CSS custom properties for both frost_light and frost_dark themes.
+ * These variables enable easy theming and customization.
+ */
+
+:root {
+  /* ================================
+   * FROST LIGHT THEME VARIABLES
+   * ================================ */
+  
+  /* Background Gradients */
+  --frost-light-bg: linear-gradient(135deg, #cef7fdff 0%, #80ebd5ff 25%, #c6e8ffff 50%, #9bc8e5ff 75%, #5081ecff 100%);
+  --frost-light-sidebar-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(249, 250, 251, 0.8) 50%, rgba(243, 244, 246, 0.85) 100%);
+  --frost-light-content-bg: rgba(209, 244, 247, 0.65);
+  --frost-light-card-bg: rgba(255, 255, 255, 0.9);
+  
+  /* Light Theme Overlays */
+  --frost-light-overlay: radial-gradient(circle at 30% 20%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+                         radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%);
+  
+  /* Light Theme Colors */
+  --frost-light-text-primary: #1f2937;
+  --frost-light-text-secondary: #6b7280;
+  --frost-light-text-muted: #9ca3af;
+  --frost-light-text-nav: #4b5563;
+  --frost-light-text-nav-hover: #1f2937;
+  --frost-light-text-nav-active: #111827;
+  
+  /* Light Theme Borders */
+  --frost-light-border: rgba(20, 184, 166, 0.3);
+  --frost-light-border-hover: rgba(6, 182, 212, 0.4);
+  --frost-light-border-active: rgba(20, 184, 166, 0.5);
+  
+  /* ================================
+   * FROST DARK THEME VARIABLES
+   * ================================ */
+  
+  /* Background Gradients */
+  --frost-dark-bg: linear-gradient(135deg, #090b0fff 0%, #0b0a1bff 50%, #18181bff 100%);
+  --frost-dark-sidebar-bg: linear-gradient(180deg, rgba(29, 28, 28, 0.9) 0%, rgba(18, 18, 18, 0.8) 50%, rgba(25, 25, 25, 0.85) 100%);
+  --frost-dark-content-bg: rgba(255, 255, 255, 0.08);
+  --frost-dark-card-bg: rgba(36, 30, 54, 0.82);
+  
+  /* Dark Theme Overlays */
+  --frost-dark-overlay: radial-gradient(circle at 30% 20%, rgba(2, 33, 36, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(2, 2, 26, 0.27) 0%, transparent 50%);
+  
+  /* Dark Theme Divider Gradient */
+  --frost-dark-divider: linear-gradient(30deg,
+    rgba(135, 80, 236, 0.65) 0%,   /* purple */
+    rgba(59, 130, 246, 0.55) 50%,  /* blue */
+    rgba(99, 102, 241, 0.60) 100%  /* indigo */
+  );
+  
+  /* Dark Theme Colors */
+  --frost-dark-text-primary: rgba(255, 255, 255, 1);
+  --frost-dark-text-secondary: rgba(78, 161, 199, 0.6);
+  --frost-dark-text-muted: rgba(255, 255, 255, 0.7);
+  --frost-dark-text-nav: rgba(133, 131, 143, 0.8);
+  --frost-dark-text-nav-hover: rgba(194, 245, 245, 0.9);
+  --frost-dark-text-nav-active: rgba(255, 255, 255, 1);
+  
+  /* Dark Theme Borders */
+  --frost-dark-border: rgba(0, 153, 255, 0.3);
+  --frost-dark-border-hover: rgba(4, 75, 80, 0.3);
+  --frost-dark-border-active: rgba(49, 112, 141, 0.3);
+  
+  /* ================================
+   * SHARED VARIABLES
+   * ================================ */
+  
+  /* Blur Effects */
+  --frost-blur-light: blur(12px) saturate(150%);
+  --frost-blur-medium: blur(16px) saturate(180%) contrast(1.05);
+  --frost-blur-heavy: blur(20px) saturate(150%);
+  --frost-blur-sidebar: blur(24px) saturate(200%) contrast(1.1);
+  
+  /* Transition Effects */
+  --frost-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --frost-transition-fast: all 0.2s ease;
+  
+  /* Border Radius */
+  --frost-radius-sm: 8px;
+  --frost-radius-md: 12px;
+  --frost-radius-lg: 16px;
+  --frost-radius-full: 50%;
+  
+  /* Spacing */
+  --frost-spacing-xs: 0.5rem;
+  --frost-spacing-sm: 0.75rem;
+  --frost-spacing-md: 1rem;
+  --frost-spacing-lg: 1.5rem;
+  --frost-spacing-xl: 2rem;
+  --frost-spacing-2xl: 2.5rem;
+  
+  /* Typography */
+  --frost-font-weight-normal: 400;
+  --frost-font-weight-medium: 500;
+  --frost-font-weight-semibold: 600;
+  --frost-font-weight-bold: 700;
+  
+  --frost-letter-spacing-tight: -0.025em;
+  --frost-letter-spacing-normal: 0;
+  --frost-letter-spacing-wide: 0.025em;
+  --frost-letter-spacing-wider: 0.05em;
+  
+  /* Z-Index Layers */
+  --frost-z-behind: -1;
+  --frost-z-base: 0;
+  --frost-z-overlay: 1;
+  --frost-z-modal: 10;
+}
+
+/* Theme-specific variable assignments */
+.frost_light {
+  --current-bg: var(--frost-light-bg);
+  --current-sidebar-bg: var(--frost-light-sidebar-bg);
+  --current-content-bg: var(--frost-light-content-bg);
+  --current-card-bg: var(--frost-light-card-bg);
+  --current-overlay: var(--frost-light-overlay);
+  --current-text-primary: var(--frost-light-text-primary);
+  --current-text-secondary: var(--frost-light-text-secondary);
+  --current-text-muted: var(--frost-light-text-muted);
+  --current-text-nav: var(--frost-light-text-nav);
+  --current-text-nav-hover: var(--frost-light-text-nav-hover);
+  --current-text-nav-active: var(--frost-light-text-nav-active);
+  --current-border: var(--frost-light-border);
+  --current-border-hover: var(--frost-light-border-hover);
+  --current-border-active: var(--frost-light-border-active);
+}
+
+.frost_dark {
+  --current-bg: var(--frost-dark-bg);
+  --current-sidebar-bg: var(--frost-dark-sidebar-bg);
+  --current-content-bg: var(--frost-dark-content-bg);
+  --current-card-bg: var(--frost-dark-card-bg);
+  --current-overlay: var(--frost-dark-overlay);
+  --current-text-primary: var(--frost-dark-text-primary);
+  --current-text-secondary: var(--frost-dark-text-secondary);
+  --current-text-muted: var(--frost-dark-text-muted);
+  --current-text-nav: var(--frost-dark-text-nav);
+  --current-text-nav-hover: var(--frost-dark-text-nav-hover);
+  --current-text-nav-active: var(--frost-dark-text-nav-active);
+  --current-border: var(--frost-dark-border);
+  --current-border-hover: var(--frost-dark-border-hover);
+  --current-border-active: var(--frost-dark-border-active);
+  
+  /* Dark theme specific */
+  --dark-divider-gradient: var(--frost-dark-divider);
+}

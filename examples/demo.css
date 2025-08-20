@@ -1,0 +1,313 @@
+/**
+ * Frost Glass CSS - Demo Styles
+ * =============================
+ * 
+ * Demo-specific styles for showcasing the Frost Glass CSS library.
+ */
+
+/* ================================
+ * DEMO LAYOUT & STRUCTURE
+ * ================================ */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    transition: all 0.3s ease;
+}
+
+.demo-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.demo-header {
+    padding: 3rem 0;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.demo-section {
+    margin-bottom: 4rem;
+}
+
+.demo-footer {
+    margin-top: 4rem;
+    padding: 2rem 0;
+}
+
+/* ================================
+ * DEMO THEME TOGGLE
+ * ================================ */
+
+.demo-theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* ================================
+ * DEMO GRIDS & LAYOUTS
+ * ================================ */
+
+.demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.demo-button-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.demo-nav-showcase {
+    max-width: 300px;
+    margin-top: 2rem;
+}
+
+.demo-layout-showcase {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+    min-height: 400px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.demo-sidebar {
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.demo-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ================================
+ * DEMO SPECIFIC COMPONENTS
+ * ================================ */
+
+.demo-code-block {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.875rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+}
+
+.frost_dark .demo-code-block {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.demo-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.demo-feature-item {
+    text-align: center;
+    padding: 2rem;
+}
+
+.demo-feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* ================================
+ * DEMO ANIMATIONS
+ * ================================ */
+
+.demo-card-hover {
+    transition: all 0.3s ease;
+}
+
+.demo-card-hover:hover {
+    transform: translateY(-4px) scale(1.02);
+}
+
+/* Stagger animation for grid items */
+.demo-grid > * {
+    animation: demo-fade-in-up 0.6s ease-out;
+}
+
+.demo-grid > *:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.demo-grid > *:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.demo-grid > *:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+@keyframes demo-fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================
+ * DEMO RESPONSIVE DESIGN
+ * ================================ */
+
+@media (max-width: 768px) {
+    .demo-container {
+        padding: 1rem;
+    }
+    
+    .demo-header {
+        padding: 2rem 0;
+    }
+    
+    .demo-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .demo-layout-showcase {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .demo-sidebar {
+        padding: 1rem;
+    }
+    
+    .demo-content {
+        padding: 1rem;
+    }
+    
+    .demo-button-grid {
+        justify-content: center;
+    }
+    
+    .demo-theme-toggle {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .demo-container {
+        padding: 0.5rem;
+    }
+    
+    .demo-section {
+        margin-bottom: 2rem;
+    }
+}
+
+/* ================================
+ * DEMO ACCESSIBILITY
+ * ================================ */
+
+.demo-skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--current-bg);
+    color: var(--current-text-primary);
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+    border-radius: 4px;
+}
+
+.demo-skip-link:focus {
+    top: 6px;
+}
+
+/* ================================
+ * DEMO PRINT STYLES
+ * ================================ */
+
+@media print {
+    .demo-theme-toggle,
+    .demo-layout-showcase {
+        display: none;
+    }
+    
+    .demo-container {
+        max-width: none;
+        padding: 0;
+    }
+    
+    .demo-section {
+        page-break-inside: avoid;
+    }
+}
+
+/* ================================
+ * DEMO DARK MODE SPECIFIC
+ * ================================ */
+
+.frost_dark body {
+    background: var(--frost-dark-bg);
+}
+
+/* ================================
+ * DEMO LIGHT MODE SPECIFIC  
+ * ================================ */
+
+.frost_light body {
+    background: var(--frost-light-bg);
+}
+
+/* ================================
+ * DEMO UTILITIES
+ * ================================ */
+
+.demo-highlight {
+    position: relative;
+    background: linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255, 255, 0, 0.3) 50%, transparent 60%, transparent 100%);
+    padding: 0 4px;
+}
+
+.demo-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 12px;
+    background: var(--current-border);
+    color: var(--current-text-primary);
+}
+
+.demo-divider {
+    height: 1px;
+    background: var(--current-border);
+    margin: 2rem 0;
+}
+
+.demo-spacer {
+    height: 2rem;
+}

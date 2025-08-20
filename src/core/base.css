@@ -1,0 +1,120 @@
+/**
+ * Frost Glass CSS - Base Effects
+ * ==============================
+ * 
+ * Core frost glass effects and fundamental styling.
+ * This file contains the essential glassmorphism properties.
+ */
+
+/* ================================
+ * BASE FROST GLASS CLASSES
+ * ================================ */
+
+.frost-glass {
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: var(--frost-blur-light);
+  -webkit-backdrop-filter: var(--frost-blur-light);
+}
+
+.frost-glass-medium {
+  backdrop-filter: var(--frost-blur-medium);
+  -webkit-backdrop-filter: var(--frost-blur-medium);
+}
+
+.frost-glass-heavy {
+  backdrop-filter: var(--frost-blur-heavy);
+  -webkit-backdrop-filter: var(--frost-blur-heavy);
+}
+
+.frost-glass-sidebar {
+  backdrop-filter: var(--frost-blur-sidebar);
+  -webkit-backdrop-filter: var(--frost-blur-sidebar);
+}
+
+/* ================================
+ * FROST GLASS OVERLAYS
+ * ================================ */
+
+.frost-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--current-overlay);
+  pointer-events: none;
+  z-index: var(--frost-z-behind);
+}
+
+/* ================================
+ * UNIVERSAL FROST EFFECTS
+ * ================================ */
+
+.frost-transition {
+  transition: var(--frost-transition);
+}
+
+.frost-transition-fast {
+  transition: var(--frost-transition-fast);
+}
+
+/* ================================
+ * ACCESSIBILITY SUPPORT
+ * ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .frost-glass,
+  .frost-glass-medium,
+  .frost-glass-heavy,
+  .frost-glass-sidebar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  
+  .frost-overlay::before {
+    animation: none !important;
+  }
+  
+  .frost-transition,
+  .frost-transition-fast {
+    transition: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .frost-glass,
+  .frost-glass-medium,
+  .frost-glass-heavy,
+  .frost-glass-sidebar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 2px solid currentColor !important;
+  }
+  
+  .frost_dark .frost-glass,
+  .frost_dark .frost-glass-medium,
+  .frost_dark .frost-glass-heavy,
+  .frost_dark .frost-glass-sidebar {
+    background: rgba(0, 0, 0, 0.95) !important;
+  }
+}
+
+/* ================================
+ * BROWSER SUPPORT FALLBACKS
+ * ================================ */
+
+@supports not (backdrop-filter: blur(1px)) {
+  .frost-glass,
+  .frost-glass-medium,
+  .frost-glass-heavy,
+  .frost-glass-sidebar {
+    background: rgba(255, 255, 255, 0.8);
+  }
+  
+  .frost_dark .frost-glass,
+  .frost_dark .frost-glass-medium,
+  .frost_dark .frost-glass-heavy,
+  .frost_dark .frost-glass-sidebar {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
