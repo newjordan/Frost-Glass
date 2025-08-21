@@ -2,6 +2,17 @@
 
 Glassmorphism CSS library by Frosty40 with dark/light themes.
 
+## Screenshots
+
+### Dark Theme
+![Frost Dark Theme](public/frostdark.png)
+
+### Light Theme
+![Frost Light Theme](public/frostlight.png)
+
+### Code Examples
+![Code Examples](public/code_examples.png)
+
 ## Quick Start
 
 ```html
