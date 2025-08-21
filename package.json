@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/frost-glass-css/frost-glass-css.git"
+    "url": "https://github.com/frosty40/frost-glass-css.git"
   },
   "keywords": [
     "css",
@@ -42,12 +42,12 @@
     "responsive",
     "accessibility"
   ],
-  "author": "Frost Glass CSS Team",
+  "author": "frosty40",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/frost-glass-css/frost-glass-css/issues"
+    "url": "https://github.com/frosty40/frost-glass-css/issues"
   },
-  "homepage": "https://github.com/frost-glass-css/frost-glass-css#readme",
+  "homepage": "https://github.com/frosty40/frost-glass-css#readme",
   "devDependencies": {
     "csso-cli": "^4.0.1",
     "live-server": "^1.2.2",
@@ -73,6 +73,6 @@
   },
   "funding": {
     "type": "github",
-    "url": "https://github.com/sponsors/frost-glass-css"
+    "url": "https://github.com/sponsors/frosty40"
   }
 }
