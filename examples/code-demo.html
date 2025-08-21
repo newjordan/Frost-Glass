@@ -13,41 +13,28 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="demo.css">
     <style>
-        /* Minimal custom styles - using theme classes for everything else */
-        .demo-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2.5rem;
+        /* Use only theme-aware styles that properly integrate with frostdark/frostlight components */
+        /* All styling should respect the frost theme system */
+        
+        /* Override any non-theme styles with proper frost theme integration */
+        .frost_dark {
+            /* Inherits from frost-dark.css */
         }
-
-        .demo-header {
-            text-align: center;
-            margin-bottom: 3rem;
+        
+        .frost_light {
+            /* Inherits from frost-light.css */
         }
-
-        .demo-header h1 {
-            margin-bottom: 1rem;
-        }
-
-        .demo-header p {
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .theme-toggle {
-            margin: 2rem 0;
-            text-align: center;
-        }
-
+        
+        /* Ensure grid layouts work with theme components */
         .demo-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
-
+        
         @media (max-width: 768px) {
             .demo-grid {
                 grid-template-columns: 1fr;
@@ -71,7 +58,7 @@
             <!-- Button Components -->
             <div class="frostdark-code-example">
                 <div class="frostdark-code-preview">
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <div class="frostdark-button-group">
                         <button class="frostdark-button-action">Primary</button>
                         <button class="frostdark-button-raised">Success</button>
                         <button class="frostdark-button-action-danger">Danger</button>
@@ -84,17 +71,19 @@
                         <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
                     </div>
                     <div class="frostdark-code-content">
-                        <pre><code>&lt;!-- Primary Action Button --&gt;
-&lt;button class="frostdark-button-action"&gt;Primary&lt;/button&gt;
+                        <pre><code>&lt;div class="frostdark-button-group"&gt;
+    &lt;!-- Primary Action Button --&gt;
+    &lt;button class="frostdark-button-action"&gt;Primary&lt;/button&gt;
 
-&lt;!-- Success Button --&gt;
-&lt;button class="frostdark-button-raised"&gt;Success&lt;/button&gt;
+    &lt;!-- Success Button --&gt;
+    &lt;button class="frostdark-button-raised"&gt;Success&lt;/button&gt;
 
-&lt;!-- Danger Button --&gt;
-&lt;button class="frostdark-button-action-danger"&gt;Danger&lt;/button&gt;
+    &lt;!-- Danger Button --&gt;
+    &lt;button class="frostdark-button-action-danger"&gt;Danger&lt;/button&gt;
 
-&lt;!-- Small Button --&gt;
-&lt;button class="frostdark-button-action frostdark-button-action-sm"&gt;Small&lt;/button&gt;</code></pre>
+    &lt;!-- Small Button --&gt;
+    &lt;button class="frostdark-button-action frostdark-button-action-sm"&gt;Small&lt;/button&gt;
+&lt;/div&gt;</code></pre>
                     </div>
                 </div>
             </div>
@@ -249,7 +238,7 @@ function toggleSwitch(element) {
                 <div class="frostdark-code-preview">
                     <div class="frostdark-app-logo">
                         <div class="frostdark-app-logo-icon">
-                            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">❄️</div>
+                            <span style="font-size: 2.5rem;">❄️</span>
                         </div>
                         <div>
                             <div class="frostdark-app-title">Frost Glass</div>
@@ -265,12 +254,34 @@ function toggleSwitch(element) {
                     <div class="frostdark-code-content">
                         <pre><code>&lt;div class="frostdark-app-logo"&gt;
     &lt;div class="frostdark-app-logo-icon"&gt;
-        &lt;div style="width: 60px; height: 60px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;"&gt;❄️&lt;/div&gt;
+        &lt;span style="font-size: 2.5rem;"&gt;❄️&lt;/span&gt;
     &lt;/div&gt;
     &lt;div&gt;
         &lt;div class="frostdark-app-title"&gt;Frost Glass&lt;/div&gt;
         &lt;div class="frostdark-app-subtitle"&gt;CSS Library&lt;/div&gt;
     &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Empty State Panel -->
+            <div class="frostdark-code-example">
+                <div class="frostdark-code-preview">
+                    <div class="frostdark-empty-panel" style="max-width: 300px;">
+                        <div class="empty-icon">📭</div>
+                        <div class="empty-text">No items found</div>
+                    </div>
+                </div>
+                <div class="frostdark-code-block">
+                    <div class="frostdark-code-header">
+                        <span class="frostdark-code-title">Empty State Panel</span>
+                        <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                    </div>
+                    <div class="frostdark-code-content">
+                        <pre><code>&lt;div class="frostdark-empty-panel"&gt;
+    &lt;div class="empty-icon"&gt;📭&lt;/div&gt;
+    &lt;div class="empty-text"&gt;No items found&lt;/div&gt;
 &lt;/div&gt;</code></pre>
                     </div>
                 </div>
@@ -377,6 +388,7 @@ function toggleSwitch(element) {
                 switchAllClasses('frostdark-code-content', 'frostlight-code-content');
 
                 // Update component classes inside previews
+                switchAllClasses('frostdark-button-group', 'frostlight-button-group');
                 switchAllClasses('frostdark-button-action', 'frostlight-button-action');
                 switchAllClasses('frostdark-button-raised', 'frostlight-button-raised');
                 switchAllClasses('frostdark-button-action-danger', 'frostlight-button-action-danger');
@@ -430,6 +442,7 @@ function toggleSwitch(element) {
                 switchAllClasses('frostlight-code-content', 'frostdark-code-content');
 
                 // Update component classes inside previews
+                switchAllClasses('frostlight-button-group', 'frostdark-button-group');
                 switchAllClasses('frostlight-button-action', 'frostdark-button-action');
                 switchAllClasses('frostlight-button-raised', 'frostdark-button-raised');
                 switchAllClasses('frostlight-button-action-danger', 'frostdark-button-action-danger');

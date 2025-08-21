@@ -81,15 +81,20 @@
 .code-content {
   padding: 1.5rem;
   overflow-x: auto;
+  overflow-y: hidden;
   position: relative;
+  max-width: 100%;
 }
+
+/* Code blocks inherit theme scrollbar styling for consistency */
 
 .code-content pre {
   margin: 0;
   font-size: 0.875rem;
   line-height: 1.6;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-x: visible;
 }
 
 .code-content code {

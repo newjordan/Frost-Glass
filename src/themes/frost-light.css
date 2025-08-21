@@ -571,6 +571,15 @@
   line-height: 1.2;
 }
 
+/* Button group for organizing multiple buttons */
+.frostlight-button-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ========================================= */
 /* FROST LIGHT INPUT COMPONENTS */
 /* ========================================= */

@@ -96,6 +96,50 @@
             height: 100vh;
         }
         
+        /* Fix horizontal scrollbars in code blocks */
+        .frostdark-code-content,
+        .frostlight-code-content {
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            max-width: 100%;
+            position: relative;
+            padding-bottom: 1rem !important;
+        }
+        
+        .frostdark-code-content::-webkit-scrollbar,
+        .frostlight-code-content::-webkit-scrollbar {
+            height: 12px !important;
+            background: transparent;
+        }
+        
+        .frostdark-code-content::-webkit-scrollbar-track,
+        .frostlight-code-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            margin: 0 8px;
+        }
+        
+        .frostdark-code-content::-webkit-scrollbar-thumb,
+        .frostlight-code-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 6px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        
+        .frostdark-code-content::-webkit-scrollbar-thumb:hover,
+        .frostlight-code-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+            background-clip: padding-box;
+        }
+        
+        .frostdark-code-content pre,
+        .frostlight-code-content pre {
+            white-space: pre !important;
+            word-wrap: normal !important;
+            overflow-x: visible !important;
+        }
+        
         /* Typography System - Standardized for frost_dark theme */
         h1, h2, h3, h4, h5, h6 {
             font-weight: 600;
@@ -525,7 +569,6 @@
                             <div class="frostdark-settings-toggle" data-state="checked" onclick="toggleTheme(this)">
                                 <div class="frostdark-settings-toggle-thumb"></div>
                             </div>
-                            <span class="text-subtitle" style="margin-left: 0.5rem; font-size: 0.75rem;">Light Mode</span>
                         </div>
                     </div>
                 </div>
@@ -534,15 +577,12 @@
             <!-- Navigation Menu -->
             <nav>
                 <div class="frostdark-app-nav-item active" onclick="showPage('components')">
-                    <span style="font-size: 1.1rem;">📦</span>
                     <span>Components</span>
                 </div>
                 <div class="frostdark-app-nav-item" onclick="showPage('code-examples')">
-                    <span style="font-size: 1.1rem;">📝</span>
                     <span>Code Examples</span>
                 </div>
                 <div class="frostdark-app-nav-item" onclick="showPage('button-builder')">
-                    <span style="font-size: 1.1rem;">🔨</span>
                     <span>Button Builder</span>
                 </div>
             </nav>
@@ -1222,6 +1262,28 @@
                             </div>
                         </div>
 
+                        <!-- Empty State Panel -->
+                        <div class="frostdark-code-example">
+                            <div class="frostdark-code-preview">
+                                <div class="frostdark-empty-panel" style="max-width: 300px;">
+                                    <div class="empty-icon">📭</div>
+                                    <div class="empty-text">No items found</div>
+                                </div>
+                            </div>
+                            <div class="frostdark-code-block">
+                                <div class="frostdark-code-header">
+                                    <span class="frostdark-code-title">Empty State Panel</span>
+                                    <button class="frostdark-copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                </div>
+                                <div class="frostdark-code-content">
+                                    <pre><code>&lt;div class="frostdark-empty-panel"&gt;
+    &lt;div class="empty-icon"&gt;📭&lt;/div&gt;
+    &lt;div class="empty-text"&gt;No items found&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Text Utilities -->
                         <div class="frostdark-code-example">
                             <div class="frostdark-code-preview">
@@ -1341,9 +1403,6 @@ function toggleSwitch(element) {
                             Soon you'll be able to customize buttons with different styles, 
                             sizes, colors, and effects - then export the code instantly.
                         </p>
-                        <div style="margin-top: 2rem;">
-                            <button class="frostdark-button-action">Notify Me When Ready</button>
-                        </div>
                     </div>
                 </div>
             </div>
