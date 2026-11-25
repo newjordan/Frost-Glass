@@ -1,0 +1,412 @@
+/**
+ * Frost Glass CSS — accessibility layer
+ * =====================================
+ *
+ * Loaded last so these corrections win over hardcoded theme colors.
+ * Keeps the public class names. Adjusts the ones that were too faint
+ * to read, and honors system transparency, contrast, color-scheme,
+ * motion, and forced-colors preferences.
+ */
+
+/* ---------------------------------
+ * color-scheme
+ * A theme class always wins. With no theme class, follow the OS.
+ * --------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.frost_light) {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not(.frost_dark) {
+    color-scheme: light;
+  }
+}
+
+/* ---------------------------------
+ * Contrast corrections
+ * --------------------------------- */
+
+/* Light titles were ~42% opacity purple and vanished on the gradient. */
+.frostlight-app-title,
+.frost_light.app-title,
+.frostlight-app-main-title,
+.frost_light .frostlight-conv-app-title,
+.frost_light .frostlight-conv-chat-title {
+  color: #3c3354;
+}
+
+.frostlight-app-subtitle,
+.frost_light.app-subtitle,
+.frostlight-app-main-subtitle,
+.frost_light .frostlight-conv-app-subtitle {
+  color: #4a435c;
+}
+
+.frostlight-app-nav-item {
+  color: #243038;
+}
+
+.frostlight-app-nav-item:hover,
+.frostlight-app-nav-item.active {
+  color: #1f2937;
+}
+
+.frostlight-app-feature-title,
+.frostlight-app-card-title,
+.frostlight-app-description {
+  color: #2c2833;
+}
+
+.frostlight-app-feature-text {
+  color: #3f3a46;
+}
+
+.frostlight-empty-panel .empty-text {
+  color: #1f2937;
+}
+
+.frost_light .text-secondary,
+.frost_light.text-secondary,
+.frost_light .frost-text-secondary {
+  color: #374151;
+}
+
+.frost_light .text-muted,
+.frost_light.text-muted,
+.frost_light .frost-text-muted,
+.frost_light .text-content,
+.frost_light.text-content,
+.frost_light .text-subtle,
+.frost_light.text-subtle,
+.frost_light .text-very-muted,
+.frost_light.text-very-muted {
+  color: #4b5563;
+}
+
+.frost_dark .text-secondary,
+.frost_dark.text-secondary,
+.frost_dark .frost-text-secondary {
+  color: #9fd4ea;
+}
+
+.frost_dark .text-muted,
+.frost_dark.text-muted {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.frost_dark .text-nav,
+.frost_dark.text-nav {
+  color: #c8c5d2;
+}
+
+.frost_dark .text-very-muted,
+.frost_dark.text-very-muted,
+.frost_dark .text-subtle,
+.frost_dark.text-subtle {
+  color: #b7c3d0;
+}
+
+.frostdark-empty-panel .empty-text {
+  color: #d9fafa;
+}
+
+/* Light-theme glass actions were ~30% teal on a mint page, so white
+ * labels fell well under 4.5:1. Paint an opaque fill instead. The dark
+ * theme sits on a near-black page, where the translucent tint still passes. */
+.frost_light :is(.frostlight-button-action, .frost-btn-action),
+.frost_light :is(.frostlight-button-action, .frost-btn-action):hover,
+.frost_light :is(.frostlight-button-action, .frost-btn-action):active {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.frost_light :is(.frostlight-button-action, .frost-btn-action) {
+  background: linear-gradient(135deg, #0e7490 0%, #0f766e 100%);
+}
+
+.frost_light :is(.frostlight-button-action, .frost-btn-action):hover {
+  background: linear-gradient(135deg, #0891b2 0%, #0d9488 100%);
+}
+
+.frost_light :is(.frostlight-button-raised, .frost-btn-raised),
+.frost_light :is(.frostlight-button-raised, .frost-btn-raised):hover,
+.frost_light :is(.frostlight-button-raised, .frost-btn-raised):active {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.frost_light :is(.frostlight-button-raised, .frost-btn-raised) {
+  background: linear-gradient(135deg, #047857 0%, #0f766e 100%);
+}
+
+.frost_light :is(.frostlight-button-raised, .frost-btn-raised):hover {
+  background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+}
+
+.frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger),
+.frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger):hover,
+.frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger):active {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger) {
+  background: linear-gradient(135deg, #be123c 0%, #9f1239 100%);
+}
+
+.frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger):hover {
+  background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+}
+
+/* A soft shadow keeps white labels readable on translucent glass. */
+.frostdark-button-action,
+.frostlight-button-action,
+.frostdark-button-raised,
+.frostlight-button-raised,
+.frostdark-button-action-danger,
+.frostlight-button-action-danger,
+.frost_dark .frost-btn-action,
+.frost_light .frost-btn-action,
+.frost_dark .frost-btn-raised,
+.frost_light .frost-btn-raised,
+.frost_dark .frost-btn-action-danger,
+.frost_light .frost-btn-action-danger {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------------------------------
+ * Focus
+ * --------------------------------- */
+
+.frost-btn:focus-visible,
+.frost-btn-glass:focus-visible,
+.button--glass:focus-visible,
+.frostdark-button-action:focus-visible,
+.frostlight-button-action:focus-visible,
+.frostdark-button-raised:focus-visible,
+.frostlight-button-raised:focus-visible,
+.frostdark-button-action-danger:focus-visible,
+.frostlight-button-action-danger:focus-visible,
+.frost_dark .frost-btn-action:focus-visible,
+.frost_light .frost-btn-action:focus-visible,
+.frost-nav-item:focus-visible,
+.frostdark-app-nav-item:focus-visible,
+.frostlight-app-nav-item:focus-visible,
+.frostdark-input-field:focus-visible,
+.frostlight-input-field:focus-visible {
+  outline: 2px solid var(--frost-focus, #0f766e);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------
+ * Reduced motion
+ * --------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .frost-btn:hover,
+  .frost-btn:active,
+  .frost-btn-glass:hover,
+  .frost-btn-glass:active,
+  .button--glass:hover,
+  .button--glass:active,
+  .frostdark-button-action:hover,
+  .frostdark-button-action:active,
+  .frostlight-button-action:hover,
+  .frostlight-button-action:active,
+  .frostdark-button-raised:hover,
+  .frostdark-button-raised:active,
+  .frostlight-button-raised:hover,
+  .frostlight-button-raised:active,
+  .frostdark-button-action-danger:hover,
+  .frostdark-button-action-danger:active,
+  .frostlight-button-action-danger:hover,
+  .frostlight-button-action-danger:active,
+  .frost_dark .frost-btn-action:hover,
+  .frost_light .frost-btn-action:hover,
+  .frost-card:hover,
+  .frost-nav-item:hover,
+  .frost-nav-item.active {
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------
+ * Reduced transparency
+ * Drop the blur and paint a solid fill so text does not sit on a wash.
+ * --------------------------------- */
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --frost-blur-light: none;
+    --frost-blur-medium: none;
+    --frost-blur-heavy: none;
+    --frost-blur-sidebar: none;
+  }
+
+  .frost_light :is(
+    .frost-glass,
+    .frost-glass-medium,
+    .frost-glass-heavy,
+    .frost-glass-sidebar,
+    .frost-card,
+    .frost-sidebar,
+    .frost-nav-item,
+    .frost-btn,
+    .frost-btn-glass,
+    .button--glass,
+    .frostlight-app-content,
+    .frostlight-app-content-card,
+    .frostlight-input-container,
+    .frostlight-empty-panel,
+    .frostlight-standard-glass-card,
+    .frostlight-button-action,
+    .frostlight-button-raised,
+    .frostlight-button-action-danger,
+    .frost-btn-action,
+    .frost-btn-raised,
+    .frost-btn-action-danger
+  ),
+  .frost_dark :is(
+    .frost-glass,
+    .frost-glass-medium,
+    .frost-glass-heavy,
+    .frost-glass-sidebar,
+    .frost-card,
+    .frost-sidebar,
+    .frost-nav-item,
+    .frost-btn,
+    .frost-btn-glass,
+    .button--glass,
+    .frostdark-app-content,
+    .frostdark-app-content-card,
+    .frostdark-input-container,
+    .frostdark-empty-panel,
+    .frostdark-standard-glass-card,
+    .frostdark-button-action,
+    .frostdark-button-raised,
+    .frostdark-button-action-danger,
+    .frost-btn-action,
+    .frost-btn-raised,
+    .frost-btn-action-danger
+  ) {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .frost_light :is(
+    .frost-card,
+    .frost-glass,
+    .frost-glass-medium,
+    .frost-glass-heavy,
+    .frost-glass-sidebar,
+    .frostlight-app-content,
+    .frostlight-app-content-card,
+    .frostlight-standard-glass-card,
+    .frostlight-empty-panel,
+    .frostlight-input-container
+  ) {
+    background-color: var(--frost-solid-light);
+    background-image: none;
+  }
+
+  .frost_dark :is(
+    .frost-card,
+    .frost-glass,
+    .frost-glass-medium,
+    .frost-glass-heavy,
+    .frost-glass-sidebar,
+    .frostdark-app-content,
+    .frostdark-app-content-card,
+    .frostdark-standard-glass-card,
+    .frostdark-empty-panel,
+    .frostdark-input-container
+  ) {
+    background-color: var(--frost-solid-dark);
+    background-image: none;
+  }
+
+  .frost_light :is(.frostlight-button-action, .frost-btn-action),
+  .frost_dark :is(.frostdark-button-action, .frost-btn-action),
+  .frost-btn-glass,
+  .button--glass {
+    background-image: none !important;
+    background-color: var(--fg-solid, #0e7490);
+    color: var(--text, #ffffff);
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .frost_light :is(.frostlight-button-raised, .frost-btn-raised),
+  .frost_dark :is(.frostdark-button-raised, .frost-btn-raised) {
+    background-image: none !important;
+    background-color: #047857;
+    color: #ffffff;
+  }
+
+  .frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger),
+  .frost_dark :is(.frostdark-button-action-danger, .frost-btn-action-danger) {
+    background-image: none !important;
+    background-color: #b91c1c;
+    color: #ffffff;
+  }
+}
+
+/* ---------------------------------
+ * High contrast and forced colors
+ * --------------------------------- */
+
+@media (prefers-contrast: more), (prefers-contrast: high) {
+  .frost_light :is(.frostlight-button-action, .frost-btn-action, .frost-btn-primary),
+  .frost_dark :is(.frostdark-button-action, .frost-btn-action, .frost-btn-primary) {
+    background-image: none !important;
+    background-color: #0e7490 !important;
+    color: #ffffff !important;
+    border: 2px solid currentColor !important;
+  }
+
+  .frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger, .frost-btn-danger),
+  .frost_dark :is(.frostdark-button-action-danger, .frost-btn-action-danger, .frost-btn-danger) {
+    background-image: none !important;
+    background-color: #991b1b !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+  }
+
+  .frost-card,
+  .frostlight-app-content-card,
+  .frostdark-app-content-card {
+    border: 2px solid currentColor !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .frost-btn,
+  .frost-btn-glass,
+  .button--glass,
+  .frost-card,
+  .frost-nav-item,
+  .frostdark-button-action,
+  .frostlight-button-action,
+  .frostdark-button-raised,
+  .frostlight-button-raised,
+  .frostdark-button-action-danger,
+  .frostlight-button-action-danger,
+  .frostdark-app-content-card,
+  .frostlight-app-content-card,
+  .frostdark-input-container,
+  .frostlight-input-container {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: ButtonFace !important;
+    background-image: none !important;
+    color: ButtonText !important;
+    border: 1px solid ButtonText !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}

@@ -4,9 +4,6 @@
 # Dependencies
 node_modules/
 
-# Build outputs
-*.min.css
-
 # OS files
 .DS_Store
 Thumbs.db

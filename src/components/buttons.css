@@ -1,8 +1,17 @@
 /**
  * Frost Glass CSS - Buttons
  * =========================
- * 
- * Button components and variations for frost glass themes.
+ *
+ * Theme-aware component buttons. Put them inside .frost_light or .frost_dark.
+ *
+ *   frost-btn + frost-btn-primary | secondary | outline | ghost
+ *   frost-btn + frost-btn-danger | frost-btn-success   (tinted, not the glass action)
+ *
+ * The signature glass actions live in the theme files and are also available
+ * as frost-btn-action, frost-btn-raised, and frost-btn-action-danger.
+ * See README "Class names" for the frostdark-button-* / frostlight-button-* map.
+ *
+ * Parametric glass (custom properties) is .frost-btn-glass, aliased as .button--glass.
  */
 
 /* ================================

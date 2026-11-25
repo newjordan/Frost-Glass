@@ -5,10 +5,10 @@
  * A comprehensive glassmorphism CSS library with dual theme support.
  * Features frost_light and frost_dark themes with complete component sets.
  * 
- * @version 1.0.0
- * @author Frost Glass CSS Team
+ * @version 1.1.0
+ * @author Frosty40
  * @license MIT
- * @url https://github.com/frost-glass-css/frost-glass-css
+ * @url https://github.com/newjordan/Frost-Glass
  */
 
 /* ================================
@@ -27,6 +27,7 @@
 @import url('../components/cards.css');
 @import url('../components/navigation.css');
 @import url('../components/buttons.css');
+@import url('../components/glass-button.css');
 
 /* ================================
  * EFFECTS IMPORTS
@@ -40,13 +41,14 @@
 
 @import url('./frost-light.css');
 @import url('./frost-dark.css');
+@import url('../core/a11y.css');
 
 /* ================================
  * LIBRARY INFORMATION
  * ================================ */
 
 /*! 
- * Frost Glass CSS v1.0.0
+ * Frost Glass CSS v1.1.0
  * 
  * A modern glassmorphism CSS library featuring:
  * - Dual theme support (light & dark)
@@ -71,8 +73,8 @@
  * - Edge 79+
  * 
  * Accessibility features:
- * - Reduced motion support
- * - High contrast mode support
+ * - Reduced motion, reduced transparency, and color-scheme
+ * - High contrast and forced-colors support
  * - Focus indicators
  * - Screen reader utilities
  * 
@@ -84,5 +86,5 @@
  * <div class="frost_dark frost-card">Dark theme card</div>
  * 
  * For more information visit:
- * https://github.com/frost-glass-css/frost-glass-css
+ * https://github.com/newjordan/Frost-Glass
  */

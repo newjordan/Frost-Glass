@@ -1,3 +1,5 @@
+/*! Frost Glass CSS v1.1.0 | MIT | https://github.com/newjordan/Frost-Glass */
+/* src/core/variables.css */
 /**
  * Frost Glass CSS Variables
  * ========================
@@ -21,11 +23,13 @@
   --frost-light-overlay: radial-gradient(circle at 30% 20%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
                          radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%);
   
-  /* Light Theme Colors */
+  /* Light Theme Colors
+   * Secondary, muted, and nav tones are dark enough for 4.5:1
+   * on the light frost gradient (the previous grays were not). */
   --frost-light-text-primary: #1f2937;
-  --frost-light-text-secondary: #6b7280;
-  --frost-light-text-muted: #9ca3af;
-  --frost-light-text-nav: #4b5563;
+  --frost-light-text-secondary: #374151;
+  --frost-light-text-muted: #4b5563;
+  --frost-light-text-nav: #374151;
   --frost-light-text-nav-hover: #1f2937;
   --frost-light-text-nav-active: #111827;
   
@@ -55,11 +59,13 @@
     rgba(99, 102, 241, 0.60) 100%  /* indigo */
   );
   
-  /* Dark Theme Colors */
+  /* Dark Theme Colors
+   * Secondary and nav colors are solid (not 60–80% opacity)
+   * so they hold contrast on the near-black frost background. */
   --frost-dark-text-primary: rgba(255, 255, 255, 1);
-  --frost-dark-text-secondary: rgba(78, 161, 199, 0.6);
-  --frost-dark-text-muted: rgba(255, 255, 255, 0.7);
-  --frost-dark-text-nav: rgba(133, 131, 143, 0.8);
+  --frost-dark-text-secondary: #9fd4ea;
+  --frost-dark-text-muted: rgba(255, 255, 255, 0.82);
+  --frost-dark-text-nav: #c8c5d2;
   --frost-dark-text-nav-hover: rgba(194, 245, 245, 0.9);
   --frost-dark-text-nav-active: rgba(255, 255, 255, 1);
   
@@ -112,10 +118,18 @@
   --frost-z-base: 0;
   --frost-z-overlay: 1;
   --frost-z-modal: 10;
+
+  /* Focus and opaque fallbacks used when blur is unavailable */
+  --frost-focus: #0f766e;
+  --frost-focus-on-dark: #a5f3fc;
+  --frost-solid-light: #f4fbfc;
+  --frost-solid-dark: #16141f;
 }
 
 /* Theme-specific variable assignments */
 .frost_light {
+  color-scheme: light;
+  --frost-focus: #0f766e;
   --current-bg: var(--frost-light-bg);
   --current-sidebar-bg: var(--frost-light-sidebar-bg);
   --current-content-bg: var(--frost-light-content-bg);
@@ -133,6 +147,8 @@
 }
 
 .frost_dark {
+  color-scheme: dark;
+  --frost-focus: var(--frost-focus-on-dark);
   --current-bg: var(--frost-dark-bg);
   --current-sidebar-bg: var(--frost-dark-sidebar-bg);
   --current-content-bg: var(--frost-dark-content-bg);
@@ -150,7 +166,9 @@
   
   /* Dark theme specific */
   --dark-divider-gradient: var(--frost-dark-divider);
-}/**
+}
+/* src/core/base.css */
+/**
  * Frost Glass CSS - Base Effects
  * ==============================
  * 
@@ -255,21 +273,25 @@
  * BROWSER SUPPORT FALLBACKS
  * ================================ */
 
-@supports not (backdrop-filter: blur(1px)) {
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .frost-glass,
   .frost-glass-medium,
   .frost-glass-heavy,
   .frost-glass-sidebar {
-    background: rgba(255, 255, 255, 0.8);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--frost-solid-light);
   }
-  
+
   .frost_dark .frost-glass,
   .frost_dark .frost-glass-medium,
   .frost_dark .frost-glass-heavy,
   .frost_dark .frost-glass-sidebar {
-    background: rgba(0, 0, 0, 0.8);
+    background: var(--frost-solid-dark);
   }
-}/**
+}
+/* src/core/utilities.css */
+/**
  * Frost Glass CSS - Utilities
  * ===========================
  * 
@@ -652,7 +674,9 @@
   .frost-lg\:flex { display: flex; }
   .frost-lg\:block { display: block; }
   .frost-lg\:inline { display: inline; }
-}/**
+}
+/* src/components/typography.css */
+/**
  * Frost Glass CSS - Typography
  * ============================
  * 
@@ -1092,7 +1116,9 @@
   .frost-h3 {
     font-size: 1.125rem;
   }
-}/**
+}
+/* src/components/cards.css */
+/**
  * Frost Glass CSS - Cards
  * =======================
  * 
@@ -1323,7 +1349,9 @@
     padding: var(--frost-spacing-lg);
     margin-bottom: var(--frost-spacing-md);
   }
-}/**
+}
+/* src/components/navigation.css */
+/**
  * Frost Glass CSS - Navigation
  * ============================
  * 
@@ -1653,11 +1681,22 @@
     width: 60px;
     height: 60px;
   }
-}/**
+}
+/* src/components/buttons.css */
+/**
  * Frost Glass CSS - Buttons
  * =========================
- * 
- * Button components and variations for frost glass themes.
+ *
+ * Theme-aware component buttons. Put them inside .frost_light or .frost_dark.
+ *
+ *   frost-btn + frost-btn-primary | secondary | outline | ghost
+ *   frost-btn + frost-btn-danger | frost-btn-success   (tinted, not the glass action)
+ *
+ * The signature glass actions live in the theme files and are also available
+ * as frost-btn-action, frost-btn-raised, and frost-btn-action-danger.
+ * See README "Class names" for the frostdark-button-* / frostlight-button-* map.
+ *
+ * Parametric glass (custom properties) is .frost-btn-glass, aliased as .button--glass.
  */
 
 /* ================================
@@ -2054,7 +2093,355 @@
     border-top-left-radius: var(--frost-radius-md);
     border-top-right-radius: var(--frost-radius-md);
   }
-}/**
+}
+/* src/components/code-blocks.css */
+/* ========================================= */
+/* CODE BLOCK COMPONENTS - Shared Styles */
+/* ========================================= */
+
+/* Universal code block styles that work with both themes */
+.code-example {
+  margin: 2rem 0;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.code-example:hover {
+  transform: translateY(-2px);
+}
+
+/* Code preview area - universal styling */
+.code-preview {
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  position: relative;
+}
+
+/* Code block container - universal structure */
+.code-block {
+  position: relative;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+}
+
+/* Code header with title and copy button */
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  position: relative;
+}
+
+.code-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.copy-button {
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: none;
+  outline: none;
+}
+
+.copy-button:hover {
+  transform: translateY(-1px);
+}
+
+.copy-button:active {
+  transform: translateY(0);
+}
+
+.copy-button.copied {
+  animation: copySuccess 0.6s ease;
+}
+
+@keyframes copySuccess {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Code content area - universal structure */
+.code-content {
+  padding: 1.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  max-width: 100%;
+}
+
+/* Code blocks inherit theme scrollbar styling for consistency */
+
+.code-content pre {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-x: visible;
+}
+
+.code-content code {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Syntax highlighting - universal color scheme */
+.code-content .tag {
+  color: #f87171; /* red-400 */
+}
+
+.code-content .attr-name {
+  color: #fbbf24; /* amber-400 */
+}
+
+.code-content .attr-value {
+  color: #22c55e; /* green-500 */
+}
+
+.code-content .comment {
+  color: #9ca3af; /* gray-400 */
+  font-style: italic;
+}
+
+.code-content .keyword {
+  color: #a855f7; /* purple-500 */
+}
+
+.code-content .string {
+  color: #22c55e; /* green-500 */
+}
+
+.code-content .number {
+  color: #3b82f6; /* blue-500 */
+}
+
+.code-content .function {
+  color: #06b6d4; /* cyan-500 */
+}
+
+.code-content .class {
+  color: #f59e0b; /* amber-500 */
+}
+
+.code-content .operator {
+  color: #f97316; /* orange-500 */
+}
+
+/* Code block responsive design - universal */
+@media (max-width: 768px) {
+  .code-example {
+    margin: 1.5rem 0;
+  }
+  
+  .code-preview {
+    padding: 1.5rem;
+    min-height: 100px;
+  }
+  
+  .code-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .code-content {
+    padding: 1rem;
+  }
+  
+  .code-content pre {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .code-header {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+  
+  .copy-button {
+    justify-content: center;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .code-example,
+  .copy-button {
+    transition: none;
+  }
+  
+  .copy-button.copied {
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .code-content {
+    border: 2px solid currentColor;
+  }
+  
+  .copy-button {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Print styles */
+@media print {
+  .code-example {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  
+  .copy-button {
+    display: none;
+  }
+}
+
+/* src/components/glass-button.css */
+/**
+ * Parametric glass button
+ * =======================
+ *
+ * One theme-agnostic button driven by custom properties. The docs builder
+ * edits these variables and can export them.
+ *
+ * .button--glass is the class name used by the bbuilder studies. It is an
+ * alias of .frost-btn-glass so both repos can share markup.
+ *
+ * Layering (base tint, gloss, angled reflection stripe, inset rim, elevation)
+ * is adapted from Frosty40's bbuilder glass-button notes. Those notes map the
+ * stripe to a reflection normal — n = (-sin a, cos a) — and cite the
+ * reflection, anti-aliasing, and SDF-normal chapters of
+ * "Visualizing Equations, Shaders, and Procedural Shapes".
+ * The Frosted, Crystal, Jelly, Chrome, and Dark Glass starting points in the
+ * docs come from that same prep document.
+ */
+
+.frost-btn-glass,
+.button--glass {
+  --btn-radius: 16px;
+  --btn-pad-x: 20px;
+  --btn-pad-y: 12px;
+  --blur: 10px;
+  --sat: 120%;
+  --bg1: rgba(6, 182, 212, 0.32);
+  --bg2: rgba(12, 48, 82, 0.26);
+  --border-color: rgba(6, 182, 212, 0.45);
+  --border-w: 1px;
+  --rim-alpha: 0.22;
+  --rim-width: 2px;
+  --text: #f4feff;
+  --gloss: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.08) 18%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  --reflect-angle: 30deg;
+  --reflect-width: 8%;
+  --reflect-alpha: 0.28;
+  --elev-offset: 4.5px;
+  --elev-blur: 9px;
+  --elev-alpha: 0.21;
+  /* Opaque color behind the translucent tint. Shows through when blur is off. */
+  --fg-solid: #0e4f63;
+  --text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius: var(--btn-radius);
+  border: var(--border-w) solid var(--border-color);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  text-decoration: none;
+  text-shadow: var(--text-shadow);
+  cursor: pointer;
+  background-color: var(--fg-solid);
+  background-image:
+    linear-gradient(
+      var(--reflect-angle),
+      transparent calc(50% - var(--reflect-width) / 2),
+      rgba(255, 255, 255, var(--reflect-alpha)) 50%,
+      transparent calc(50% + var(--reflect-width) / 2)
+    ),
+    var(--gloss),
+    linear-gradient(135deg, var(--bg1), var(--bg2));
+  background-blend-mode: screen, screen, normal;
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+  backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+  box-shadow:
+    0 var(--elev-offset) var(--elev-blur) rgba(0, 0, 0, var(--elev-alpha)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 0 var(--rim-width) rgba(255, 255, 255, var(--rim-alpha));
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+.frost-btn-glass:hover,
+.button--glass:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.frost-btn-glass:active,
+.button--glass:active {
+  transform: translateY(0) scale(0.99);
+  filter: brightness(0.98);
+}
+
+.frost-btn-glass:focus-visible,
+.button--glass:focus-visible {
+  outline: 2px solid var(--frost-focus, #a5f3fc);
+  outline-offset: 3px;
+}
+
+.frost-btn-glass:disabled,
+.button--glass:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .frost-btn-glass,
+  .button--glass {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-image: none;
+    background-color: var(--fg-solid);
+  }
+}
+
+/* src/effects/animations.css */
+/**
  * Frost Glass CSS - Animations
  * =============================
  * 
@@ -2242,463 +2629,2007 @@
   @keyframes logoBorderRotate {
     0%, 100% { transform: rotate(0deg); }
   }
-}/**
- * Frost Glass CSS - Light Theme
- * =============================
+}
+/* src/themes/frost-light.css */
+/* ========================================= */
+/* FROST LIGHT THEME - Complete Light Theme CSS */
+/* ========================================= */
+/*
+ * CRITICAL ARCHITECTURE RULES:
+ * ============================
+ * 1. This file uses ONLY frostlight-* prefixed classes (frostlight-app-*, frostlight-conv-*, etc.)
+ * 2. This file must NEVER reference or override any frostdark-* classes
+ * 3. Light and Dark themes are COMPLETELY SEPARATE systems
+ * 4. The HTML markup switches between frostdark-* and frostlight-* classes based on theme
+ * 5. NO CROSS-THEME DEPENDENCIES - Light theme is 100% independent
+ * 6. Namespace prevents conflicts with other libraries' dark/light themes
  * 
- * Complete light theme implementation with all frost_light styles.
+ * When body has class="frost_light":
+ * - HTML uses: <div class="frostlight-app-content-card">
+ * - NOT: <div class="frostdark-app-content-card">
  */
 
-/* ================================
- * BASE LIGHT THEME
- * ================================ */
-
-body.frost_light,
+/* Core Variables for Light Theme */
 .frost_light {
-  /* Scene/Background */
-  background: var(--frost-light-bg) !important;
+  /* Light divider gradient system */
+  --frostlight-divider-gradient: linear-gradient(30deg,
+    rgba(20, 184, 166, 0.4) 0%,   /* teal */
+    rgba(6, 182, 212, 0.35) 50%,  /* cyan */
+    rgba(59, 130, 246, 0.4) 100%  /* blue */
+  );
+  
+  /* Base light background - from LightAppLayoutScene */
+  background: linear-gradient(135deg, rgba(206, 247, 253, 1) 0%, rgba(128, 235, 213, 1) 25%, rgba(198, 232, 255, 1) 50%, rgba(155, 200, 229, 1) 75%, rgba(80, 129, 236, 1) 100%);
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
 }
 
-body.frost_light::before,
 .frost_light::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--frost-light-overlay);
+  background: radial-gradient(circle at 30% 20%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%);
   pointer-events: none;
-  z-index: var(--frost-z-behind);
+  animation: frostlightBackgroundShift 20s ease-in-out infinite;
 }
 
-/* ================================
- * LIGHT THEME COMPONENTS
- * ================================ */
+/* ========================================= */
+/* FROST LIGHT SIDEBAR COMPONENT */
+/* ========================================= */
 
-/* Sidebar */
 .frost_light.sidebar {
   width: 280px;
-  background: var(--frost-light-sidebar-bg);
-  backdrop-filter: var(--frost-blur-sidebar);
-  -webkit-backdrop-filter: var(--frost-blur-sidebar);
-  border-right: 1px solid rgba(20, 184, 166, 0.3);
-  padding: var(--frost-spacing-xl) var(--frost-spacing-lg);
+  background: linear-gradient(145deg, #cef7fdff 0%, #80ebd5ff 25%, #9eb9ec91 50%, #5081ec8a 100%);
+  backdrop-filter: blur(24px) saturate(200%) contrast(1.1);
+  -webkit-backdrop-filter: blur(24px) saturate(200%) contrast(1.1);
+  border-right: 1px solid transparent;
+  border-image: linear-gradient(145deg, rgba(167, 149, 243, 1) 0%, rgba(159, 248, 230, 0.59) 25%, rgba(75, 52, 155, 0.45) 50%, rgba(135, 80, 236, 0.3) 100%) 1;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   position: relative;
   box-shadow:
-    0 8px 32px rgba(6, 182, 212, 0.08),
-    0 2px 8px rgba(255, 255, 255, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 1),
-    inset -1px 0 0 rgba(20, 184, 166, 0.2);
+    inset -1px 0 0 rgba(20, 184, 166, 0.15),
+    4px 0 24px rgba(6, 182, 212, 0.08);
 }
 
 .frost_light.sidebar::before {
   content: '';
   position: absolute;
+  top: 0;
+  right: -1px;
+  width: 1px;
+  height: 100%;
   background: linear-gradient(to bottom,
     transparent 0%,
     rgba(20, 184, 166, 0.4) 20%,
-    rgba(6, 182, 212, 0.5) 50%,
-    rgba(20, 184, 166, 0.4) 80%,
+    rgba(6, 182, 212, 0.6) 50%,
+    rgba(105, 20, 184, 0.4) 80%,
     transparent 100%);
-  width: 1px;
-  height: 100%;
-  right: -1px;
-  top: 0;
   animation: sidebarGlow 3s ease-in-out infinite alternate;
 }
 
-/* Content */
+.frostlight-app-header {
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(30deg, rgba(217, 229, 233, 0.62) 30%, rgba(188, 175, 216, 0.54) 60%, rgba(196, 190, 218, 0.56) 60%) 1;
+}
+
+/* ========================================= */
+/* FROST LIGHT CONTENT AREAS */
+/* ========================================= */
+
+/* Content variant */
 .frost_light.content {
-  background: var(--frost-light-content-bg);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Main content area */
+.frostlight-app-content {
+  flex: 1;
+  background: rgba(209, 244, 247, 0.65);
   backdrop-filter: blur(20px) saturate(150%) contrast(1.05);
   -webkit-backdrop-filter: blur(20px) saturate(150%) contrast(1.05);
+  padding: 2.5rem;
+  position: relative;
   box-shadow: inset 0 1px 0 rgba(100, 165, 196, 0.8);
 }
 
-/* Cards */
+.frostlight-app-main-header {
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid transparent;
+  border-image: var(--frostlight-divider-gradient) 1;
+}
+
+/* Card variant */
 .frost_light.card {
-  background: var(--frost-light-card-bg);
-  backdrop-filter: var(--frost-blur-light);
-  -webkit-backdrop-filter: var(--frost-blur-light);
-  border: 1px solid rgba(20, 184, 166, 0.2);
-  box-shadow:
-    0 8px 32px rgba(6, 182, 212, 0.1),
-    0 1px 1px rgba(255, 255, 255, 0.8),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-.frost_light.settings-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px) saturate(180%) contrast(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(180%) contrast(1.1);
-  border: 1px solid rgba(20, 184, 166, 0.25);
-  border-radius: var(--frost-radius-lg);
-  padding: var(--frost-spacing-lg);
-  box-shadow:
-    0 8px 32px rgba(6, 182, 212, 0.08),
-    0 1px 1px rgba(255, 255, 255, 0.9),
-    inset 0 1px 0 rgba(255, 255, 255, 1),
-    inset 0 -1px 0 rgba(6, 182, 212, 0.1);
-}
-
-.frost_light.feature-box {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: var(--frost-blur-light);
-  -webkit-backdrop-filter: var(--frost-blur-light);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
   border: 1px solid rgba(20, 184, 166, 0.3);
-  border-radius: var(--frost-radius-lg);
-  padding: var(--frost-spacing-xl);
-  margin-bottom: var(--frost-spacing-lg);
   box-shadow:
-    0 8px 32px rgba(6, 182, 212, 0.1),
-    0 1px 1px rgba(255, 255, 255, 0.8),
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 1px 1px rgba(20, 184, 166, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-/* ================================
- * LIGHT THEME NAVIGATION
- * ================================ */
+.frostlight-app-content-card {
+  background: rgba(164, 235, 238, 0.575);
+  backdrop-filter: blur(12px) saturate(150%) contrast(1.02);
+  -webkit-backdrop-filter: blur(12px) saturate(150%) contrast(1.02);
+  border: 0px solid rgba(20, 184, 166, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1.5rem; /* match dark-app-content-card */
+  box-shadow:
+    0 8px 1px rgba(6, 182, 212, 0.1),
+    0 2px 8px rgba(20, 179, 184, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.91),
+    inset 0 -1px 0 rgba(139, 115, 226, 0.3),
+    inset 1px 0 0 rgba(20, 184, 166, 0.2),
+    inset -1px 0 0 rgba(6, 181, 212, 0.16);
+}
 
+/* ========================================= */
+/* FROST LIGHT TEXT BLOCK COMPONENTS */
+/* ========================================= */
+
+/* Individual Text Block Containers - Match frost_dark layout (spacing, sizing) */
+.frostlight-app-text-block {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  border-radius: 8px;
+  padding: 1rem; /* match dark p-4 */
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  word-wrap: break-word;
+  box-sizing: border-box;
+}
+
+.frostlight-app-text-block:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(20, 184, 166, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+}
+
+/* Text Block Titles - match frost_dark sizing/spacing; boost specificity to avoid Tailwind overrides */
+.frostlight-app-text-block .frostlight-app-text-block-title,
+.frost_light .frostlight-app-text-block-title {
+  color: rgba(71, 85, 105, 1);
+  font-weight: 500; /* font-medium */
+  font-size: 1rem;  /* text-base */
+  line-height: 1.4;
+  margin-bottom: 0.5rem; /* mb-2 */
+  display: block;
+  min-width: 0;
+  white-space: normal; /* allow wrapping like dark theme */
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  letter-spacing: -0.01em;
+}
+
+/* Text Block Content - Enhanced contrast and readability; stronger selector */
+.frostlight-app-text-block .frostlight-app-text-block-content,
+.frost_light .frostlight-app-text-block-content {
+  color: rgba(100, 116, 139, 0.9);
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.6;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Icon formatting inside light text blocks - match frost_dark structure, adapt colors */
+.frost_light .frostlight-app-text-block .frostlight-app-text-block-title svg,
+.frost_light .frostlight-app-text-block .frostlight-app-text-block-title .icon,
+.frost_light .frostlight-app-text-block .frostlight-app-text-block-content svg,
+.frost_light .frostlight-app-text-block .frostlight-app-text-block-content .icon,
+.frost_light .frostlight-app-text-block .frostlight-app-text-block-title [class*="i-"],
+.frost_light .frostlight-app-text-block .frostlight-app-text-block-content [class*="i-"] {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin-right: 0.5rem; /* space between icon and text */
+  vertical-align: middle;
+  transform: translateY(1px); /* optical alignment to baseline */
+  color: rgba(20, 184, 166, 0.9); /* teal accent on light */
+  opacity: 0.95;
+}
+
+/* Ensure icon+text rows align neatly (when inline-flex or flex containers are used) */
+.frost_light .frostlight-app-text-block .icon-row,
+.frost_light .frostlight-app-text-block .with-icon,
+.frost_light .frostlight-app-text-block .title-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ========================================= */
+/* FROST LIGHT NAVIGATION COMPONENTS */
+/* ========================================= */
+
+/* Navigation item variant */
 .frost_light.nav-item {
   background: transparent;
   border: 1px solid transparent;
-  color: var(--frost-light-text-nav);
-  transition: var(--frost-transition);
+  color: rgba(100, 116, 139, 0.9);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
-  font-weight: var(--frost-font-weight-medium);
-  letter-spacing: var(--frost-letter-spacing-wide);
+  font-weight: 500;
+  letter-spacing: 0.025em;
 }
 
 .frost_light.nav-item:hover {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: var(--frost-blur-medium);
-  -webkit-backdrop-filter: var(--frost-blur-medium);
-  color: var(--frost-light-text-nav-hover);
-  border: 1px solid rgba(20, 184, 166, 0.3);
+  background: rgba(239, 246, 255, 0.8);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  color: rgba(71, 85, 105, 1);
   box-shadow:
-    0 4px 16px rgba(6, 182, 212, 0.1),
-    0 2px 4px rgba(20, 184, 166, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
+    0 2px 2px rgba(20, 184, 166, 0.2),
+    0 1px 4px rgba(20, 184, 166, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transform: translateY(-1px);
 }
 
 .frost_light.nav-item.active {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: var(--frost-blur-medium);
-  -webkit-backdrop-filter: var(--frost-blur-medium);
-  border: 1px solid rgba(6, 182, 212, 0.4);
-  color: var(--frost-light-text-nav-active);
+  background: rgba(239, 246, 255, 0.9);
+  backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  border: 1px solid rgba(20, 184, 166, 0.4);
+  color: rgba(71, 85, 105, 1);
   box-shadow:
-    0 2px 2px rgba(6, 182, 212, 0.2),
-    0 1px 1px rgba(20, 184, 166, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 1),
-    inset 0 -1px 0 rgba(6, 182, 212, 0.1);
+    0 1px 1px rgba(20, 184, 166, 0.3),
+    0 1px 1px rgba(6, 182, 212, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(20, 184, 166, 0.3);
   transform: translateY(-2px);
 }
 
-/* ================================
- * LIGHT THEME LOGO
- * ================================ */
+/* Enhanced navigation item layout - EXACT LAYOUT as frost_dark with light theme colors */
+.frostlight-app-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  margin: 0.5rem 0;
+  border-radius: 12px;
+  color: rgba(71, 93, 105, 0.48);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  font-weight: 500;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.frostlight-app-nav-item:hover {
+  background: rgba(213, 235, 241, 0.5);
+  backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  color: rgba(71, 85, 105, 1);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  box-shadow:
+    0 4px 16px rgba(161, 86, 184, 0.34),
+    0 2px 4px rgba(20, 184, 166, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(139, 115, 226, 0.3),
+    inset 1px 0 0 rgba(20, 184, 166, 0.2),
+    inset -1px 0 0 rgba(6, 182, 212, 0.25);
+  transform: translateY(-1px);
+}
+
+.frostlight-app-nav-item.active {
+  background: rgba(218, 232, 238, 0.55);
+  backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  color: rgba(71, 85, 105, 0.8);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  box-shadow:
+    0 6px 20px rgba(6, 182, 212, 0.15),
+    0 2px 8px rgba(20, 184, 166, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(139, 115, 226, 0.3),
+    inset 1px 0 0 rgba(20, 184, 166, 0.2),
+    inset -1px 0 0 rgba(6, 182, 212, 0.25);
+}
+
+.frostlight-app-nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(to bottom, rgba(20, 184, 166, 0.8), rgba(6, 182, 212, 0.8));
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+}
+
+/* ========================================= */
+/* FROST LIGHT LOGO COMPONENT */
+/* ========================================= */
 
 .frost_light.logo {
   background: radial-gradient(circle at center, rgba(255, 255, 255, 0.9) 0%, rgba(249, 250, 251, 0.8) 60%);
-  border: 1px solid rgba(6, 182, 212, 0.3);
+  border: 0px solid;
   box-shadow:
-    inset 0 2px 4px rgba(255, 255, 255, 0.8),
-    inset 0 -2px 4px rgba(20, 184, 166, 0.1),
-    0 8px 32px rgba(6, 182, 212, 0.15),
-    0 0 50px rgba(20, 184, 166, 0.1);
+    inset 0 1px 1px rgba(20, 184, 166, 0.4),
+    inset 0 -2px 1px rgba(6, 182, 212, 0.3),
+    0 5px 12px rgba(20, 184, 166, 0.2),
+    0 0 50px rgba(20, 184, 166, 0.15);
   position: relative;
 }
 
-.frost_light.logo-icon {
+.frost_light.logo::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: inherit;
+  background: linear-gradient(45deg, rgba(20, 184, 166, 0.4), rgba(6, 182, 212, 0.3), rgba(59, 130, 246, 0.4));
+  z-index: -1;
+}
+
+.frost_light.logo::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 72px;
+  height: 72px;
+  transform: translate(-50%, -50%);
+  border-radius: inherit;
+  background: radial-gradient(circle at 30% 30%, rgba(20, 184, 166, 0.2) 0%, transparent 40%, rgba(255, 255, 255, 0.3) 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Enhanced Logo Components */
+.frostlight-app-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.frostlight-app-logo-icon {
   width: 84px;
   height: 84px;
-  border-radius: var(--frost-radius-full);
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(240, 253, 255, 0.9) 0%, rgba(224, 242, 254, 0.8) 60%);
+  border: 1px solid rgba(20, 184, 166, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.9) 0%, rgba(249, 250, 251, 0.8) 60%);
-  border: 1px solid rgba(6, 182, 212, 0.3);
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 4px rgba(20, 184, 166, 0.1),
+    0 8px 32px rgba(6, 182, 212, 0.15),
+    0 0 50px rgba(20, 184, 166, 0.1);
   animation: logoGlow 4s ease-in-out infinite alternate;
 }
 
-.frost_light.logo-icon::before {
+.frostlight-app-logo-icon::before {
   content: '';
   position: absolute;
   inset: -2px;
-  border-radius: var(--frost-radius-full);
-  background: linear-gradient(135deg,
-    rgba(6, 182, 212, 0.4) 0%,
-    rgba(103, 232, 249, 0.6) 50%,
-    rgba(6, 182, 212, 0.4) 100%
-  );
-  z-index: var(--frost-z-behind);
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.6) 50%, rgba(20, 184, 166, 0.4) 100%);
+  z-index: -1;
   animation: logoBorderRotate 8s linear infinite;
 }
 
-.frost_light.logo-icon::after {
+.frostlight-app-logo-icon::after {
   content: '';
   position: absolute;
   inset: 1px;
-  border-radius: var(--frost-radius-full);
+  border-radius: 50%;
   background:
-    radial-gradient(circle at 20% 20%, rgba(139, 115, 226, 0.35) 0%, transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(95, 155, 223, 0.30) 0%, transparent 45%),
-    radial-gradient(circle at 40% 70%, rgba(20, 184, 166, 0.25) 0%, transparent 35%),
-    radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.22) 0%, transparent 30%),
-    linear-gradient(135deg, rgba(139, 115, 226, 0.12) 0%, rgba(95, 155, 223, 0.09) 50%, rgba(20, 184, 166, 0.11) 100%);
+    radial-gradient(circle at 20% 20%, rgba(139, 115, 226, 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(95, 155, 223, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 40% 70%, rgba(20, 184, 166, 0.3) 0%, transparent 35%),
+    radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.25) 0%, transparent 30%),
+    linear-gradient(135deg, rgba(139, 115, 226, 0.15) 0%, rgba(95, 155, 223, 0.1) 50%, rgba(20, 184, 166, 0.12) 100%);
   pointer-events: none;
 }
 
-.frost_light.logo-gif {
+.frostlight-app-logo-gif {
   width: 60px;
   height: 60px;
-  border-radius: var(--frost-radius-full);
+  border-radius: 50%;
   position: relative;
-  z-index: var(--frost-z-overlay);
+  z-index: 1;
   opacity: 0.8;
   mix-blend-mode: multiply;
 }
 
-/* ================================
- * LIGHT THEME TYPOGRAPHY
- * ================================ */
+/* ========================================= */
+/* FROST LIGHT BUTTON SYSTEM */
+/* Canonical aliases (need a .frost_light ancestor):
+   .frost-btn-action, .frost-btn-raised, .frost-btn-action-danger,
+   .frost-btn-action-sm, .frost-btn-action-icon, .frost-btn-action-group
+   ========================================= */
 
-.frost_light.header {
-  margin-bottom: 0px;
-  padding-top: var(--frost-spacing-lg);
+/* Action buttons (teal/cyan) */
+.frostlight-button-action,
+.frost_light .frost-btn-action {
+  background: linear-gradient(135deg, rgba(20, 184, 165, 0.247) 0%, rgba(6, 181, 212, 0.336) 50%, rgba(59, 131, 246, 0.288) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  color: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(20, 184, 166, 0.4);
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 2px 4px rgba(20, 184, 166, 0.2);
 }
 
+.frostlight-button-action:hover,
+.frost_light .frost-btn-action:hover {
+  background: linear-gradient(135deg, rgba(20, 184, 165, 0.37) 0%, rgba(6, 181, 212, 0.438) 50%, rgba(59, 131, 246, 0.404) 100%);
+  border-color: rgba(6, 182, 212, 0.6);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 2px 0 rgba(5, 238, 255, 0.938),
+    0 4px 8px #49fae25e;
+}
+
+.frostlight-button-action:active,
+.frost_light .frost-btn-action:active {
+  background: linear-gradient(135deg, rgba(6, 181, 212, 0.288) 0%, rgba(20, 184, 165, 0.226) 50%, rgba(59, 131, 246, 0.288) 100%);
+  box-shadow:
+    inset 0 1px 2px rgba(20, 184, 166, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(0px);
+}
+
+.frostlight-button-action-sm,
+.frost_light .frost-btn-action-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.frostlight-button-action-icon,
+.frost_light .frost-btn-action-icon {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+}
+
+/* Danger buttons */
+.frostlight-button-action-danger,
+.frost_light .frost-btn-action-danger {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.384) 0%, rgba(220, 38, 38, 0.349) 50%, rgba(185, 28, 28, 0.445) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 0px solid transparent;
+  border-image: linear-gradient(135deg, rgba(239, 68, 68, 0.425) 0%, rgba(185, 28, 28, 0.6) 100%) 1;
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  color: rgba(255, 255, 255, 1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.frostlight-button-action-danger:hover,
+.frost_light .frost-btn-action-danger:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.623) 0%, rgba(220, 38, 38, 0.616) 50%, rgba(185, 28, 28, 0.616) 100%);
+  box-shadow:
+    0 -3px 0 rgba(252, 150, 221, 0.959),
+    0 2px 0 rgba(248, 58, 58, 0.815),
+    -2px 0 0 rgba(239, 68, 68, 0.76),
+    2px 0 0 rgba(220, 38, 38, 0.5),
+    0 4px 12px rgba(209, 14, 14, 0.63);
+  border-image: linear-gradient(135deg, rgba(248, 113, 113, 0.8) 0%, rgba(220, 38, 38, 0.7) 100%) 1;
+  transform: translateY(-1px);
+}
+
+.frostlight-button-action-danger:active,
+.frost_light .frost-btn-action-danger:active {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.7) 0%, rgba(220, 38, 38, 0.6) 50%, rgba(185, 28, 28, 0.8) 100%);
+  box-shadow:
+    0 -1px 0 rgba(185, 28, 28, 0.2),
+    0 1px 0 rgba(248, 113, 113, 0.3),
+    -1px 0 0 rgba(239, 68, 68, 0.25),
+    1px 0 0 rgba(220, 38, 38, 0.3),
+    0 1px 4px rgba(185, 28, 28, 0.1);
+  transform: translateY(0px);
+}
+
+/* Raised buttons (enhanced green for light theme) */
+.frostlight-button-raised,
+.frost_light .frost-btn-raised {
+  background: linear-gradient(135deg, rgba(34, 197, 170, 0.349) 0%, rgba(16, 185, 185, 0.253) 50%, rgba(21, 80, 128, 0.336) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  color: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  box-shadow:
+    inset 0 2px 0 rgba(127, 243, 237, 0.3),
+    inset 0 -1px 0 rgba(76, 21, 128, 0.247),
+    0 4px 8px rgba(34, 197, 94, 0.2);
+}
+
+.frostlight-button-raised:hover,
+.frost_light .frost-btn-raised:hover {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.637) 0%, rgba(16, 185, 129, 0.63) 50%, rgba(21, 128, 60, 0.678) 100%);
+  border-color: rgba(34, 197, 94, 0.452);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 2px 0 rgba(0, 255, 170, 0.89),
+    inset 0 -1px 0 rgba(2, 255, 44, 0.973),
+    0 6px 12px rgba(17, 226, 139, 0.651);
+}
+
+.frostlight-button-raised:active,
+.frost_light .frost-btn-raised:active {
+  background: linear-gradient(135deg, rgba(134, 239, 172, 0.4) 0%, rgba(34, 197, 94, 0.3) 50%, rgba(21, 128, 61, 0.5) 100%);
+  box-shadow:
+    inset 0 1px 2px rgba(28, 228, 168, 0.76),
+    inset 0 -1px 0 rgba(134, 239, 172, 0.3);
+  transform: translateY(0px);
+}
+
+/* Button text sizes (already aligned, re-assert scale) */
+.frost_light .frostlight-button-action,
+.frost_light .frost-btn-action,
+.frost_light .frostlight-button-raised,
+.frost_light .frost-btn-raised,
+.frost_light .frostlight-button-action-danger,
+.frost_light .frost-btn-action-danger {
+  font-size: 0.875rem;  /* text-sm */
+  line-height: 1.2;
+}
+
+/* Button group for organizing multiple buttons */
+.frostlight-button-group,
+.frost_light .frost-btn-action-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========================================= */
+/* FROST LIGHT INPUT COMPONENTS */
+/* ========================================= */
+
+/* Input container with inset styling */
+.frostlight-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(167, 202, 218, 0.35) 0%, rgba(139, 115, 226, 0.2) 50%, rgba(162, 196, 235, 0.53) 100%);
+  backdrop-filter: blur(0px) saturate(150%);
+  -webkit-backdrop-filter: blur(0px) saturate(150%);
+  border: 0px solid rgba(5, 7, 7, 0.2);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+  box-shadow:
+    inset 0 2px 0 rgba(74, 49, 214, 0.3),
+    inset 0 -1px 0 rgba(205, 232, 243, 0.88),
+    inset 1px 0 0 rgba(129, 95, 223, 0.37),
+    inset -1px 0 0 rgba(106, 182, 233, 0.52);
+}
+
+.frostlight-input-container:focus-within {
+  box-shadow:
+    inset 0 3px 0 rgba(15, 23, 42, 0.8),
+    inset 0 -2px 0 rgba(6, 182, 212, 0.4),
+    inset 2px 0 0 rgba(30, 41, 59, 0.7),
+    inset -2px 0 0 rgba(6, 182, 212, 0.3),
+    0 0 0 2px rgba(6, 182, 212, 0.2);
+}
+
+.frostlight-input-field {
+  flex: 1;
+  background: transparent;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: rgba(71, 85, 105, 1);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  padding: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.frostlight-input-field::placeholder {
+  color: rgba(148, 163, 184, 1);
+}
+
+.frostlight-input-field:focus {
+  color: rgba(71, 85, 105, 1);
+}
+
+/* Textarea specific styling */
+.frostlight-textarea-field {
+  flex: 1;
+  background: transparent;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: rgba(71, 85, 105, 1);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 0;
+  margin: 0;
+  resize: vertical;
+  min-height: 120px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Inputs / textareas placeholder sizing only (color unchanged) */
+.frost_light .frostlight-input-container input::placeholder,
+.frost_light .frostlight-input-container textarea::placeholder {
+  font-size: 0.875rem;  /* text-sm */
+  line-height: 1.4;
+}
+
+/* ========================================= */
+/* FROST LIGHT TOGGLE COMPONENTS */
+/* ========================================= */
+
+/* Generic light toggle (container) */
+.frost_light.toggle,
+.frostlight-settings-toggle {
+  width: 48px;
+  height: 24px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  background: linear-gradient(135deg,
+    rgba(249, 250, 251, 0.8) 0%,
+    rgba(243, 244, 246, 0.6) 50%,
+    rgba(248, 250, 252, 0.7) 100%);
+  transition: all 0.3s ease;
+  box-shadow:
+    inset 0 2px 0 rgba(248, 250, 252, 0.9),
+    inset 0 -2px 0 rgba(209, 213, 219, 0.4),
+    inset 1px 0 0 rgba(20, 184, 166, 0.2),
+    inset -1px 0 0 rgba(6, 182, 212, 0.15);
+}
+
+/* Hover state - slightly brighter and sharper border */
+.frost_light.toggle:hover,
+.frostlight-settings-toggle:hover {
+  background: linear-gradient(135deg,
+    rgba(239, 246, 255, 0.9) 0%,
+    rgba(219, 234, 254, 0.7) 50%,
+    rgba(224, 242, 254, 0.8) 100%);
+  border-color: rgba(6, 182, 212, 0.45);
+}
+
+/* Active/checked state for both patterns */
+.frost_light.toggle.active,
+.frostlight-settings-toggle[data-state="checked"] {
+  background: linear-gradient(135deg,
+    rgba(239, 246, 255, 0.9) 0%,
+    rgba(219, 234, 254, 0.8) 50%,
+    rgba(224, 242, 254, 0.85) 100%);
+  border-color: rgba(6, 182, 212, 0.6);
+}
+
+/* Toggle thumb (knob) */
+.frost_light.toggle-thumb,
+.frostlight-settings-toggle-thumb {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
+  border: 1px solid rgba(209, 213, 219, 0.4);
+  transition: all 0.3s ease;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(229, 231, 235, 0.5),
+    inset 1px 0 0 rgba(248, 250, 252, 0.6),
+    inset -1px 0 0 rgba(20, 184, 166, 0.2),
+    0 2px 8px rgba(20, 184, 166, 0.1);
+}
+
+/* Checked: thumb translated and with brighter rim */
+.frost_light.toggle.active .frost_light.toggle-thumb,
+.frostlight-settings-toggle[data-state="checked"] .frostlight-settings-toggle-thumb {
+  transform: translateX(24px);
+  /* Active state: teal thumb with stronger highlights */
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.9) 0%, rgba(6, 182, 212, 0.85) 100%);
+  border: none;
+  box-shadow:
+    0 2px 6px rgba(20, 184, 166, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(20, 184, 166, 0.4),
+    inset 1px 0 0 rgba(6, 182, 212, 0.3),
+    inset -1px 0 0 rgba(20, 184, 166, 0.5),
+    0 3px 10px rgba(20, 184, 166, 0.2);
+}
+
+/* Enhanced Settings Toggle Styles - EXACT from LightSettingsScene.tsx */
+.frostlight-settings-toggle {
+  width: 48px;
+  height: 24px;
+  background: linear-gradient(135deg, rgba(148, 163, 184, 0.1) 0%, rgba(139, 115, 226, 0.15) 50%, rgba(95, 155, 223, 0.2) 100%);
+  border: 0px solid rgba(5, 7, 7, 0.2);
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    inset 0 2px 0 rgba(74, 49, 214, 0.3),
+    inset 0 -2px 0 rgba(205, 232, 243, 0.88),
+    inset 1px 0 0 rgba(129, 95, 223, 0.37),
+    inset -1px 0 0 rgba(106, 182, 233, 0.52);
+}
+
+.frostlight-settings-toggle.active,
+.frostlight-settings-toggle[data-state="checked"] {
+  background: linear-gradient(135deg, rgba(75, 124, 214, 0.21) 0%, rgba(113, 150, 207, 0.32) 50%, rgba(139, 115, 226, 0.2) 100%);
+  border-color: rgba(160, 172, 241, 0.4);
+}
+
+.frostlight-settings-toggle-thumb {
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 30% 30%, rgba(180, 225, 226, 0.66) 0%, rgba(176, 231, 240, 0.57) 60%, rgba(224, 242, 254, 0.9) 100%);
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  transition: all 0.3s ease;
+  border: 0px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(108, 44, 192, 0.4),
+    inset 1px 0 0 rgba(255, 255, 255, 0.7),
+    inset -1px 0 0 rgba(224, 242, 254, 0.4);
+}
+
+.frostlight-settings-toggle.active .frostlight-settings-toggle-thumb,
+.frostlight-settings-toggle[data-state="checked"] .frostlight-settings-toggle-thumb {
+  transform: translateX(24px);
+  background: linear-gradient(135deg, rgba(20, 91, 184, 0.29) 0%, rgba(6, 88, 212, 0.23) 100%);
+  border: 1px solid rgba(20, 184, 166, 0.6);
+  box-shadow: 
+    0 2px 6px rgba(20, 184, 166, 0.3),
+    inset 0 1px 0 rgba(179, 250, 250, 0.75),
+    inset 0 -1px 0 rgba(97, 20, 184, 0.64),
+    inset 1px 0 0 rgba(6, 182, 212, 0.2),
+    inset -1px 0 0 rgba(139, 115, 226, 0.15);
+}
+
+/* ========================================= */
+/* FROST LIGHT DIALOG AND MODAL COMPONENTS */
+/* ========================================= */
+
+/* Dialog backdrop */
+.frostlight-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Danger dialog panel */
+.frostlight-dialog-danger {
+  background: linear-gradient(135deg, rgba(218, 218, 218, 0.342) 0%, rgba(243, 243, 243, 0.623) 50%, rgba(228, 228, 228, 0.349) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow:
+    0 8px 32px rgba(65, 56, 150, 0.233),
+    0 4px 2px rgba(71, 68, 239, 0.37),
+    inset 0 1px 0 rgba(34, 240, 212, 0.8),
+    inset 0 -1px 0 rgba(68, 213, 239, 0.616),
+    inset 1px 0 0 rgba(20, 184, 166, 0.1),
+    inset -1px 0 0 rgba(6, 182, 212, 0.15),
+    0 8px 24px rgba(68, 156, 239, 0.1);
+}
+
+.frostlight-dialog-danger h2,
+.frostlight-dialog-danger [data-dialog-title],
+.frostlight-dialog-danger .dialog-title,
+.frostlight-dialog-danger .dialog-description {
+  color: rgba(153, 27, 27, 0.9);
+}
+
+/* Empty state panel */
+.frost_light .frostlight-empty-panel,
+.frostlight-empty-panel {
+  background: linear-gradient(135deg, rgba(27, 87, 255, 0.274) 0%, rgba(117, 137, 230, 0.26) 50%, rgba(29, 16, 212, 0.322) 100%);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(6, 181, 212, 0.151);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow:
+    0 8px 0px rgba(80, 145, 231, 0.2),
+    0 4px 2px rgba(6, 181, 212, 0.25),
+    inset 0 1px 0 rgba(130, 240, 255, 0.671),
+    inset 0 -3px 0 rgba(25, 162, 241, 0.192),
+    inset -1px 0 0 rgba(20, 221, 228, 0.637),
+    inset 0px 0 0 rgba(164, 8, 178, 0.445),
+    0 8px 8px rgba(20, 107, 221, 0.13);
+}
+
+.frostlight-empty-panel .empty-icon {
+  color: rgba(59, 130, 246, 0.7);
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem; /* space above text */
+}
+
+.frostlight-empty-panel .empty-text {
+  color: rgba(100, 116, 139, 0.9);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ========================================= */
+/* FROST LIGHT CONVERSATIONS SCENE (ported from LightConversationsScene) */
+/* ========================================= */
+
+/* Scene container and animated background */
+.frost_light .frostlight-conv-scene {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #cef7fdff 0%, #80ebd5ff 25%, #c6e8ffff 50%, #9bc8e5ff 75%, #5081ecff 100%);
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.frost_light .frostlight-conv-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%);
+  pointer-events: none;
+  animation: frostlightBackgroundShift 25s ease-in-out infinite;
+}
+
+/* Sidebar */
+.frost_light .frostlight-conv-sidebar {
+  width: 320px;
+  background: linear-gradient(145deg, #cef7fdff 0%, #80ebd5ff 25%, #9eb9ec91 50%, #5081ec8a 100%);
+  backdrop-filter: blur(24px) saturate(200%) contrast(1.1);
+  -webkit-backdrop-filter: blur(24px) saturate(200%) contrast(1.1);
+  border-right: 1px solid transparent;
+  border-image: linear-gradient(145deg, #a795f3ff 0%, #9ff8e696 25%, #4b349b73 50%, #8750ec4d 100%) 1;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow:
+    inset -1px 0 0 rgba(20, 184, 166, 0.15),
+    4px 0 24px rgba(6, 182, 212, 0.08);
+}
+
+.frost_light .frostlight-conv-sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, 
+    transparent 0%, 
+    rgba(20, 184, 166, 0.4) 20%, 
+    rgba(6, 182, 212, 0.6) 50%, 
+    rgba(105, 20, 184, 0.4) 80%, 
+    transparent 100%);
+  animation: sidebarGlow 3s ease-in-out infinite alternate;
+}
+
+/* Content column */
+.frost_light .frostlight-conv-content {
+  flex: 1;
+  background: rgba(209, 244, 247, 0.33);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(100, 165, 196, 0.8);
+}
+
+/* Header and logo */
+.frost_light .frostlight-conv-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(30deg, rgba(217, 229, 233, 0.62) 30%, rgba(188, 175, 216, 0.54) 60%, rgba(196, 190, 218, 0.56) 60%) 1;
+}
+
+.frost_light .frostlight-conv-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.frost_light .frostlight-conv-logo-icon {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(240, 253, 255, 0.9) 0%, rgba(224, 242, 254, 0.8) 60%);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 4px rgba(20, 184, 166, 0.1),
+    0 8px 1px rgba(6, 182, 212, 0.15),
+    0 0 50px rgba(20, 184, 166, 0.1);
+  animation: logoGlow 4s ease-in-out infinite alternate;
+}
+
+.frost_light .frostlight-conv-logo-icon::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.6) 50%, rgba(20, 184, 166, 0.4) 100%);
+  z-index: -1;
+  animation: logoBorderRotate 8s linear infinite;
+}
+
+.frost_light .frostlight-conv-logo-icon::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(139, 115, 226, 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(95, 155, 223, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 40% 70%, rgba(20, 184, 166, 0.3) 0%, transparent 35%),
+    radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.25) 0%, transparent 30%),
+    linear-gradient(135deg, rgba(139, 115, 226, 0.15) 0%, rgba(95, 155, 223, 0.1) 50%, rgba(20, 184, 166, 0.12) 100%);
+  pointer-events: none;
+}
+
+.frost_light .frostlight-conv-logo-gif {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  opacity: 0.8;
+  mix-blend-mode: overlay;
+}
+
+.frost_light .frostlight-conv-app-title {
+  color: rgba(94, 77, 141, 0.42);
+}
+
+.frost_light .frostlight-conv-app-subtitle {
+  color: rgba(134, 96, 168, 0.8);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+
+/* Section title */
+.frost_light .frostlight-conv-section-title {
+  background: linear-gradient(135deg, rgba(71, 85, 105, 1) 0%, rgba(20, 184, 166, 0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.025em;
+  text-align: center;
+}
+
+/* Conversation list and items */
+.frost_light .frostlight-conv-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0;
+}
+
+.frost_light .frostlight-conv-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  margin: 0.5rem 1.5rem;
+  border-radius: 16px;
+  background: rgba(201, 227, 243, 0.8);
+  backdrop-filter: blur(12px) saturate(150%) contrast(1.02);
+  -webkit-backdrop-filter: blur(12px) saturate(150%) contrast(1.02);
+  border: 0px solid rgba(20, 184, 166, 0.2);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow:
+    0 8px 1px rgba(6, 182, 212, 0.1),
+    0 2px 8px rgba(20, 179, 184, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.91),
+    inset 0 -1px 0 rgba(139, 115, 226, 0.3),
+    inset 1px 0 0 rgba(20, 184, 166, 0.2),
+    inset -1px 0 0 rgba(6, 181, 212, 0.16);
+}
+
+.frost_light .frostlight-conv-item:hover {
+  background: rgba(213, 235, 241, 0.5);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  box-shadow:
+    0 4px 16px rgba(161, 86, 184, 0.34),
+    0 2px 4px rgba(20, 184, 166, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(139, 115, 226, 0.3),
+    inset 1px 0 0 rgba(20, 184, 166, 0.2),
+    inset -1px 0 0 rgba(6, 182, 212, 0.25);
+  transform: translateY(-1px);
+}
+
+.frost_light .frostlight-conv-item.active {
+  background: rgba(218, 232, 238, 0.55);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  box-shadow:
+    0 6px 20px rgba(6, 182, 212, 0.15),
+    0 2px 8px rgba(20, 184, 166, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(139, 115, 226, 0.3),
+    inset 1px 0 0 rgba(20, 184, 166, 0.2),
+    inset -1px 0 0 rgba(6, 182, 212, 0.25);
+}
+
+.frost_light .frostlight-conv-item.active::before {
+  content: '';
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 32px;
+  background: linear-gradient(to bottom, rgba(20, 184, 166, 0.8), rgba(6, 182, 212, 0.8));
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(20, 184, 166, 0.4);
+}
+
+/* Avatars and list item details */
+.frost_light .frostlight-conv-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(240, 253, 255, 0.9) 0%, rgba(224, 242, 254, 0.8) 60%);
+  border: 2px solid rgba(20, 184, 166, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.8),
+    0 2px 8px rgba(6, 182, 212, 0.1);
+  flex-shrink: 0;
+}
+
+.frost_light .frostlight-conv-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.frost_light .frostlight-conv-name {
+  font-weight: 600;
+  color: rgba(71, 85, 105, 1);
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.frost_light .frostlight-conv-preview {
+  color: rgba(100, 116, 139, 0.9);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.frost_light .frostlight-conv-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.frost_light .frostlight-conv-time {
+  color: rgba(148, 163, 184, 1);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.frost_light .frostlight-conv-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(20, 184, 166, 0.6);
+  box-shadow: 0 0 4px rgba(20, 184, 166, 0.4);
+}
+
+.frost_light .frostlight-conv-status.unread {
+  background: rgba(6, 182, 212, 0.8);
+  box-shadow: 0 0 6px rgba(6, 182, 212, 0.6);
+  animation: frostlightPulse 2s ease-in-out infinite;
+}
+
+/* Chat area */
+.frost_light .frostlight-conv-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.frost_light .frostlight-conv-chat-header {
+  margin-bottom: 1rem;
+  padding: 1.25rem 2.5rem 0.75rem;
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(30deg, rgba(70, 165, 196, 0.16) 100%, rgba(71, 47, 209, 0.61) 100%, rgba(43, 162, 192, 0.79) 100%) 1;
+}
+
+.frost_light .frostlight-conv-chat-title {
+  color: rgba(94, 77, 141, 0.42);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.025em;
+}
+
+.frost_light .frostlight-conv-chat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 2.5rem;
+}
+
+.frost_light .frostlight-conv-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Individual message rows */
+.frost_light .frostlight-conv-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  max-width: 80%;
+}
+
+.frost_light .frostlight-conv-message.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.frost_light .frostlight-conv-message.assistant {
+  align-self: flex-start;
+}
+
+/* Message avatars */
+.frost_light .frostlight-conv-message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.1);
+}
+
+.frost_light .frostlight-conv-message.user .frostlight-conv-message-avatar {
+  background: linear-gradient(135deg, rgba(71, 117, 216, 0.45) 0%, rgba(115, 69, 223, 0.57) 100%);
+  border: 0px solid rgba(255, 255, 255, 0.8);
+  box-shadow:
+    inset 0 2px 0 rgba(74, 49, 214, 0.3),
+    inset 0 -1px 0 rgba(205, 232, 243, 0.88),
+    inset 1px 0 0 rgba(129, 95, 223, 0.37),
+    inset -1px 0 0 rgba(106, 182, 233, 0.52),
+    0 2px 8px rgba(6, 182, 212, 0.1);
+}
+
+.frost_light .frostlight-conv-message.assistant .frostlight-conv-message-avatar {
+  background: rgba(91, 209, 137, 0.74);
+  border: 2px solid rgba(20, 184, 166, 0.3);
+  box-shadow:
+    inset 0 2px 0 rgba(238, 255, 254, 0.9),
+    inset 0 -1px 0 rgba(108, 44, 192, 0.4),
+    inset 1px 0 0 rgba(255, 255, 255, 0.7),
+    inset -1px 0 0 rgba(224, 242, 254, 0.4),
+    0 2px 8px rgba(6, 182, 212, 0.1);
+}
+
+/* Message bubbles */
+.frost_light .frostlight-conv-message-bubble {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px) saturate(150%) contrast(1.02);
+  -webkit-backdrop-filter: blur(12px) saturate(150%) contrast(1.02);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  border-radius: 18px;
+  padding: 1rem 1.25rem;
+  position: relative;
+  box-shadow:
+    0 4px 16px rgba(6, 182, 212, 0.08),
+    0 1px 4px rgba(20, 184, 166, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.frost_light .frostlight-conv-message.user .frostlight-conv-message-bubble {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+}
+
+.frost_light .frostlight-conv-message.assistant .frostlight-conv-message-bubble {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.frost_light .frostlight-conv-message-bubble::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+}
+
+.frost_light .frostlight-conv-message.user .frostlight-conv-message-bubble::before {
+  right: -15px;
+  top: 12px;
+  border-left-color: rgba(20, 184, 166, 0.2);
+}
+
+.frost_light .frostlight-conv-message.assistant .frostlight-conv-message-bubble::before {
+  left: -15px;
+  top: 12px;
+  border-right-color: rgba(34, 197, 94, 0.2);
+}
+
+/* Message text and timestamp */
+.frost_light .frostlight-conv-message-text {
+  color: rgba(71, 85, 105, 1);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.frost_light .frostlight-conv-message-time {
+  color: rgba(55, 65, 81, 0.9);
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+/* ========================================= */
+/* FROST LIGHT CONVERSATION INPUT COMPONENTS */
+/* ========================================= */
+
+/* Chat Input Styles for Conversations Page - Light Theme */
+.frost_light .frostlight-conv-input-area {
+  padding: 1.5rem 0 2rem;
+  border-top: 1px solid rgba(20, 184, 166, 0.15);
+  margin-top: 1rem;
+}
+
+.frost_light .frostlight-conv-input-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 0rem;
+  background: linear-gradient(135deg, rgba(167, 202, 218, 0.35) 0%, rgba(139, 115, 226, 0.2) 50%, rgba(162, 196, 235, 0.53) 100%);
+  backdrop-filter: blur(0px) saturate(0%);
+  -webkit-backdrop-filter: blur(0px) saturate(150%);
+  border: 0px solid rgba(5, 7, 7, 0.2);
+  border-radius: 20px;
+  padding: 1rem 1.25rem;
+  box-shadow:
+    inset 0 2px 0 rgba(74, 49, 214, 0.3),
+    inset 0 -1px 0 rgba(205, 232, 243, 0.88),
+    inset 1px 0 0 rgba(129, 95, 223, 0.37),
+    inset -1px 0 0 rgba(106, 182, 233, 0.52);
+}
+
+.frost_light .frostlight-conv-input-container:focus-within {
+  box-shadow:
+    inset 0 2px 4px rgba(15, 23, 42, 0.8),
+    inset 0 -1px 0 rgba(6, 182, 212, 0.3),
+    0 0 0 2px rgba(6, 182, 212, 0.2);
+}
+
+.frost_light .frostlight-conv-input {
+  flex: 1;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: rgba(71, 85, 105, 1);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: none;
+  min-height: 24px;
+  max-height: 120px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.frost_light .frostlight-conv-input::placeholder {
+  color: rgba(148, 163, 184, 1);
+}
+
+.frost_light .frostlight-conv-send-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(20, 184, 165, 0.5) 0%, rgba(6, 181, 212, 0.39) 100%);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(238, 255, 254, 0.9),
+    inset 0 -2px 0 rgba(108, 44, 192, 0.4),
+    inset 1px 0 0 rgba(255, 255, 255, 0.7),
+    inset -1px 0 0 rgba(224, 242, 254, 0.4),
+    0 4px 12px rgba(6, 182, 212, 0.2),
+    0 2px 4px rgba(20, 184, 166, 0.1);
+}
+
+.frost_light .frostlight-conv-send-btn:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 6px 16px rgba(20, 184, 166, 0.3),
+    0 3px 6px rgba(6, 182, 212, 0.2);
+}
+
+.frost_light .frostlight-conv-send-btn:active {
+  transform: scale(0.95);
+}
+
+/* ========================================= */
+/* FROST LIGHT SCROLLBAR STYLING */
+/* ========================================= */
+
+.frost_light ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  margin: 0 !important;
+}
+
+.frost_light ::-webkit-scrollbar-track {
+  background: linear-gradient(135deg, rgba(249, 250, 251, 0.8) 0%, rgba(243, 244, 246, 0.6) 100%);
+  backdrop-filter: blur(8px) saturate(110%);
+  -webkit-backdrop-filter: blur(8px) saturate(110%);
+  border-radius: 6px;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  margin: 0 !important;
+  padding: 0 !important;
+  background-clip: padding-box;
+}
+
+.frost_light ::-webkit-scrollbar-track-piece:start,
+.frost_light ::-webkit-scrollbar-track-piece:end {
+  margin: 0 !important;
+}
+
+.frost_light ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.5) 0%, rgba(6, 182, 212, 0.4) 50%, rgba(59, 130, 246, 0.6) 100%);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border-radius: 6px;
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 2px 4px rgba(20, 184, 166, 0.1);
+}
+
+.frost_light ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.7) 0%, rgba(6, 182, 212, 0.6) 50%, rgba(59, 130, 246, 0.8) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 4px 8px rgba(20, 184, 166, 0.2);
+}
+
+.frost_light ::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(6, 182, 212, 0.3) 50%, rgba(59, 130, 246, 0.5) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(20, 184, 166, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.4),
+    0 1px 4px rgba(20, 184, 166, 0.1);
+}
+
+.frost_light ::-webkit-scrollbar-corner {
+  background: linear-gradient(135deg, rgba(249, 250, 251, 0.8) 0%, rgba(243, 244, 246, 0.6) 100%);
+  backdrop-filter: blur(8px) saturate(110%);
+  -webkit-backdrop-filter: blur(8px) saturate(110%);
+}
+
+/* ========================================= */
+/* FROST LIGHT TEXT COLOR UTILITIES */
+/* ========================================= */
+
+/* Text color modifiers */
+.frost_light.text-primary,
+.frost_light .text-primary {
+  color: rgba(71, 85, 105, 1);
+}
+
+.frost_light.text-secondary,
+.frost_light .text-secondary {
+  color: rgba(20, 184, 166, 0.8);
+}
+
+.frost_light.text-muted,
+.frost_light .text-muted {
+  color: rgba(148, 163, 184, 1);
+}
+
+.frost_light.text-nav,
+.frost_light .text-nav {
+  color: rgba(100, 116, 139, 0.9);
+}
+
+.frost_light.text-nav-hover,
+.frost_light .text-nav-hover {
+  color: rgba(71, 85, 105, 1);
+}
+
+.frost_light.text-nav-active,
+.frost_light .text-nav-active {
+  color: rgba(71, 85, 105, 1);
+}
+
+/* Additional standardized text colors for frost_light */
+.frost_light.text-title,
+.frost_light .text-title {
+  color: rgba(71, 85, 105, 1);
+}
+
+.frost_light.text-subtitle,
+.frost_light .text-subtitle {
+  color: rgba(100, 116, 139, 0.9);
+}
+
+.frost_light.text-card-title,
+.frost_light .text-card-title {
+  color: rgba(71, 85, 105, 1);
+}
+
+.frost_light.text-content,
+.frost_light .text-content {
+  color: rgba(77, 93, 119, 0.753);
+  line-height: 1.6;
+}
+
+/* Additional utility text classes */
+.frost_light .text-subtle,
+.frost_light.text-subtle {
+  color: rgba(70, 88, 121, 0.747);
+}
+
+.frost_light .text-very-muted,
+.frost_light.text-very-muted {
+  color: rgba(124, 145, 177, 0.8);
+}
+
+.frost_light .text-label,
+.frost_light.text-label {
+  color: rgba(100, 116, 139, 0.9);
+}
+
+.frost_light .text-accent,
+.frost_light.text-accent {
+  color: rgba(20, 184, 166, 0.9);
+}
+
+.frost_light .text-success,
+.frost_light.text-success {
+  color: rgba(13, 148, 136, 0.9);
+}
+
+.frost_light .text-danger,
+.frost_light.text-danger {
+  color: rgba(153, 27, 27, 0.9);
+}
+
+.frost_light .text-danger-muted,
+.frost_light.text-danger-muted {
+  color: rgba(185, 28, 28, 0.8);
+}
+
+.frost_light .dialog-description {
+  color: rgba(148, 163, 184, 1);
+}
+
+/* Settings and toggle text classes */
+.frost_light .demo-toggle-title {
+  color: rgba(71, 85, 105, 1);
+  font-weight: 500;
+}
+
+.frost_light .demo-toggle-description {
+  color: rgba(148, 163, 184, 1);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+  /* Standard glass card for light theme */
+.frost_light .frostlight-standard-glass-card {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
+  backdrop-filter: blur(12px) saturate(150%) contrast(1.02);
+  -webkit-backdrop-filter: blur(12px) saturate(150%) contrast(1.02);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow:
+    0 4px 16px rgba(6, 182, 212, 0.08),
+    0 1px 4px rgba(20, 184, 166, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Feature box styles from LightAppLayoutScene */
+.frostlight-app-feature-box {
+  background: rgba(222, 233, 243, 0.64);
+  backdrop-filter: blur(4px);
+  border: 0px solid rgba(255, 255, 255, 0.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(139, 115, 226, 0.2),
+    inset 1px 0 0 rgba(20, 184, 166, 0.15),
+    inset -1px 0 0 rgba(6, 182, 212, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.frostlight-app-feature-title {
+  color: rgba(45, 39, 59, 0.68);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.frostlight-app-feature-text {
+  color: rgba(106, 96, 114, 0.8);
+  font-size: 0.875rem;
+}
+
+.frostlight-app-card-title {
+  color: rgba(45, 39, 59, 0.68);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.frostlight-app-description {
+  color: rgba(45, 39, 59, 0.68);
+  margin-bottom: 1.5rem;
+}
+
+  /* Unified input styling for light theme */
+.frost_light .frostlight-input-container {
+  background: linear-gradient(135deg, rgba(167, 202, 218, 0.35) 0%, rgba(139, 115, 226, 0.2) 50%, rgba(162, 196, 235, 0.53) 100%);
+  backdrop-filter: blur(0px) saturate(150%);
+  -webkit-backdrop-filter: blur(0px) saturate(150%);
+  border: 0px solid rgba(5, 7, 7, 0.2);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  box-shadow:
+    inset 0 2px 0 rgba(74, 49, 214, 0.3),
+    inset 0 -1px 0 rgba(205, 232, 243, 0.88),
+    inset 1px 0 0 rgba(129, 95, 223, 0.37),
+    inset -1px 0 0 rgba(106, 182, 233, 0.52);
+  transition: all 0.3s ease;
+}
+
+.frost_light .frostlight-input-container:focus-within {
+  box-shadow:
+    inset 0 2px 4px rgba(15, 23, 42, 0.8),
+    inset 0 -1px 0 rgba(6, 182, 212, 0.3),
+    0 0 0 2px rgba(6, 182, 212, 0.2);
+}
+
+.frost_light .frostlight-input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: rgba(71, 85, 105, 1);
+  font-size: 0.875rem;
+}
+
+.frost_light .frostlight-input-field::placeholder {
+  color: rgba(148, 163, 184, 1);
+}
+
+/* Unified conversation input styles for light theme - restored original */
+.frost_light .frostlight-conv-input-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 0rem;
+  background: linear-gradient(135deg, rgba(167, 202, 218, 0.35) 0%, rgba(139, 115, 226, 0.2) 50%, rgba(162, 196, 235, 0.53) 100%);
+  backdrop-filter: blur(0px) saturate(150%);
+  -webkit-backdrop-filter: blur(0px) saturate(150%);
+  border: 0px solid rgba(5, 7, 7, 0.2);
+  border-radius: 20px;
+  padding: 1rem 1.25rem;
+  box-shadow:
+    inset 0 2px 0 rgba(74, 49, 214, 0.3),
+    inset 0 -1px 0 rgba(205, 232, 243, 0.88),
+    inset 1px 0 0 rgba(129, 95, 223, 0.37),
+    inset -1px 0 0 rgba(106, 182, 233, 0.52);
+}
+
+.frost_light .frostlight-conv-input-container:focus-within {
+  box-shadow:
+    inset 0 2px 4px rgba(15, 23, 42, 0.8),
+    inset 0 -1px 0 rgba(6, 182, 212, 0.3),
+    0 0 0 2px rgba(6, 182, 212, 0.2);
+}
+
+.frost_light .frostlight-conv-input {
+  flex: 1;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: rgba(71, 85, 105, 1);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: none;
+  min-height: 24px;
+  max-height: 120px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.frost_light .frostlight-conv-input::placeholder {
+  color: rgba(148, 163, 184, 1);
+}
+
+.frost_light .frostlight-conv-send-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.8) 0%, rgba(6, 182, 212, 0.7) 100%);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 0 rgba(20, 184, 166, 0.4),
+    0 4px 12px rgba(20, 184, 166, 0.2);
+}
+
+.frost_light .frostlight-conv-send-btn:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 6px 16px rgba(20, 184, 166, 0.3),
+    0 3px 6px rgba(6, 182, 212, 0.2);
+}
+
+.frost_light .frostlight-conv-send-btn:active {
+  transform: scale(0.95);
+}
+
+/* App title and subtitle classes for frost_light */
 .frost_light.app-title {
-  color: var(--frost-light-text-primary);
-  font-weight: var(--frost-font-weight-bold);
+  color: rgba(94, 77, 141, 0.42);
+  font-weight: 700;
   font-size: 1.125rem;
-  letter-spacing: var(--frost-letter-spacing-tight);
+  letter-spacing: -0.025em;
   line-height: 1.25;
 }
 
 .frost_light.app-subtitle {
-  color: var(--frost-light-text-secondary);
-  font-size: 0.75rem;
-  font-weight: var(--frost-font-weight-medium);
-  text-transform: uppercase;
-  letter-spacing: var(--frost-letter-spacing-wider);
-}
-
-.frost_light .text-primary {
-  color: var(--frost-light-text-primary);
-}
-
-.frost_light .text-secondary {
-  color: var(--frost-light-text-secondary);
-}
-
-.frost_light .text-muted {
-  color: var(--frost-light-text-muted);
-}
-
-.frost_light .text-feature {
-  background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.frost_light .text-title {
-  color: var(--frost-light-text-primary);
-  font-weight: var(--frost-font-weight-bold);
-}
-
-.frost_light .text-subtitle {
-  color: var(--frost-light-text-secondary);
-}
-
-.frost_light .text-card-title {
-  color: var(--frost-light-text-primary);
-  font-weight: var(--frost-font-weight-semibold);
-}
-
-.frost_light .text-nav {
-  color: var(--frost-light-text-nav);
-}
-
-.frost_light .text-nav-hover {
-  color: var(--frost-light-text-nav-hover);
-}
-
-.frost_light .text-nav-active {
-  color: var(--frost-light-text-nav-active);
-}
-
-/* ================================
- * LIGHT THEME TOGGLES
- * ================================ */
-
-.frost_light.toggle {
-  width: 44px;
-  height: 24px;
-  background: rgba(209, 213, 219, 0.6);
-  border: 1px solid rgba(156, 163, 175, 0.4);
-  border-radius: 12px;
-  position: relative;
-  cursor: pointer;
-  transition: var(--frost-transition);
-  backdrop-filter: blur(8px) saturate(120%);
-  -webkit-backdrop-filter: blur(8px) saturate(120%);
-  box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.1),
-    0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.frost_light.toggle.active {
-  background: rgba(20, 184, 166, 0.2);
-  border-color: rgba(20, 184, 166, 0.4);
-  box-shadow:
-    inset 0 2px 4px rgba(20, 184, 166, 0.1),
-    0 1px 2px rgba(6, 182, 212, 0.1);
-}
-
-.frost_light.toggle-thumb {
-  width: 20px;
-  height: 20px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.9) 100%);
-  border-radius: var(--frost-radius-full);
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  transition: var(--frost-transition);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.1),
-    0 1px 2px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-.frost_light.toggle.active .frost_light.toggle-thumb {
-  left: 21px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(240, 253, 244, 0.95) 100%);
-  box-shadow:
-    0 2px 4px rgba(20, 184, 166, 0.2),
-    0 1px 2px rgba(6, 182, 212, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
-}
-
-/* ================================
- * LIGHT THEME SETTINGS
- * ================================ */
-
-.frost_light.settings-section {
-  margin-bottom: var(--frost-spacing-lg);
-  padding-bottom: var(--frost-spacing-lg);
-  border-bottom: 1px solid rgba(20, 184, 166, 0.2);
-}
-
-.frost_light.settings-description {
-  color: var(--frost-light-text-secondary);
+  color: rgba(134, 96, 168, 0.8);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
 }
 
 .frost_light.settings-title {
-  color: var(--frost-light-text-primary);
-  font-weight: var(--frost-font-weight-semibold);
-  font-size: 1.125rem;
-  margin-bottom: var(--frost-spacing-xs);
+  color: rgba(71, 85, 105, 1);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
 }
 
 .frost_light.settings-subtitle {
-  color: var(--frost-light-text-secondary);
+  color: rgba(100, 116, 139, 0.9);
   font-size: 0.875rem;
 }
 
-/* ================================
- * LIGHT THEME SCROLLBARS
- * ================================ */
-
-.frost_light ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+.frostlight-app-title {
+  color: rgba(94, 77, 141, 0.42);
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
 }
 
-.frost_light ::-webkit-scrollbar-track {
-  background: rgba(249, 250, 251, 0.5);
-  border-radius: 4px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+.frostlight-app-subtitle {
+  color: rgba(134, 96, 168, 0.8);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
 }
 
-.frost_light ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, 
-    rgba(20, 184, 166, 0.6) 0%, 
-    rgba(6, 182, 212, 0.4) 100%
-  );
-  border-radius: 4px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+.frostlight-app-main-title {
+  color: rgba(94, 77, 141, 0.42);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.frostlight-app-main-subtitle {
+  color: rgba(134, 96, 168, 0.8);
+  font-size: 1.125rem;
+}
+
+/* ========================================= */
+/* FROST LIGHT BORDER UTILITIES */
+/* ========================================= */
+
+/* Normalize generic light dividers to use teal-blue gradient */
+.frost_light .border-t {
+  border-top: 1px solid transparent;
+  border-right: 0;
+  border-left: 0;
+  border-bottom: 0;
+  border-image: var(--frostlight-divider-gradient) 1;
+}
+
+.frost_light .border-b {
+  border-bottom: 1px solid transparent;
+  border-right: 0;
+  border-left: 0;
+  border-top: 0;
+  border-image: var(--frostlight-divider-gradient) 1;
+}
+
+.frost_light .divide-y > :not([hidden]) ~ :not([hidden]) {
+  border-top: 1px solid transparent;
+  border-image: var(--frostlight-divider-gradient) 1;
+}
+
+/* ========================================= */
+/* FROST LIGHT TITLE BAR COMPONENTS */
+/* ========================================= */
+
+/* Main title bar styling for frost_light theme */
+.frost_light .titlebar,
+.frost_light .window-chrome,
+.frost_light .app-titlebar {
+  background: linear-gradient(135deg, rgba(249, 250, 251, 0.95) 0%, rgba(243, 244, 246, 0.9) 50%, rgba(248, 250, 252, 0.95) 100%);
+  backdrop-filter: blur(20px) saturate(150%) contrast(1.05);
+  -webkit-backdrop-filter: blur(20px) saturate(150%) contrast(1.05);
+  border-bottom: 1px solid transparent;
+  border-image: var(--frostlight-divider-gradient) 1;
+  padding: 0.75rem 1rem;
   box-shadow:
-    0 1px 2px rgba(20, 184, 166, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(20, 184, 166, 0.1);
+  transition: all 0.3s ease;
 }
 
-.frost_light ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, 
-    rgba(20, 184, 166, 0.8) 0%, 
-    rgba(6, 182, 212, 0.6) 100%
-  );
+/* Window control buttons styling for frost_light */
+.frost_light .titlebar-button,
+.frost_light .window-controls button,
+.frost_light .app-titlebar button {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(20, 184, 166, 0.1) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  color: rgba(71, 85, 105, 1);
+  cursor: pointer;
+  transition: all 0.3s ease;
   box-shadow:
-    0 2px 4px rgba(20, 184, 166, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 -1px 0 rgba(20, 184, 166, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.frost_light ::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(135deg, 
-    rgba(20, 184, 166, 0.9) 0%, 
-    rgba(6, 182, 212, 0.7) 100%
-  );
+.frost_light .titlebar-button:hover,
+.frost_light .window-controls button:hover,
+.frost_light .app-titlebar button:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(20, 184, 166, 0.2) 100%);
+  color: rgba(71, 85, 105, 1);
+  box-shadow:
+    0 -2px 0 rgba(20, 184, 166, 0.2),
+    0 2px 0 rgba(255, 255, 255, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 8px rgba(20, 184, 166, 0.1);
+  transform: translateY(-1px);
 }
 
-.frost_light ::-webkit-scrollbar-corner {
-  background: rgba(249, 250, 251, 0.5);
+.frost_light .titlebar-button:active,
+.frost_light .window-controls button:active,
+.frost_light .app-titlebar button:active {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(20, 184, 166, 0.08) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(20, 184, 166, 0.1),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.8),
+    0 1px 4px rgba(20, 184, 166, 0.05);
+  transform: translateY(0px);
 }
 
-/* ================================
- * LIGHT THEME BODY & ROOT
- * ================================ */
-
-.frost_light body {
-  background: var(--frost-light-bg);
-  color: var(--frost-light-text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  line-height: 1.6;
+/* Close button specific styling for frost_light */
+.frost_light .titlebar-button.close:hover,
+.frost_light .window-controls .close:hover,
+.frost_light .app-titlebar .close:hover {
+  background: linear-gradient(135deg, rgba(254, 226, 226, 0.8) 0%, rgba(239, 68, 68, 0.15) 100%);
+  color: rgba(153, 27, 27, 0.9);
+  border-color: rgba(239, 68, 68, 0.3);
 }
 
-.frost_light #root {
-  background: transparent;
-  min-height: 100vh;
-  position: relative;
+/* App logo/favicon in title bar for frost_light */
+.frost_light .titlebar .app-logo,
+.frost_light .app-titlebar .app-logo {
+  filter: drop-shadow(0 1px 2px rgba(20, 184, 166, 0.1));
+  opacity: 0.9;
+  transition: all 0.3s ease;
 }
 
-.frost_light .app-drag-region {
-  -webkit-app-region: drag;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(20, 184, 166, 0.2);
+.frost_light .titlebar .app-logo:hover,
+.frost_light .app-titlebar .app-logo:hover {
+  opacity: 1;
+  filter: drop-shadow(0 2px 4px rgba(20, 184, 166, 0.2));
 }
 
-/* ================================
- * LIGHT THEME ACCESSIBILITY
- * ================================ */
+/* Title text styling for frost_light */
+.frost_light .titlebar .app-title,
+.frost_light .app-titlebar .app-title {
+  color: rgba(71, 85, 105, 1);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* ========================================= */
+/* FROST LIGHT ANIMATIONS */
+/* ========================================= */
+
+@keyframes frostlightBackgroundShift {
+  from {
+    background: radial-gradient(circle at 30% 20%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%);
+  }
+  50% {
+    background: radial-gradient(circle at 70% 30%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 30% 70%, rgba(20, 184, 166, 0.08) 0%, transparent 50%);
+  }
+  to {
+    background: radial-gradient(circle at 30% 20%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%);
+  }
+}
+
+@keyframes sidebarGlow {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+@keyframes logoGlow {
+  0% {
+    box-shadow:
+      inset 0 2px 4px rgba(255, 255, 255, 0.8),
+      inset 0 -2px 4px rgba(20, 184, 166, 0.1),
+      0 8px 32px rgba(6, 182, 212, 0.15),
+      0 0 50px rgba(20, 184, 166, 0.1);
+  }
+  100% {
+    box-shadow:
+      inset 0 2px 4px rgba(255, 255, 255, 0.9),
+      inset 0 -2px 4px rgba(20, 184, 166, 0.15),
+      0 12px 40px rgba(6, 182, 212, 0.2),
+      0 0 60px rgba(20, 184, 166, 0.15);
+  }
+}
+
+@keyframes logoBorderRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Conversation status pulse */
+@keyframes frostlightPulse {
+  from { opacity: 1; }
+  50% { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+/* ========================================= */
+/* FROST LIGHT ACCESSIBILITY */
+/* ========================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .frost_light *, .frost_light *::before, .frost_light *::after {
+  .frost_light::before,
+  .frost_light.sidebar::before,
+  .frost_light *, 
+  .frost_light *::before, 
+  .frost_light *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -2707,70 +4638,306 @@ body.frost_light::before,
 
 @media (prefers-contrast: high) {
   .frost_light.nav-item {
-    border: 2px solid rgba(20, 184, 166, 0.3);
+    border: 2px solid rgba(20, 184, 166, 0.4);
   }
-  
+
   .frost_light.nav-item.active {
     background: rgba(255, 255, 255, 1);
     border: 2px solid rgba(20, 184, 166, 0.8);
   }
 }
 
-/* ================================
- * LIGHT THEME RESPONSIVE
- * ================================ */
+/* ========================================= */
+/* FROST LIGHT RESPONSIVE DESIGN */
+/* ========================================= */
 
 @media (max-width: 768px) {
   .frost_light.sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid rgba(20, 184, 166, 0.3);
+    width: 200px;
+    padding: 1rem;
+  }
+
+  .frostlight-app-content {
+    padding: 1.5rem;
+  }
+
+  .frost_light .text-title {
+    font-size: 2rem;
+  }
+
+  /* Mobile-specific typography improvements - match frost_dark */
+  .frostlight-app-text-block {
+    padding: 1rem;
+    min-height: 70px;
+  }
+
+  .frostlight-app-text-block .frostlight-app-text-block-title,
+  .frost_light .frostlight-app-text-block-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.3;
+    white-space: normal;
+  }
+
+  .frostlight-app-text-block .frostlight-app-text-block-content,
+  .frost_light .frostlight-app-text-block-content {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  /* Title bar responsive adjustments */
+  .frost_light .titlebar,
+  .frost_light .window-chrome,
+  .frost_light .app-titlebar {
+    padding: 0.5rem 1rem;
+  }
+
+  .frost_light .titlebar .app-title,
+  .frost_light .app-titlebar .app-title {
+    font-size: 0.8125rem;
+  }
+
+  /* Conversations scene responsive tweaks */
+  .frost_light .frostlight-conv-sidebar {
+    width: 280px;
+    padding: 1.5rem 1rem;
+  }
+
+  .frost_light .frostlight-conv-chat-content {
+    padding: 0 1.5rem;
+  }
+
+  .frost_light .frostlight-conv-input-area {
+    padding: 1rem;
+  }
+}
+
+/* ========================================= */
+/* FROST LIGHT CODE BLOCK COMPONENTS */
+/* ========================================= */
+
+/* Code example container */
+.frostlight-code-example {
+  margin: 2rem 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(20, 184, 166, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Code preview area */
+.frostlight-code-preview {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  border-bottom: none;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+/* Code block container */
+.frostlight-code-block {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  position: relative;
+}
+
+/* Code header with title and copy button */
+.frostlight-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%);
+  border-bottom: 1px solid rgba(20, 184, 166, 0.2);
+}
+
+.frostlight-code-title {
+  color: rgba(194, 245, 245, 0.9);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.frostlight-copy-button {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.8) 0%, rgba(6, 182, 212, 0.7) 100%);
+  border: 1px solid rgba(20, 184, 166, 0.4);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: rgba(255, 255, 255, 1);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.frostlight-copy-button:hover {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.9) 0%, rgba(6, 182, 212, 0.8) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+}
+
+.frostlight-copy-button:active {
+  transform: translateY(0);
+}
+
+.frostlight-copy-button.copied {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.8) 0%, rgba(16, 185, 129, 0.7) 100%);
+  border-color: rgba(34, 197, 94, 0.6);
+}
+
+/* Code content area */
+.frostlight-code-content {
+  padding: 1.5rem;
+  overflow-x: auto;
+  background: rgba(15, 23, 42, 0.98);
+}
+
+.frostlight-code-content pre {
+  margin: 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.frostlight-code-content code {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* Syntax highlighting for common elements */
+.frostlight-code-content .tag {
+  color: rgba(248, 113, 113, 1);
+}
+
+.frostlight-code-content .attr-name {
+  color: rgba(251, 191, 36, 1);
+}
+
+.frostlight-code-content .attr-value {
+  color: rgba(34, 197, 94, 1);
+}
+
+.frostlight-code-content .comment {
+  color: rgba(156, 163, 175, 1);
+  font-style: italic;
+}
+
+.frostlight-code-content .keyword {
+  color: rgba(147, 51, 234, 1);
+}
+
+.frostlight-code-content .string {
+  color: rgba(34, 197, 94, 1);
+}
+
+.frostlight-code-content .number {
+  color: rgba(59, 130, 246, 1);
+}
+
+/* Code block responsive design */
+@media (max-width: 768px) {
+  .frostlight-code-example {
+    margin: 1.5rem 0;
   }
   
-  .frost_light.content {
-    padding: var(--frost-spacing-lg);
+  .frostlight-code-preview {
+    padding: 1.5rem;
+    min-height: 100px;
   }
-}/**
- * Frost Glass CSS - Dark Theme
+  
+  .frostlight-code-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .frostlight-code-content {
+    padding: 1rem;
+  }
+  
+  .frostlight-code-content pre {
+    font-size: 0.8125rem;
+  }
+}
+
+/* ========================================= */
+/* FROST LIGHT HEADING STYLES */
+/* ========================================= */
+
+.frost_light h2 {
+  color: #0f766e !important; /* Darker teal for light theme */
+  font-weight: 600;
+}
+/* src/themes/frost-dark.css */
+/* ========================================= */
+/* FROST DARK THEME - Complete Dark Theme CSS */
+/* ========================================= */
+/*
+ * CRITICAL ARCHITECTURE RULES:
  * ============================
+ * 1. This file uses ONLY frostdark-* prefixed classes (frostfrostdark-app-*, frostfrostdark-conv-*, etc.)
+ * 2. This file must NEVER reference or override any frostlight-* classes
+ * 3. Light and Dark themes are COMPLETELY SEPARATE systems
+ * 4. The HTML markup switches between frostdark-* and frostlight-* classes based on theme
+ * 5. NO CROSS-THEME DEPENDENCIES - Dark theme is 100% independent
+ * 6. Namespace prevents conflicts with other libraries' dark/light themes
  * 
- * Complete dark theme implementation with all frost_dark styles.
+ * When body has class="frost_dark":
+ * - HTML uses: <div class="frostfrostdark-app-content-card">
+ * - NOT: <div class="frostlight-app-content-card">
  */
 
-/* ================================
- * BASE DARK THEME
- * ================================ */
-
-body.frost_dark,
+/* Core Variables for Dark Theme */
 .frost_dark {
-  background: var(--frost-dark-bg);
+  /* Dark divider gradient system */
+  --frostdark-divider-gradient: linear-gradient(30deg,
+    rgba(135, 80, 236, 0.65) 0%,   /* purple */
+    rgba(59, 130, 246, 0.55) 50%,  /* blue */
+    rgba(99, 102, 241, 0.60) 100%  /* indigo */
+  );
+  
+  /* Base dark background */
+  background: linear-gradient(135deg, #090b0fff 0%, #0b0a1bff 50%, #18181bff 100%);
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
 }
 
 .frost_dark::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--frost-dark-overlay);
+  background: radial-gradient(circle at 30% 20%, rgba(2, 33, 36, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(2, 2, 26, 0.27) 0%, transparent 50%);
   pointer-events: none;
-  z-index: var(--frost-z-behind);
+  /* animation: frost-dark-shift 20s ease-in-out infinite; DISABLED to match static light theme background */
 }
 
-/* ================================
- * DARK THEME COMPONENTS
- * ================================ */
+/* ========================================= */
+/* FROST DARK SIDEBAR COMPONENT */
+/* ========================================= */
 
-/* Sidebar */
 .frost_dark.sidebar {
   width: 280px;
-  background: var(--frost-dark-sidebar-bg);
-  backdrop-filter: var(--frost-blur-sidebar);
-  -webkit-backdrop-filter: var(--frost-blur-sidebar);
+  background: linear-gradient(180deg, rgba(29, 28, 28, 0.9) 0%, rgba(18, 18, 18, 0.8) 50%, rgba(25, 25, 25, 0.85) 100%);
+  backdrop-filter: blur(24px) saturate(200%) contrast(1.1);
+  -webkit-backdrop-filter: blur(24px) saturate(200%) contrast(1.1);
   border-right: 1px solid;
   border-image: linear-gradient(180deg, rgba(4, 75, 80, 0.3) 0%, rgba(4, 75, 80, 0.8) 50%, rgba(4, 75, 80, 0.4) 100%) 1;
-  padding: var(--frost-spacing-xl) var(--frost-spacing-lg);
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -2797,46 +4964,174 @@ body.frost_dark,
   animation: frost-dark-glow 3s ease-in-out infinite alternate;
 }
 
-/* Content */
+.frostdark-app-header {
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid transparent;
+  border-image: var(--frostdark-divider-gradient) 1;
+}
+
+/* ========================================= */
+/* FROST DARK CONTENT AREAS */
+/* ========================================= */
+
+/* Content variant */
 .frost_dark.content {
-  background: var(--frost-dark-content-bg);
-  backdrop-filter: var(--frost-blur-heavy);
-  -webkit-backdrop-filter: var(--frost-blur-heavy);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Cards */
+/* Main content area */
+.frostdark-app-content {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(167, 202, 218, 0.12) 0%, rgba(139, 115, 226, 0.08) 50%, rgba(162, 196, 235, 0.18) 100%);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  padding: 2.5rem;
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.frostdark-app-main-header {
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid transparent;
+  border-image: var(--frostdark-divider-gradient) 1;
+}
+
+/* Card variant */
 .frost_dark.card {
-  background: var(--frost-dark-card-bg);
-  backdrop-filter: var(--frost-blur-light);
-  -webkit-backdrop-filter: var(--frost-blur-light);
-  border: 1px solid var(--frost-dark-border);
+  background: rgba(36, 30, 54, 0.82);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid rgba(0, 153, 255, 0.3);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.2),
     0 1px 1px rgba(59, 36, 187, 0.34),
     inset 0 1px 0 rgba(36, 127, 180, 0.42);
 }
 
-/* ================================
- * DARK THEME NAVIGATION
- * ================================ */
+.frostdark-app-content-card {
+  background: rgba(36, 30, 54, 0.575);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: none;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1.5rem; /* match light-app-content-card */
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 4px 2px rgba(52, 36, 143, 0.445),
+    inset 0 1px 0 rgba(50, 167, 235, 0.459);
+}
 
+/* ========================================= */
+/* FROST DARK TEXT BLOCK COMPONENTS */
+/* ========================================= */
+
+/* Individual Text Block Containers - Match frost_light layout (spacing, sizing) */
+.frostdark-app-text-block {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem; /* match light p-4 */
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  word-wrap: break-word;
+  box-sizing: border-box;
+}
+
+.frostdark-app-text-block:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Text Block Titles - match frost_light sizing/spacing; boost specificity to avoid Tailwind overrides */
+.frostdark-app-text-block .frostdark-app-text-block-title,
+.frost_dark .frostdark-app-text-block-title {
+  color: rgba(255, 255, 255, 1);
+  font-weight: 500; /* font-medium */
+  font-size: 1rem;  /* text-base */
+  line-height: 1.4;
+  margin-bottom: 0.5rem; /* mb-2 */
+  display: block;
+  min-width: 0;
+  white-space: normal; /* allow wrapping like light theme */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.01em;
+}
+
+/* Text Block Content - Enhanced contrast and readability; stronger selector */
+.frostdark-app-text-block .frostdark-app-text-block-content,
+.frost_dark .frostdark-app-text-block-content {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.6;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Icon formatting inside dark text blocks - match frost_light structure, adapt colors */
+.frost_dark .frostdark-app-text-block .frostdark-app-text-block-title svg,
+.frost_dark .frostdark-app-text-block .frostdark-app-text-block-title .icon,
+.frost_dark .frostdark-app-text-block .frostdark-app-text-block-content svg,
+.frost_dark .frostdark-app-text-block .frostdark-app-text-block-content .icon,
+.frost_dark .frostdark-app-text-block .frostdark-app-text-block-title [class*="i-"],
+.frost_dark .frostdark-app-text-block .frostdark-app-text-block-content [class*="i-"] {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin-right: 0.5rem; /* space between icon and text */
+  vertical-align: middle;
+  transform: translateY(1px); /* optical alignment to baseline */
+  color: rgba(103, 232, 249, 0.9); /* teal/cyan accent on dark */
+  opacity: 0.95;
+}
+
+/* Ensure icon+text rows align neatly (when inline-flex or flex containers are used) */
+.frost_dark .frostdark-app-text-block .icon-row,
+.frost_dark .frostdark-app-text-block .with-icon,
+.frost_dark .frostdark-app-text-block .title-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ========================================= */
+/* FROST DARK NAVIGATION COMPONENTS */
+/* ========================================= */
+
+/* Navigation item variant */
 .frost_dark.nav-item {
   background: transparent;
   border: 1px solid transparent;
-  color: var(--frost-dark-text-nav);
-  transition: var(--frost-transition);
+  color: rgba(133, 131, 143, 0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
-  font-weight: var(--frost-font-weight-medium);
-  letter-spacing: var(--frost-letter-spacing-wide);
+  font-weight: 500;
+  letter-spacing: 0.025em;
 }
 
 .frost_dark.nav-item:hover {
   background: rgba(12, 48, 82, 0.6);
-  backdrop-filter: var(--frost-blur-light);
-  -webkit-backdrop-filter: var(--frost-blur-light);
-  color: var(--frost-dark-text-nav-hover);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  color: rgba(194, 245, 245, 0.9);
   box-shadow:
     0 2px 2px rgba(69, 39, 177, 0.49),
     0 1px 4px rgba(194, 245, 245, 0.1),
@@ -2846,10 +5141,10 @@ body.frost_dark,
 
 .frost_dark.nav-item.active {
   background: rgba(29, 32, 49, 0.32);
-  backdrop-filter: var(--frost-blur-medium);
-  -webkit-backdrop-filter: var(--frost-blur-medium);
-  border: 1px solid var(--frost-dark-border-active);
-  color: var(--frost-dark-text-nav-active);
+  backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  border: 1px solid rgba(49, 112, 141, 0.3);
+  color: rgba(255, 255, 255, 1);
   box-shadow:
     0 1px 1px rgba(69, 39, 177, 0.29),
     0 1px 1px rgba(35, 29, 71, 0.61),
@@ -2858,9 +5153,69 @@ body.frost_dark,
   transform: translateY(-2px);
 }
 
-/* ================================
- * DARK THEME LOGO
- * ================================ */
+/* Enhanced navigation item layout - EXACT LAYOUT as frost_light with dark theme colors */
+.frostdark-app-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  margin: 0.5rem 0;
+  border-radius: 12px;
+  color: rgba(133, 131, 143, 0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  font-weight: 500;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.frostdark-app-nav-item:hover {
+  background: rgba(12, 48, 82, 0.5);
+  backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  color: rgba(194, 245, 245, 0.9);
+  border: 1px solid rgba(4, 75, 80, 0.2);
+  box-shadow:
+    0 4px 16px rgba(69, 39, 177, 0.34),
+    0 2px 4px rgba(4, 75, 80, 0.08),
+    inset 0 1px 0 rgba(194, 245, 245, 0.2),
+    inset 0 -1px 0 rgba(59, 36, 187, 0.3),
+    inset 1px 0 0 rgba(4, 75, 80, 0.2),
+    inset -1px 0 0 rgba(20, 122, 153, 0.25);
+  transform: translateY(-1px);
+}
+
+.frostdark-app-nav-item.active {
+  background: rgba(29, 32, 49, 0.32);
+  backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) contrast(1.05);
+  border: 1px solid rgba(65, 34, 143, 0.4);
+  color: rgba(255, 255, 255, 1);
+  box-shadow:
+    0 1px 1px rgba(69, 39, 177, 0.29),
+    0 1px 1px rgba(35, 29, 71, 0.61),
+    inset 0 1px 0 rgba(16, 100, 139, 0.54),
+    inset 0 -1px 0 rgba(65, 34, 143, 0.56);
+  transform: translateY(-2px);
+}
+
+.frostdark-app-nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(to bottom, rgba(4, 75, 80, 0.8), rgba(6, 182, 212, 0.8));
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+}
+
+/* ========================================= */
+/* FROST DARK LOGO COMPONENT */
+/* ========================================= */
 
 .frost_dark.logo {
   background: radial-gradient(circle at center, rgba(2, 21, 26, 0.82) 0%, rgba(6, 18, 36, 0.7) 60%);
@@ -2882,7 +5237,7 @@ body.frost_dark,
   bottom: -2px;
   border-radius: inherit;
   background: linear-gradient(45deg, rgba(3, 38, 41, 0.6), rgba(10, 129, 129, 0.4), rgba(14, 136, 145, 0.8));
-  z-index: var(--frost-z-behind);
+  z-index: -1;
 }
 
 .frost_dark.logo::after {
@@ -2895,79 +5250,984 @@ body.frost_dark,
   transform: translate(-50%, -50%);
   border-radius: inherit;
   background: radial-gradient(circle at 30% 30%, rgba(4, 75, 80, 0.3) 0%, transparent 40%, rgba(18, 18, 18, 0.2) 70%);
-  z-index: var(--frost-z-overlay);
+  z-index: 1;
   pointer-events: none;
 }
 
-/* ================================
- * DARK THEME TYPOGRAPHY
- * ================================ */
+/* Enhanced Logo Components */
+.frostdark-app-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
 
+.frostdark-app-logo-icon {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  background: radial-gradient(circle at center, rgba(2, 21, 26, 0.82) 0%, rgba(6, 18, 36, 0.7) 60%);
+  border: 1px solid rgba(6, 182, 212, 0.28);
+  animation: dark-logo-glow 4s ease-in-out infinite alternate;
+}
+
+.frostdark-app-logo-icon::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,
+    rgba(6, 182, 212, 0.4) 0%,
+    rgba(103, 232, 249, 0.5) 50%,
+    rgba(6, 182, 212, 0.4) 100%
+  );
+  z-index: -1;
+  animation: logoBorderRotate 8s linear infinite;
+}
+
+.frostdark-app-logo-icon::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(139, 115, 226, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(95, 155, 223, 0.30) 0%, transparent 45%),
+    radial-gradient(circle at 40% 70%, rgba(20, 184, 166, 0.25) 0%, transparent 35%),
+    radial-gradient(circle at 70% 80%, rgba(6, 182, 212, 0.22) 0%, transparent 30%),
+    linear-gradient(135deg, rgba(139, 115, 226, 0.12) 0%, rgba(95, 155, 223, 0.09) 50%, rgba(20, 184, 166, 0.11) 100%);
+  pointer-events: none;
+}
+
+.frostdark-app-logo-gif {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  opacity: 0.8;
+  mix-blend-mode: overlay;
+}
+
+/* ========================================= */
+/* FROST DARK BUTTON SYSTEM */
+/* Canonical aliases (need a .frost_dark ancestor):
+   .frost-btn-action, .frost-btn-raised, .frost-btn-action-danger,
+   .frost-btn-action-sm, .frost-btn-action-icon, .frost-btn-action-group
+   ========================================= */
+
+/* Action buttons (teal/cyan) */
+.frostdark-button-action,
+.frost_dark .frost-btn-action {
+  background: linear-gradient(135deg, rgba(20, 184, 165, 0.247) 0%, rgba(6, 181, 212, 0.336) 50%, rgba(59, 131, 246, 0.288) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  color: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(20, 184, 166, 0.4);
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 2px 4px rgba(20, 184, 166, 0.2);
+}
+
+.frostdark-button-action:hover,
+.frost_dark .frost-btn-action:hover {
+  background: linear-gradient(135deg, rgba(20, 184, 165, 0.37) 0%, rgba(6, 181, 212, 0.438) 50%, rgba(59, 131, 246, 0.404) 100%);
+  border-color: rgba(6, 182, 212, 0.6);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 2px 0 rgba(5, 238, 255, 0.938),
+    0 4px 8px #49fae25e;
+}
+
+.frostdark-button-action:active,
+.frost_dark .frost-btn-action:active {
+  background: linear-gradient(135deg, rgba(6, 181, 212, 0.288) 0%, rgba(20, 184, 165, 0.226) 50%, rgba(59, 131, 246, 0.288) 100%);
+  box-shadow:
+    inset 0 1px 2px rgba(20, 184, 166, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(0px);
+}
+
+.frostdark-button-action-sm,
+.frost_dark .frost-btn-action-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.frostdark-button-action-icon,
+.frost_dark .frost-btn-action-icon {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+}
+
+/* Danger buttons */
+.frostdark-button-action-danger,
+.frost_dark .frost-btn-action-danger {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.384) 0%, rgba(220, 38, 38, 0.349) 50%, rgba(185, 28, 28, 0.445) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 0px solid transparent;
+  border-image: linear-gradient(135deg, rgba(239, 68, 68, 0.425) 0%, rgba(185, 28, 28, 0.6) 100%) 1;
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  color: rgba(255, 255, 255, 1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.frostdark-button-action-danger:hover,
+.frost_dark .frost-btn-action-danger:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.623) 0%, rgba(220, 38, 38, 0.616) 50%, rgba(185, 28, 28, 0.616) 100%);
+  box-shadow:
+    0 -3px 0 rgba(252, 150, 221, 0.959),
+    0 2px 0 rgba(248, 58, 58, 0.815),
+    -2px 0 0 rgba(239, 68, 68, 0.76),
+    2px 0 0 rgba(220, 38, 38, 0.5),
+    0 4px 12px rgba(209, 14, 14, 0.63);
+  border-image: linear-gradient(135deg, rgba(248, 113, 113, 0.8) 0%, rgba(220, 38, 38, 0.7) 100%) 1;
+  transform: translateY(-1px);
+}
+
+.frostdark-button-action-danger:active,
+.frost_dark .frost-btn-action-danger:active {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.7) 0%, rgba(220, 38, 38, 0.6) 50%, rgba(185, 28, 28, 0.8) 100%);
+  box-shadow:
+    0 -1px 0 rgba(185, 28, 28, 0.2),
+    0 1px 0 rgba(248, 113, 113, 0.3),
+    -1px 0 0 rgba(239, 68, 68, 0.25),
+    1px 0 0 rgba(220, 38, 38, 0.3),
+    0 1px 4px rgba(185, 28, 28, 0.1);
+  transform: translateY(0px);
+}
+
+/* Raised buttons (enhanced green for dark theme) */
+.frostdark-button-raised,
+.frost_dark .frost-btn-raised {
+  background: linear-gradient(135deg, rgba(34, 197, 170, 0.349) 0%, rgba(16, 185, 185, 0.253) 50%, rgba(21, 80, 128, 0.336) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  color: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  box-shadow:
+    inset 0 2px 0 rgba(127, 243, 237, 0.3),
+    inset 0 -1px 0 rgba(76, 21, 128, 0.247),
+    0 4px 8px rgba(34, 197, 94, 0.2);
+}
+
+.frostdark-button-raised:hover,
+.frost_dark .frost-btn-raised:hover {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.637) 0%, rgba(16, 185, 129, 0.63) 50%, rgba(21, 128, 60, 0.678) 100%);
+  border-color: rgba(34, 197, 94, 0.452);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 2px 0 rgba(0, 255, 170, 0.89),
+    inset 0 -1px 0 rgba(2, 255, 44, 0.973),
+    0 6px 12px rgba(17, 226, 139, 0.651);
+}
+
+.frostdark-button-raised:active,
+.frost_dark .frost-btn-raised:active {
+  background: linear-gradient(135deg, rgba(134, 239, 172, 0.4) 0%, rgba(34, 197, 94, 0.3) 50%, rgba(21, 128, 61, 0.5) 100%);
+  box-shadow:
+    inset 0 1px 2px rgba(28, 228, 168, 0.76),
+    inset 0 -1px 0 rgba(134, 239, 172, 0.3);
+  transform: translateY(0px);
+}
+
+/* Button text sizes (already aligned, re-assert scale) */
+.frost_dark .frostdark-button-action,
+.frost_dark .frost-btn-action,
+.frost_dark .frostdark-button-raised,
+.frost_dark .frost-btn-raised,
+.frost_dark .frostdark-button-action-danger,
+.frost_dark .frost-btn-action-danger {
+  font-size: 0.875rem;  /* text-sm */
+  line-height: 1.2;
+}
+
+/* Button group for organizing multiple buttons */
+.frostdark-button-group,
+.frost_dark .frost-btn-action-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========================================= */
+/* FROST DARK INPUT COMPONENTS */
+/* ========================================= */
+
+/* Input container with inset styling */
+.frostdark-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(51, 65, 85, 0.4);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+  box-shadow:
+    inset 0 3px 0 rgba(15, 23, 42, 0.6),
+    inset 0 -2px 0 rgba(71, 85, 105, 0.4),
+    inset 2px 0 0 rgba(30, 41, 59, 0.5),
+    inset -2px 0 0 rgba(51, 65, 85, 0.6);
+}
+
+.frostdark-input-container:focus-within {
+  box-shadow:
+    inset 0 3px 0 rgba(15, 23, 42, 0.8),
+    inset 0 -2px 0 rgba(6, 182, 212, 0.4),
+    inset 2px 0 0 rgba(30, 41, 59, 0.7),
+    inset -2px 0 0 rgba(6, 182, 212, 0.3),
+    0 0 0 2px rgba(6, 182, 212, 0.2);
+}
+
+.frostdark-input-field {
+  flex: 1;
+  background: transparent;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: rgba(226, 232, 240, 0.9);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  padding: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.frostdark-input-field::placeholder {
+  color: rgba(148, 163, 184, 0.6);
+}
+
+.frostdark-input-field:focus {
+  color: rgba(226, 232, 240, 1);
+}
+
+/* Textarea specific styling */
+.frostdark-textarea-field {
+  flex: 1;
+  background: transparent;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: rgba(226, 232, 240, 0.9);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 0;
+  margin: 0;
+  resize: vertical;
+  min-height: 120px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Inputs / textareas placeholder sizing only (color unchanged) */
+.frost_dark .frostdark-input-container input::placeholder,
+.frost_dark .frostdark-input-container textarea::placeholder {
+  font-size: 0.875rem;  /* text-sm */
+  line-height: 1.4;
+}
+
+/* ========================================= */
+/* FROST DARK TOGGLE COMPONENTS */
+/* ========================================= */
+
+/* Generic dark toggle (container) */
+.frost_dark.toggle,
+.frostdark-settings-toggle {
+  width: 48px;
+  height: 24px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 1px solid rgba(4, 75, 80, 0.3);
+  background: linear-gradient(135deg,
+    rgba(29, 28, 28, 0.45) 0%,
+    rgba(18, 18, 18, 0.28) 50%,
+    rgba(25, 25, 25, 0.32) 100%);
+  transition: all 0.3s ease;
+  box-shadow:
+    inset 0 2px 0 rgba(15, 23, 42, 0.6),
+    inset 0 -2px 0 rgba(71, 85, 105, 0.4),
+    inset 1px 0 0 rgba(4, 75, 80, 0.37),
+    inset -1px 0 0 rgba(6, 182, 212, 0.3);
+}
+
+/* Hover state - slightly brighter and sharper border */
+.frost_dark.toggle:hover,
+.frostdark-settings-toggle:hover {
+  background: linear-gradient(135deg,
+    rgba(12, 48, 82, 0.45) 0%,
+    rgba(4, 75, 80, 0.32) 50%,
+    rgba(6, 182, 212, 0.24) 100%);
+  border-color: rgba(6, 182, 212, 0.45);
+}
+
+/* Active/checked state for both patterns */
+.frost_dark.toggle.active,
+.frostdark-settings-toggle[data-state="checked"] {
+  background: linear-gradient(135deg,
+    rgba(12, 48, 82, 0.6) 0%,
+    rgba(4, 75, 80, 0.45) 50%,
+    rgba(6, 182, 212, 0.35) 100%);
+  border-color: rgba(6, 182, 212, 0.5);
+}
+
+/* Toggle thumb (knob) */
+.frost_dark.toggle-thumb,
+.frostdark-settings-toggle-thumb {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(226, 232, 240, 0.9) 0%, rgba(148, 163, 184, 0.8) 100%);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  transition: all 0.3s ease;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(51, 65, 85, 0.5),
+    inset 1px 0 0 rgba(148, 163, 184, 0.4),
+    inset -1px 0 0 rgba(8, 145, 178, 0.35),
+    0 2px 8px rgba(6, 182, 212, 0.2);
+}
+
+/* Checked: thumb translated and with brighter rim */
+.frost_dark.toggle.active .frost_dark.toggle-thumb,
+.frostdark-settings-toggle[data-state="checked"] .frostdark-settings-toggle-thumb {
+  transform: translateX(24px);
+  /* Active state: teal thumb with stronger inset_up highlights */
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.92) 0%, rgba(103, 232, 249, 0.88) 100%);
+  border: none;
+  box-shadow:
+    0 2px 6px rgba(6, 182, 212, 0.4),
+    inset 0 1px 0 rgba(179, 250, 250, 0.6),
+    inset 0 -1px 0 rgba(4, 75, 80, 0.5),
+    inset 1px 0 0 rgba(103, 232, 249, 0.4),
+    inset -1px 0 0 rgba(8, 145, 178, 0.55),
+    0 3px 10px rgba(6, 182, 212, 0.3);
+}
+
+/* Enhanced Settings Toggle Styles - EXACT match to DarkSettingsScene.tsx */
+.frostdark-settings-toggle {
+  width: 52px;
+  height: 28px;
+  background: rgba(18, 18, 18, 0.6);
+  border-radius: 14px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid rgba(51, 65, 85, 0.3);
+  transition: all 0.3s ease;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.1);
+}
+
+.frostdark-settings-toggle.active,
+.frostdark-settings-toggle[data-state="checked"] {
+  /* Teal-on dark, raised (inset_up) appearance */
+  background: linear-gradient(135deg,
+    rgba(6, 182, 212, 0.28) 0%,
+    rgba(4, 75, 80, 0.24) 60%,
+    rgba(12, 48, 82, 0.32) 100%);
+  border-color: rgba(6, 182, 212, 0.4);
+  box-shadow:
+    inset 0 2px 4px rgba(6, 182, 212, 0.15),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.15),
+    inset -1px 0 0 rgba(103, 232, 249, 0.22),
+    inset 1px 0 0 rgba(8, 145, 178, 0.36),
+    0 4px 10px rgba(6, 182, 212, 0.18);
+}
+
+.frostdark-settings-toggle-thumb {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(226, 232, 240, 0.9) 0%, rgba(148, 163, 184, 0.8) 100%);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  transition: all 0.3s ease;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(51, 65, 85, 0.5),
+    inset -1px 0 0 rgba(103, 232, 249, 0.22),
+    inset 1px 0 0 rgba(8, 145, 178, 0.35),
+    0 2px 8px rgba(6, 182, 212, 0.2);
+}
+
+.frostdark-settings-toggle.active .frostdark-settings-toggle-thumb,
+.frostdark-settings-toggle[data-state="checked"] .frostdark-settings-toggle-thumb {
+  transform: translateX(24px);
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.9) 0%, rgba(103, 232, 249, 0.85) 100%);
+  border: 1px solid rgba(6, 182, 212, 0.55);
+  box-shadow:
+    0 3px 10px rgba(6, 182, 212, 0.35),
+    inset 0 1px 0 rgba(179, 250, 250, 0.6),
+    inset 0 -1px 0 rgba(4, 75, 80, 0.5),
+    inset 1px 0 0 rgba(103, 232, 249, 0.4),
+    inset -1px 0 0 rgba(8, 145, 178, 0.55);
+}
+
+/* ========================================= */
+/* FROST DARK DIALOG AND MODAL COMPONENTS */
+/* ========================================= */
+
+/* Dialog backdrop */
+.frostdark-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Danger dialog panel */
+.frostdark-dialog-danger {
+  background: linear-gradient(135deg, rgba(36, 30, 54, 0.4) 0%, rgba(29, 32, 49, 0.35) 50%, rgba(15, 23, 42, 0.45) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(185, 28, 28, 0.4);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 4px 2px rgba(185, 28, 28, 0.3),
+    inset 0 1px 0 rgba(248, 113, 113, 0.2),
+    inset 0 -1px 0 rgba(153, 27, 27, 0.4),
+    inset 1px 0 0 rgba(4, 75, 80, 0.25),
+    inset -1px 0 0 rgba(20, 122, 153, 0.3),
+    0 8px 24px rgba(185, 28, 28, 0.2);
+}
+
+.frostdark-dialog-danger h2,
+.frostdark-dialog-danger [data-dialog-title],
+.frostdark-dialog-danger .dialog-title,
+.frostdark-dialog-danger .dialog-description {
+  color: rgba(248, 113, 113, 1);
+}
+
+/* Empty state panel */
+.frost_dark .frostdark-empty-panel,
+.frostdark-empty-panel {
+  background: linear-gradient(135deg, rgba(29, 58, 85, 0.253) 0%, rgba(4, 75, 80, 0.18) 50%, rgba(5, 130, 161, 0.18) 100%);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(6, 181, 212, 0.151);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 4px 2px rgba(6, 181, 212, 0.25),
+    inset 0 1px 0 rgba(103, 232, 249, 0.3),
+    inset 0 -1px 0 rgba(4, 75, 80, 0.4),
+    inset -1px 0 0 rgba(103, 232, 249, 0.2),
+    inset 1px 0 0 rgba(8, 145, 178, 0.35),
+    0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.frostdark-empty-panel .empty-icon {
+  color: rgba(59, 130, 246, 0.7);
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem; /* space above text */
+}
+
+.frostdark-empty-panel .empty-text {
+  color: rgba(194, 245, 245, 0.92);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ========================================= */
+/* FROST DARK CONVERSATION INPUT COMPONENTS */
+/* ========================================= */
+
+/* Chat Input Styles for Conversations Page - Dark Theme */
+.frost_dark .frostdark-conv-input-area {
+  padding: 1rem;
+  border-top: 1px solid;
+  border-image: var(--dark-divider-gradient) 1;
+  margin-top: auto;
+}
+
+.frost_dark .frostdark-conv-input-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 0rem;
+  background: rgba(36, 30, 54, 0.15);
+  backdrop-filter: blur(6px) saturate(110%);
+  -webkit-backdrop-filter: blur(6px) saturate(110%);
+  border: 1px solid rgba(135, 80, 236, 0.2);
+  border-radius: 20px;
+  padding: 1rem 1.25rem;
+  box-shadow:
+    inset 0 2px 0 rgba(135, 80, 236, 0.2),
+    inset 0 -1px 0 rgba(59, 130, 246, 0.25),
+    inset 1px 0 0 rgba(99, 102, 241, 0.2),
+    inset -1px 0 0 rgba(135, 80, 236, 0.15);
+  isolation: isolate;
+}
+
+.frost_dark .frostdark-conv-input-container:focus-within {
+  box-shadow:
+    inset 0 3px 0 rgba(15, 23, 42, 0.8),
+    inset 0 -2px 0 rgba(6, 182, 212, 0.4),
+    inset 2px 0 0 rgba(30, 41, 59, 0.7),
+    inset -2px 0 0 rgba(6, 182, 212, 0.3),
+    0 0 0 2px rgba(6, 182, 212, 0.2);
+}
+
+.frost_dark .frostdark-conv-input {
+  flex: 1;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: none;
+  min-height: 24px;
+  max-height: 120px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.frost_dark .frostdark-conv-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.frost_dark .frostdark-conv-send-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(135, 80, 236, 0.8) 0%, rgba(59, 130, 246, 0.7) 100%);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(135, 80, 236, 0.6),
+    inset 1px 0 0 rgba(255, 255, 255, 0.1),
+    inset -1px 0 0 rgba(59, 130, 246, 0.4),
+    0 4px 12px rgba(135, 80, 236, 0.3);
+}
+
+.frost_dark .frostdark-conv-send-btn:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 6px 16px rgba(135, 80, 236, 0.4),
+    0 3px 6px rgba(59, 130, 246, 0.3);
+}
+
+.frost_dark .frostdark-conv-send-btn:active {
+  transform: scale(0.95);
+}
+
+/* ========================================= */
+/* FROST DARK SCROLLBAR STYLING */
+/* ========================================= */
+
+.frost_dark ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  margin: 0 !important;
+}
+
+.frost_dark ::-webkit-scrollbar-track {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.3) 100%);
+  backdrop-filter: blur(8px) saturate(110%);
+  -webkit-backdrop-filter: blur(8px) saturate(110%);
+  border-radius: 6px;
+  border: 1px solid rgba(71, 85, 105, 0.2);
+  margin: 0 !important;
+  padding: 0 !important;
+  background-clip: padding-box;
+}
+
+.frost_dark ::-webkit-scrollbar-track-piece:start,
+.frost_dark ::-webkit-scrollbar-track-piece:end {
+  margin: 0 !important;
+}
+
+.frost_dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.5) 0%, rgba(4, 75, 80, 0.4) 50%, rgba(20, 122, 153, 0.6) 100%);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border-radius: 6px;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(194, 245, 245, 0.2),
+    0 2px 4px rgba(6, 182, 212, 0.2);
+}
+
+.frost_dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.7) 0%, rgba(4, 75, 80, 0.6) 50%, rgba(20, 122, 153, 0.8) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(194, 245, 245, 0.3),
+    0 4px 8px rgba(6, 182, 212, 0.3);
+}
+
+.frost_dark ::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.4) 0%, rgba(4, 75, 80, 0.3) 50%, rgba(20, 122, 153, 0.5) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(6, 182, 212, 0.3),
+    inset 0 -1px 0 rgba(194, 245, 245, 0.2),
+    0 1px 4px rgba(6, 182, 212, 0.2);
+}
+
+.frost_dark ::-webkit-scrollbar-corner {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.3) 100%);
+  backdrop-filter: blur(8px) saturate(110%);
+  -webkit-backdrop-filter: blur(8px) saturate(110%);
+}
+
+/* ========================================= */
+/* FROST DARK TEXT COLOR UTILITIES */
+/* ========================================= */
+
+/* Text color modifiers */
+.frost_dark.text-primary,
 .frost_dark .text-primary {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(194, 245, 245, 0.8) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: rgba(255, 255, 255, 1);
 }
 
+.frost_dark.text-secondary,
 .frost_dark .text-secondary {
-  color: var(--frost-dark-text-secondary);
+  color: rgba(78, 161, 199, 0.6);
 }
 
+.frost_dark.text-muted,
 .frost_dark .text-muted {
-  color: var(--frost-dark-text-muted);
+  color: rgba(255, 255, 255, 0.7);
 }
 
+.frost_dark.text-nav,
 .frost_dark .text-nav {
-  color: var(--frost-dark-text-nav);
+  color: rgba(133, 131, 143, 0.8);
 }
 
+.frost_dark.text-nav-hover,
 .frost_dark .text-nav-hover {
-  color: var(--frost-dark-text-nav-hover);
+  color: rgba(194, 245, 245, 0.9);
 }
 
+.frost_dark.text-nav-active,
 .frost_dark .text-nav-active {
-  color: var(--frost-dark-text-nav-active);
+  color: rgba(255, 255, 255, 1);
 }
 
-.frost_dark.app-title {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(194, 245, 245, 0.8) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: var(--frost-font-weight-bold);
-  font-size: 1.125rem;
-  letter-spacing: var(--frost-letter-spacing-tight);
-  line-height: 1.25;
+/* Additional standardized text colors for frost_dark */
+.frost_dark.text-title,
+.frost_dark .text-title {
+  color: rgba(194, 245, 245, 0.9);
 }
 
-.frost_dark.app-subtitle {
-  color: var(--frost-dark-text-nav);
-  font-size: 0.75rem;
-  font-weight: var(--frost-font-weight-medium);
-  text-transform: uppercase;
-  letter-spacing: var(--frost-letter-spacing-wider);
+.frost_dark.text-subtitle,
+.frost_dark .text-subtitle {
+  color: rgba(133, 131, 143, 0.8);
 }
 
-.frost_dark.settings-title {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(194, 245, 245, 0.8) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: var(--frost-font-weight-semibold);
-  font-size: 1.125rem;
-  margin-bottom: var(--frost-spacing-xs);
+.frost_dark.text-card-title,
+.frost_dark .text-card-title {
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.frost_dark.settings-subtitle {
-  color: var(--frost-dark-text-secondary);
+.frost_dark.text-content,
+.frost_dark .text-content {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+/* Additional utility text classes */
+.frost_dark .text-subtle,
+.frost_dark.text-subtle {
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.frost_dark .text-very-muted,
+.frost_dark.text-very-muted {
+  color: rgba(100, 116, 139, 0.7);
+}
+
+.frost_dark .text-label,
+.frost_dark.text-label {
+  color: rgba(133, 131, 143, 0.8);
+}
+
+.frost_dark .text-accent,
+.frost_dark.text-accent {
+  color: rgba(103, 232, 249, 0.9);
+}
+
+.frost_dark .text-success,
+.frost_dark.text-success {
+  color: rgba(20, 184, 166, 0.9);
+}
+
+.frost_dark .text-danger,
+.frost_dark.text-danger {
+  color: rgba(248, 113, 113, 1);
+}
+
+.frost_dark .text-danger-muted,
+.frost_dark.text-danger-muted {
+  color: rgba(248, 113, 113, 0.85);
+}
+
+.frost_dark .dialog-description {
+  color: rgba(148, 163, 184, 0.9);
+}
+
+/* Settings and toggle text classes */
+.frost_dark .demo-toggle-title {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.frost_dark .demo-toggle-description {
+  color: rgba(148, 163, 184, 0.85);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+  /* Standard glass card for dark theme */
+.frost_dark .frostdark-standard-glass-card {
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 1px 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(51, 65, 85, 0.5);
+}
+
+  /* Unified input styling for dark theme */
+.frost_dark .frostdark-input-container {
+  background: rgba(51, 65, 85, 0.3);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  box-shadow:
+    inset 0 2px 4px rgba(15, 23, 42, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.frost_dark .frostdark-input-container:focus-within {
+  border-color: rgba(6, 182, 212, 0.5);
+  box-shadow:
+    inset 0 2px 4px rgba(15, 23, 42, 0.8),
+    inset 0 -1px 0 rgba(6, 182, 212, 0.3),
+    0 0 0 2px rgba(6, 182, 212, 0.2);
+}
+
+.frost_dark .frostdark-input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.9);
   font-size: 0.875rem;
 }
 
-/* ================================
- * DARK THEME BORDERS & DIVIDERS
- * ================================ */
+.frost_dark .frostdark-input-field::placeholder {
+  color: rgba(148, 163, 184, 0.7);
+}
 
+/* Unified conversation input styles for dark theme - restored original */
+.frost_dark .frostdark-conv-input-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 0rem;
+  background: rgba(36, 30, 54, 0.15);
+  backdrop-filter: blur(6px) saturate(110%);
+  -webkit-backdrop-filter: blur(6px) saturate(110%);
+  border: 1px solid rgba(135, 80, 236, 0.2);
+  border-radius: 20px;
+  padding: 1rem 1.25rem;
+  box-shadow:
+    inset 0 3px 0 rgba(15, 23, 42, 0.6),
+    inset 0 -2px 0 rgba(71, 85, 105, 0.4),
+    inset 2px 0 0 rgba(30, 41, 59, 0.5),
+    inset -2px 0 0 rgba(51, 65, 85, 0.6);
+}
+
+.frost_dark .frostdark-conv-input-container:focus-within {
+  box-shadow:
+    inset 0 3px 0 rgba(15, 23, 42, 0.8),
+    inset 0 -2px 0 rgba(6, 182, 212, 0.4),
+    inset 2px 0 0 rgba(30, 41, 59, 0.7),
+    inset -2px 0 0 rgba(6, 182, 212, 0.3),
+    0 0 0 2px rgba(6, 182, 212, 0.2);
+}
+
+.frost_dark .frostdark-conv-input {
+  flex: 1;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: none;
+  min-height: 24px;
+  max-height: 120px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.frost_dark .frostdark-conv-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.frost_dark .frostdark-conv-send-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(135, 80, 236, 0.8) 0%, rgba(59, 130, 246, 0.7) 100%);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(135, 80, 236, 0.4),
+    0 4px 12px rgba(135, 80, 236, 0.3);
+}
+
+.frost_dark .frostdark-conv-send-btn:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 6px 16px rgba(135, 80, 236, 0.4),
+    0 3px 6px rgba(59, 130, 246, 0.3);
+}
+
+.frost_dark .frostdark-conv-send-btn:active {
+  transform: scale(0.95);
+}
+
+/* App title and subtitle classes for frost_dark */
+.frost_dark.app-title {
+  color: rgba(194, 245, 245, 0.9);
+}
+
+.frost_dark.app-subtitle {
+  color: rgba(133, 131, 143, 0.8);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+
+.frost_dark.settings-title {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.frost_dark.settings-subtitle {
+  color: rgba(194, 245, 245, 0.7);
+  font-size: 0.875rem;
+}
+
+.frostdark-app-title {
+  color: rgba(194, 245, 245, 0.9);
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.frostdark-app-subtitle {
+  color: rgba(133, 131, 143, 0.8);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.frostdark-app-main-title {
+  color: rgba(255, 255, 255, 1);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.frostdark-app-main-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.125rem;
+}
+
+/* ========================================= */
+/* FROST DARK BORDER UTILITIES */
+/* ========================================= */
+
+/* Normalize generic dark dividers to use purple-blue gradient */
 .frost_dark .border-t {
   border-top: 1px solid transparent;
   border-right: 0;
@@ -2989,279 +6249,143 @@ body.frost_dark,
   border-image: var(--dark-divider-gradient) 1;
 }
 
-/* ================================
- * DARK THEME CONTENT AREAS
- * ================================ */
+/* ========================================= */
+/* FROST DARK TITLE BAR COMPONENTS */
+/* ========================================= */
 
-.frost_dark .dark-app-content {
-  flex: 1;
-  background: linear-gradient(135deg, rgba(167, 202, 218, 0.12) 0%, rgba(139, 115, 226, 0.08) 50%, rgba(162, 196, 235, 0.18) 100%);
-  backdrop-filter: var(--frost-blur-heavy);
-  -webkit-backdrop-filter: var(--frost-blur-heavy);
-  padding: var(--frost-spacing-2xl);
-  padding-right: 0;
-  position: relative;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.frost_dark .dark-app-main-title {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(194, 245, 245, 0.8) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-size: 2.5rem;
-  font-weight: var(--frost-font-weight-bold);
-  margin-bottom: var(--frost-spacing-xs);
-  letter-spacing: var(--frost-letter-spacing-tight);
-}
-
-.frost_dark .dark-app-content h1 {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(194, 245, 245, 0.8) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-size: 2rem;
-  font-weight: var(--frost-font-weight-bold);
-  margin-bottom: var(--frost-spacing-md);
-}
-
-.frost_dark .dark-app-content h2 {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(194, 245, 245, 0.8) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-size: 1.5rem;
-  font-weight: var(--frost-font-weight-semibold);
-  margin-bottom: var(--frost-spacing-md);
-}
-
-.frost_dark .dark-app-content h3 {
-  color: var(--frost-dark-text-primary);
-  font-size: 1.25rem;
-  font-weight: var(--frost-font-weight-semibold);
-  margin-bottom: var(--frost-spacing-sm);
-}
-
-.frost_dark .dark-app-content-card h3 {
-  color: var(--frost-dark-text-primary);
-  font-size: 1.125rem;
-  font-weight: var(--frost-font-weight-medium);
-  margin-bottom: var(--frost-spacing-sm);
-}
-
-.frost_dark .dark-app-content p,
-.frost_dark .dark-app-content li {
-  color: var(--frost-dark-text-secondary);
-  line-height: 1.6;
-}
-
-.frost_dark .dark-app-content label {
-  color: var(--frost-dark-text-primary);
-  font-weight: var(--frost-font-weight-medium);
-}
-
-.frost_dark .dark-app-content-card {
-  background: rgba(36, 30, 54, 0.575);
-  backdrop-filter: var(--frost-blur-light);
-  -webkit-backdrop-filter: var(--frost-blur-light);
-  border: none;
-  border-radius: var(--frost-radius-lg);
-  padding: var(--frost-spacing-xl);
-  margin-bottom: var(--frost-spacing-lg);
+/* Main title bar styling for frost_dark theme */
+.frost_dark .titlebar,
+.frost_dark .window-chrome,
+.frost_dark .app-titlebar {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.7) 50%, rgba(51, 65, 85, 0.8) 100%);
+  backdrop-filter: blur(20px) saturate(150%) contrast(1.05);
+  -webkit-backdrop-filter: blur(20px) saturate(150%) contrast(1.05);
+  border-bottom: 1px solid transparent;
+  border-image: var(--dark-divider-gradient) 1;
+  padding: 0.75rem 1rem;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.2),
-    0 4px 2px rgba(52, 36, 143, 0.445),
-    inset 0 1px 0 rgba(50, 167, 235, 0.459);
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(6, 182, 212, 0.15);
+  transition: all 0.3s ease;
 }
 
-/* ================================
- * DARK THEME TEXT BLOCKS
- * ================================ */
-
-.frost_dark .dark-app-text-block {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--frost-radius-sm);
-  padding: var(--frost-spacing-md);
-  min-height: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  transition: var(--frost-transition-fast);
-  overflow: hidden;
-  word-wrap: break-word;
-  box-sizing: border-box;
+/* Window control buttons styling for frost_dark */
+.frost_dark .titlebar-button,
+.frost_dark .window-controls button,
+.frost_dark .app-titlebar button {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(6, 182, 212, 0.2) 100%);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  color: rgba(194, 245, 245, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 -1px 0 rgba(6, 182, 212, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.frost_dark .dark-app-text-block:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
+.frost_dark .titlebar-button:hover,
+.frost_dark .window-controls button:hover,
+.frost_dark .app-titlebar button:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(6, 182, 212, 0.4) 100%);
+  color: rgba(194, 245, 245, 1);
+  box-shadow:
+    0 -2px 0 rgba(6, 182, 212, 0.3),
+    0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 2px 8px rgba(6, 182, 212, 0.15);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.frost_dark .dark-app-text-block-title {
-  color: rgba(255, 255, 255, 1);
-  font-weight: var(--frost-font-weight-medium);
-  font-size: 1rem;
-  line-height: 1.4;
-  margin-bottom: var(--frost-spacing-xs);
-  display: block;
-  min-width: 0;
-  white-space: normal;
+.frost_dark .titlebar-button:active,
+.frost_dark .window-controls button:active,
+.frost_dark .app-titlebar button:active {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(6, 182, 212, 0.15) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(6, 182, 212, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    0 1px 4px rgba(6, 182, 212, 0.1);
+  transform: translateY(0px);
+}
+
+/* Close button specific styling for frost_dark */
+.frost_dark .titlebar-button.close:hover,
+.frost_dark .window-controls .close:hover,
+.frost_dark .app-titlebar .close:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(220, 38, 38, 0.2) 100%);
+  color: rgba(248, 113, 113, 1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* App logo/favicon in title bar for frost_dark */
+.frost_dark .titlebar .app-logo,
+.frost_dark .app-titlebar .app-logo {
+  filter: drop-shadow(0 1px 2px rgba(6, 182, 212, 0.2));
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.frost_dark .titlebar .app-logo:hover,
+.frost_dark .app-titlebar .app-logo:hover {
+  opacity: 1;
+  filter: drop-shadow(0 2px 4px rgba(6, 182, 212, 0.3));
+}
+
+/* Title text styling for frost_dark */
+.frost_dark .titlebar .app-title,
+.frost_dark .app-titlebar .app-title {
+  color: rgba(194, 245, 245, 0.9);
+  font-weight: 600;
+  font-size: 0.875rem;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.frost_dark .dark-app-text-block-content {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.875rem;
-  line-height: 1.5;
-  word-wrap: break-word;
-  white-space: normal;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+/* ========================================= */
+/* FROST DARK ANIMATIONS */
+/* ========================================= */
+
+@keyframes frost-dark-glow {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
 
-/* ================================
- * DARK THEME TOGGLES
- * ================================ */
-
-.frost_dark.toggle {
-  width: 44px;
-  height: 24px;
-  background: rgba(31, 41, 55, 0.8);
-  border: 1px solid rgba(75, 85, 99, 0.6);
-  border-radius: 12px;
-  position: relative;
-  cursor: pointer;
-  transition: var(--frost-transition);
-  backdrop-filter: blur(8px) saturate(120%);
-  -webkit-backdrop-filter: blur(8px) saturate(120%);
-  box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.3),
-    0 1px 2px rgba(0, 0, 0, 0.2);
+@keyframes dark-logo-glow {
+  0% {
+    box-shadow:
+      inset 0 1px 1px rgba(14, 149, 212, 0.4),
+      inset 0 -2px 1px rgba(15, 73, 139, 0.53),
+      0 5px 12px rgba(61, 15, 145, 0.42),
+      0 0 50px rgba(23, 30, 129, 0.34);
+  }
+  100% {
+    box-shadow:
+      inset 0 1px 1px rgba(14, 149, 212, 0.5),
+      inset 0 -2px 1px rgba(15, 73, 139, 0.6),
+      0 8px 16px rgba(61, 15, 145, 0.5),
+      0 0 60px rgba(23, 30, 129, 0.4);
+  }
 }
 
-.frost_dark.toggle.active {
-  background: rgba(4, 75, 80, 0.4);
-  border-color: rgba(4, 75, 80, 0.6);
-  box-shadow:
-    inset 0 2px 4px rgba(4, 75, 80, 0.2),
-    0 1px 2px rgba(4, 75, 80, 0.1);
+@keyframes logoBorderRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.frost_dark.toggle-thumb {
-  width: 20px;
-  height: 20px;
-  background: linear-gradient(135deg, rgba(209, 213, 219, 0.95) 0%, rgba(156, 163, 175, 0.9) 100%);
-  border-radius: var(--frost-radius-full);
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  transition: var(--frost-transition);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.2),
-    0 1px 2px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.frost_dark.toggle.active .frost_dark.toggle-thumb {
-  left: 21px;
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.95) 0%, rgba(22, 163, 74, 0.9) 100%);
-  box-shadow:
-    0 2px 4px rgba(4, 75, 80, 0.3),
-    0 1px 2px rgba(4, 75, 80, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-/* ================================
- * DARK THEME SCROLLBARS
- * ================================ */
-
-.frost_dark ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.frost_dark ::-webkit-scrollbar-track {
-  background: rgba(31, 41, 55, 0.3);
-  border-radius: 4px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-.frost_dark ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, 
-    rgba(4, 75, 80, 0.7) 0%, 
-    rgba(20, 122, 153, 0.5) 100%
-  );
-  border-radius: 4px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.frost_dark ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, 
-    rgba(4, 75, 80, 0.9) 0%, 
-    rgba(20, 122, 153, 0.7) 100%
-  );
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-}
-
-.frost_dark ::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(135deg, 
-    rgba(4, 75, 80, 1) 0%, 
-    rgba(20, 122, 153, 0.8) 100%
-  );
-}
-
-.frost_dark ::-webkit-scrollbar-corner {
-  background: rgba(31, 41, 55, 0.3);
-}
-
-/* ================================
- * DARK THEME BODY & ROOT
- * ================================ */
-
-.frost_dark body {
-  background: var(--frost-dark-bg);
-  color: var(--frost-dark-text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  line-height: 1.6;
-}
-
-.frost_dark #root {
-  background: transparent;
-  min-height: 100vh;
-  position: relative;
-}
-
-.frost_dark .content {
-  background: var(--frost-dark-content-bg);
-  min-height: 100vh;
-}
-
-.frost_dark .app-drag-region {
-  -webkit-app-region: drag;
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid;
-  border-image: var(--dark-divider-gradient) 1;
-}
-
-/* ================================
- * DARK THEME ACCESSIBILITY
- * ================================ */
+/* ========================================= */
+/* FROST DARK ACCESSIBILITY */
+/* ========================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .frost_dark *, .frost_dark *::before, .frost_dark *::after {
+  .frost_dark::before,
+  .frost_dark.sidebar::before,
+  .frost_dark *, 
+  .frost_dark *::before, 
+  .frost_dark *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -3272,26 +6396,649 @@ body.frost_dark,
   .frost_dark.nav-item {
     border: 2px solid rgba(20, 184, 166, 0.3);
   }
-  
+
   .frost_dark.nav-item.active {
     background: rgba(0, 0, 0, 1);
     border: 2px solid rgba(20, 184, 166, 0.8);
   }
 }
 
-/* ================================
- * DARK THEME RESPONSIVE
- * ================================ */
+/* ========================================= */
+/* FROST DARK RESPONSIVE DESIGN */
+/* ========================================= */
 
 @media (max-width: 768px) {
   .frost_dark.sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid;
-    border-image: var(--dark-divider-gradient) 1;
+    width: 200px;
+    padding: 1rem;
+  }
+
+  .frostdark-app-content {
+    padding: 1.5rem;
+  }
+
+  .frost_dark .text-title {
+    font-size: 2rem;
+  }
+
+  /* Mobile-specific typography improvements - match frost_light */
+  .frostdark-app-text-block {
+    padding: 1rem;
+    min-height: 70px;
+  }
+
+  .frostdark-app-text-block .frostdark-app-text-block-title,
+  .frost_dark .frostdark-app-text-block-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.3;
+    white-space: normal;
+  }
+
+  .frostdark-app-text-block .frostdark-app-text-block-content,
+  .frost_dark .frostdark-app-text-block-content {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  /* Title bar responsive adjustments */
+  .frost_dark .titlebar,
+  .frost_dark .window-chrome,
+  .frost_dark .app-titlebar {
+    padding: 0.5rem 1rem;
+  }
+
+  .frost_dark .titlebar .app-title,
+  .frost_dark .app-titlebar .app-title {
+    font-size: 0.8125rem;
+  }
+}
+
+/* ========================================= */
+/* FROST DARK CODE BLOCK COMPONENTS */
+/* ========================================= */
+
+/* Code example container */
+.frostdark-code-example {
+  margin: 2rem 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(6, 182, 212, 0.15),
+    inset 0 1px 0 rgba(194, 245, 245, 0.1);
+}
+
+/* Code preview area */
+.frostdark-code-preview {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(194, 245, 245, 0.2);
+  border-bottom: none;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+/* Code block container */
+.frostdark-code-block {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%);
+  border: 1px solid rgba(194, 245, 245, 0.3);
+  position: relative;
+}
+
+/* Code header with title and copy button */
+.frostdark-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.99) 0%, rgba(30, 41, 59, 0.97) 100%);
+  border-bottom: 1px solid rgba(194, 245, 245, 0.2);
+}
+
+.frostdark-code-title {
+  color: rgba(194, 245, 245, 0.9);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.frostdark-copy-button {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.8) 0%, rgba(20, 184, 166, 0.7) 100%);
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: rgba(255, 255, 255, 1);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.frostdark-copy-button:hover {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.9) 0%, rgba(20, 184, 166, 0.8) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+}
+
+.frostdark-copy-button:active {
+  transform: translateY(0);
+}
+
+.frostdark-copy-button.copied {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.8) 0%, rgba(16, 185, 129, 0.7) 100%);
+  border-color: rgba(34, 197, 94, 0.6);
+}
+
+/* Code content area */
+.frostdark-code-content {
+  padding: 1.5rem;
+  overflow-x: auto;
+  background: rgba(15, 23, 42, 0.99);
+}
+
+.frostdark-code-content pre {
+  margin: 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.frostdark-code-content code {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* Syntax highlighting for common elements */
+.frostdark-code-content .tag {
+  color: rgba(248, 113, 113, 1);
+}
+
+.frostdark-code-content .attr-name {
+  color: rgba(251, 191, 36, 1);
+}
+
+.frostdark-code-content .attr-value {
+  color: rgba(34, 197, 94, 1);
+}
+
+.frostdark-code-content .comment {
+  color: rgba(156, 163, 175, 1);
+  font-style: italic;
+}
+
+.frostdark-code-content .keyword {
+  color: rgba(147, 51, 234, 1);
+}
+
+.frostdark-code-content .string {
+  color: rgba(34, 197, 94, 1);
+}
+
+.frostdark-code-content .number {
+  color: rgba(59, 130, 246, 1);
+}
+
+/* Code block responsive design */
+@media (max-width: 768px) {
+  .frostdark-code-example {
+    margin: 1.5rem 0;
   }
   
-  .frost_dark .dark-app-content {
-    padding: var(--frost-spacing-lg);
+  .frostdark-code-preview {
+    padding: 1.5rem;
+    min-height: 100px;
+  }
+  
+  .frostdark-code-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .frostdark-code-content {
+    padding: 1rem;
+  }
+  
+  .frostdark-code-content pre {
+    font-size: 0.8125rem;
+  }
+}
+
+/* ========================================= */
+/* FROST DARK HEADING STYLES */
+/* ========================================= */
+
+.frost_dark h2 {
+  color: #14b8a6 !important; /* Bright teal color */
+  font-weight: 600;
+}
+
+/* ========================================= */
+/* FROST DARK RESPONSIVE DESIGN */
+/* ========================================= */
+
+/* src/core/a11y.css */
+/**
+ * Frost Glass CSS — accessibility layer
+ * =====================================
+ *
+ * Loaded last so these corrections win over hardcoded theme colors.
+ * Keeps the public class names. Adjusts the ones that were too faint
+ * to read, and honors system transparency, contrast, color-scheme,
+ * motion, and forced-colors preferences.
+ */
+
+/* ---------------------------------
+ * color-scheme
+ * A theme class always wins. With no theme class, follow the OS.
+ * --------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.frost_light) {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not(.frost_dark) {
+    color-scheme: light;
+  }
+}
+
+/* ---------------------------------
+ * Contrast corrections
+ * --------------------------------- */
+
+/* Light titles were ~42% opacity purple and vanished on the gradient. */
+.frostlight-app-title,
+.frost_light.app-title,
+.frostlight-app-main-title,
+.frost_light .frostlight-conv-app-title,
+.frost_light .frostlight-conv-chat-title {
+  color: #3c3354;
+}
+
+.frostlight-app-subtitle,
+.frost_light.app-subtitle,
+.frostlight-app-main-subtitle,
+.frost_light .frostlight-conv-app-subtitle {
+  color: #4a435c;
+}
+
+.frostlight-app-nav-item {
+  color: #243038;
+}
+
+.frostlight-app-nav-item:hover,
+.frostlight-app-nav-item.active {
+  color: #1f2937;
+}
+
+.frostlight-app-feature-title,
+.frostlight-app-card-title,
+.frostlight-app-description {
+  color: #2c2833;
+}
+
+.frostlight-app-feature-text {
+  color: #3f3a46;
+}
+
+.frostlight-empty-panel .empty-text {
+  color: #1f2937;
+}
+
+.frost_light .text-secondary,
+.frost_light.text-secondary,
+.frost_light .frost-text-secondary {
+  color: #374151;
+}
+
+.frost_light .text-muted,
+.frost_light.text-muted,
+.frost_light .frost-text-muted,
+.frost_light .text-content,
+.frost_light.text-content,
+.frost_light .text-subtle,
+.frost_light.text-subtle,
+.frost_light .text-very-muted,
+.frost_light.text-very-muted {
+  color: #4b5563;
+}
+
+.frost_dark .text-secondary,
+.frost_dark.text-secondary,
+.frost_dark .frost-text-secondary {
+  color: #9fd4ea;
+}
+
+.frost_dark .text-muted,
+.frost_dark.text-muted {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.frost_dark .text-nav,
+.frost_dark.text-nav {
+  color: #c8c5d2;
+}
+
+.frost_dark .text-very-muted,
+.frost_dark.text-very-muted,
+.frost_dark .text-subtle,
+.frost_dark.text-subtle {
+  color: #b7c3d0;
+}
+
+.frostdark-empty-panel .empty-text {
+  color: #d9fafa;
+}
+
+/* Light-theme glass actions were ~30% teal on a mint page, so white
+ * labels fell well under 4.5:1. Paint an opaque fill instead. The dark
+ * theme sits on a near-black page, where the translucent tint still passes. */
+.frost_light :is(.frostlight-button-action, .frost-btn-action),
+.frost_light :is(.frostlight-button-action, .frost-btn-action):hover,
+.frost_light :is(.frostlight-button-action, .frost-btn-action):active {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.frost_light :is(.frostlight-button-action, .frost-btn-action) {
+  background: linear-gradient(135deg, #0e7490 0%, #0f766e 100%);
+}
+
+.frost_light :is(.frostlight-button-action, .frost-btn-action):hover {
+  background: linear-gradient(135deg, #0891b2 0%, #0d9488 100%);
+}
+
+.frost_light :is(.frostlight-button-raised, .frost-btn-raised),
+.frost_light :is(.frostlight-button-raised, .frost-btn-raised):hover,
+.frost_light :is(.frostlight-button-raised, .frost-btn-raised):active {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.frost_light :is(.frostlight-button-raised, .frost-btn-raised) {
+  background: linear-gradient(135deg, #047857 0%, #0f766e 100%);
+}
+
+.frost_light :is(.frostlight-button-raised, .frost-btn-raised):hover {
+  background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+}
+
+.frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger),
+.frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger):hover,
+.frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger):active {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger) {
+  background: linear-gradient(135deg, #be123c 0%, #9f1239 100%);
+}
+
+.frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger):hover {
+  background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+}
+
+/* A soft shadow keeps white labels readable on translucent glass. */
+.frostdark-button-action,
+.frostlight-button-action,
+.frostdark-button-raised,
+.frostlight-button-raised,
+.frostdark-button-action-danger,
+.frostlight-button-action-danger,
+.frost_dark .frost-btn-action,
+.frost_light .frost-btn-action,
+.frost_dark .frost-btn-raised,
+.frost_light .frost-btn-raised,
+.frost_dark .frost-btn-action-danger,
+.frost_light .frost-btn-action-danger {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------------------------------
+ * Focus
+ * --------------------------------- */
+
+.frost-btn:focus-visible,
+.frost-btn-glass:focus-visible,
+.button--glass:focus-visible,
+.frostdark-button-action:focus-visible,
+.frostlight-button-action:focus-visible,
+.frostdark-button-raised:focus-visible,
+.frostlight-button-raised:focus-visible,
+.frostdark-button-action-danger:focus-visible,
+.frostlight-button-action-danger:focus-visible,
+.frost_dark .frost-btn-action:focus-visible,
+.frost_light .frost-btn-action:focus-visible,
+.frost-nav-item:focus-visible,
+.frostdark-app-nav-item:focus-visible,
+.frostlight-app-nav-item:focus-visible,
+.frostdark-input-field:focus-visible,
+.frostlight-input-field:focus-visible {
+  outline: 2px solid var(--frost-focus, #0f766e);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------
+ * Reduced motion
+ * --------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .frost-btn:hover,
+  .frost-btn:active,
+  .frost-btn-glass:hover,
+  .frost-btn-glass:active,
+  .button--glass:hover,
+  .button--glass:active,
+  .frostdark-button-action:hover,
+  .frostdark-button-action:active,
+  .frostlight-button-action:hover,
+  .frostlight-button-action:active,
+  .frostdark-button-raised:hover,
+  .frostdark-button-raised:active,
+  .frostlight-button-raised:hover,
+  .frostlight-button-raised:active,
+  .frostdark-button-action-danger:hover,
+  .frostdark-button-action-danger:active,
+  .frostlight-button-action-danger:hover,
+  .frostlight-button-action-danger:active,
+  .frost_dark .frost-btn-action:hover,
+  .frost_light .frost-btn-action:hover,
+  .frost-card:hover,
+  .frost-nav-item:hover,
+  .frost-nav-item.active {
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------
+ * Reduced transparency
+ * Drop the blur and paint a solid fill so text does not sit on a wash.
+ * --------------------------------- */
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --frost-blur-light: none;
+    --frost-blur-medium: none;
+    --frost-blur-heavy: none;
+    --frost-blur-sidebar: none;
+  }
+
+  .frost_light :is(
+    .frost-glass,
+    .frost-glass-medium,
+    .frost-glass-heavy,
+    .frost-glass-sidebar,
+    .frost-card,
+    .frost-sidebar,
+    .frost-nav-item,
+    .frost-btn,
+    .frost-btn-glass,
+    .button--glass,
+    .frostlight-app-content,
+    .frostlight-app-content-card,
+    .frostlight-input-container,
+    .frostlight-empty-panel,
+    .frostlight-standard-glass-card,
+    .frostlight-button-action,
+    .frostlight-button-raised,
+    .frostlight-button-action-danger,
+    .frost-btn-action,
+    .frost-btn-raised,
+    .frost-btn-action-danger
+  ),
+  .frost_dark :is(
+    .frost-glass,
+    .frost-glass-medium,
+    .frost-glass-heavy,
+    .frost-glass-sidebar,
+    .frost-card,
+    .frost-sidebar,
+    .frost-nav-item,
+    .frost-btn,
+    .frost-btn-glass,
+    .button--glass,
+    .frostdark-app-content,
+    .frostdark-app-content-card,
+    .frostdark-input-container,
+    .frostdark-empty-panel,
+    .frostdark-standard-glass-card,
+    .frostdark-button-action,
+    .frostdark-button-raised,
+    .frostdark-button-action-danger,
+    .frost-btn-action,
+    .frost-btn-raised,
+    .frost-btn-action-danger
+  ) {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .frost_light :is(
+    .frost-card,
+    .frost-glass,
+    .frost-glass-medium,
+    .frost-glass-heavy,
+    .frost-glass-sidebar,
+    .frostlight-app-content,
+    .frostlight-app-content-card,
+    .frostlight-standard-glass-card,
+    .frostlight-empty-panel,
+    .frostlight-input-container
+  ) {
+    background-color: var(--frost-solid-light);
+    background-image: none;
+  }
+
+  .frost_dark :is(
+    .frost-card,
+    .frost-glass,
+    .frost-glass-medium,
+    .frost-glass-heavy,
+    .frost-glass-sidebar,
+    .frostdark-app-content,
+    .frostdark-app-content-card,
+    .frostdark-standard-glass-card,
+    .frostdark-empty-panel,
+    .frostdark-input-container
+  ) {
+    background-color: var(--frost-solid-dark);
+    background-image: none;
+  }
+
+  .frost_light :is(.frostlight-button-action, .frost-btn-action),
+  .frost_dark :is(.frostdark-button-action, .frost-btn-action),
+  .frost-btn-glass,
+  .button--glass {
+    background-image: none !important;
+    background-color: var(--fg-solid, #0e7490);
+    color: var(--text, #ffffff);
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .frost_light :is(.frostlight-button-raised, .frost-btn-raised),
+  .frost_dark :is(.frostdark-button-raised, .frost-btn-raised) {
+    background-image: none !important;
+    background-color: #047857;
+    color: #ffffff;
+  }
+
+  .frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger),
+  .frost_dark :is(.frostdark-button-action-danger, .frost-btn-action-danger) {
+    background-image: none !important;
+    background-color: #b91c1c;
+    color: #ffffff;
+  }
+}
+
+/* ---------------------------------
+ * High contrast and forced colors
+ * --------------------------------- */
+
+@media (prefers-contrast: more), (prefers-contrast: high) {
+  .frost_light :is(.frostlight-button-action, .frost-btn-action, .frost-btn-primary),
+  .frost_dark :is(.frostdark-button-action, .frost-btn-action, .frost-btn-primary) {
+    background-image: none !important;
+    background-color: #0e7490 !important;
+    color: #ffffff !important;
+    border: 2px solid currentColor !important;
+  }
+
+  .frost_light :is(.frostlight-button-action-danger, .frost-btn-action-danger, .frost-btn-danger),
+  .frost_dark :is(.frostdark-button-action-danger, .frost-btn-action-danger, .frost-btn-danger) {
+    background-image: none !important;
+    background-color: #991b1b !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+  }
+
+  .frost-card,
+  .frostlight-app-content-card,
+  .frostdark-app-content-card {
+    border: 2px solid currentColor !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .frost-btn,
+  .frost-btn-glass,
+  .button--glass,
+  .frost-card,
+  .frost-nav-item,
+  .frostdark-button-action,
+  .frostlight-button-action,
+  .frostdark-button-raised,
+  .frostlight-button-raised,
+  .frostdark-button-action-danger,
+  .frostlight-button-action-danger,
+  .frostdark-app-content-card,
+  .frostlight-app-content-card,
+  .frostdark-input-container,
+  .frostlight-input-container {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: ButtonFace !important;
+    background-image: none !important;
+    color: ButtonText !important;
+    border: 1px solid ButtonText !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 }

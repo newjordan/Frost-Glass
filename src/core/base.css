@@ -103,18 +103,20 @@
  * BROWSER SUPPORT FALLBACKS
  * ================================ */
 
-@supports not (backdrop-filter: blur(1px)) {
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .frost-glass,
   .frost-glass-medium,
   .frost-glass-heavy,
   .frost-glass-sidebar {
-    background: rgba(255, 255, 255, 0.8);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--frost-solid-light);
   }
-  
+
   .frost_dark .frost-glass,
   .frost_dark .frost-glass-medium,
   .frost_dark .frost-glass-heavy,
   .frost_dark .frost-glass-sidebar {
-    background: rgba(0, 0, 0, 0.8);
+    background: var(--frost-solid-dark);
   }
 }
