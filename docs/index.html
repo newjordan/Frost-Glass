@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Frost Glass — glassmorphism CSS</title>
+      <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Cpath d='M17 2 L30 12 L25 30 L9 30 L4 12 Z' fill='%2314b8a6'/%3E%3C/svg%3E" />
+    <meta
+      name="description"
+      content="Frost Glass is a pure-CSS glassmorphism library with light and dark themes, a shared button API, and a live button builder."
+    />
+    <link rel="stylesheet" href="frost-glass.min.css" />
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: #07080d;
+      }
+      .docs-root {
+        min-height: 100vh;
+        overflow: visible;
+        color: var(--current-text-primary);
+      }
+      .docs-root::before { z-index: 0; }
+      .wrap {
+        position: relative;
+        z-index: 1;
+        width: min(1120px, calc(100vw - 2rem));
+        margin: 0 auto;
+        padding-bottom: 4rem;
+      }
+      .skip {
+        position: absolute;
+        left: 1rem;
+        top: -4rem;
+        background: #f8fafc;
+        color: #0f172a;
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+        z-index: 30;
+      }
+      .skip:focus { top: 0.75rem; }
+      .top {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.65rem 1rem;
+        padding: 0.8rem 0;
+        background: rgba(7, 8, 13, 0.72);
+        -webkit-backdrop-filter: blur(16px) saturate(140%);
+        backdrop-filter: blur(16px) saturate(140%);
+      }
+      .brand { margin-right: auto; }
+      .frost_light .top { background: rgba(244, 251, 252, 0.82); }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        text-decoration: none;
+        color: inherit;
+      }
+      .mark {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+      }
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem 0.9rem;
+        align-items: center;
+      }
+      .nav a {
+        color: inherit;
+        text-decoration: none;
+        font-size: 0.92rem;
+        opacity: 0.85;
+      }
+      .nav a:hover, .nav a:focus-visible { opacity: 1; text-decoration: underline; }
+      .theme-switch { display: flex; gap: 0.35rem; }
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+        gap: 2rem;
+        align-items: center;
+        padding: 3.2rem 0 1.5rem;
+      }
+      .hero > *,
+      .builder > *,
+      .gallery > *,
+      .compare > * { min-width: 0; }
+      .kicker {
+        margin: 0 0 0.6rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--current-text-secondary);
+      }
+      h1 {
+        margin: 0;
+        max-width: 100%;
+        font-family: Palatino, Georgia, serif;
+        font-size: clamp(2.4rem, 8vw, 4.6rem);
+        font-weight: 600;
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+        text-wrap: balance;
+        overflow-wrap: break-word;
+      }
+      .lede {
+        max-width: 42rem;
+        font-size: 1.08rem;
+        line-height: 1.6;
+        color: var(--current-text-muted);
+      }
+      .row { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center; }
+      h2 {
+        font-family: Palatino, Georgia, serif;
+        font-size: clamp(1.8rem, 3vw, 2.4rem);
+        letter-spacing: -0.03em;
+        margin: 0 0 0.4rem;
+      }
+      .section { padding: 2.4rem 0; scroll-margin-top: 4.75rem; }
+      .section p.intro { max-width: 46rem; color: var(--current-text-muted); line-height: 1.6; }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+      .panel h3 { margin: 0 0 0.8rem; font-size: 1rem; }
+      .stack { display: grid; gap: 0.7rem; }
+      .compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .compare figure { margin: 0; }
+      .compare figcaption {
+        margin-top: 0.55rem;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.78rem;
+        color: var(--current-text-secondary);
+      }
+      .table-wrap { overflow-x: auto; max-width: 100%; }
+      table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+      th, td {
+        text-align: left;
+        padding: 0.75rem 0.7rem;
+        border-bottom: 1px solid var(--current-border, rgba(255,255,255,0.16));
+        vertical-align: top;
+      }
+      th { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+      code, .docs-code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      code {
+        font-size: 0.84em;
+        padding: 0.08em 0.35em;
+        border-radius: 6px;
+      }
+      .frost_dark code { background: rgba(255, 255, 255, 0.08); }
+      .frost_light code { background: rgba(15, 23, 42, 0.06); }
+      .docs-code {
+        margin: 0;
+        max-width: 100%;
+        padding: 1rem 1.1rem;
+        overflow-x: auto;
+        border-radius: 14px;
+        line-height: 1.55;
+        font-size: 0.84rem;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .frost_dark .docs-code { background: rgba(8, 10, 18, 0.72); color: #e7fbff; }
+      .frost_light .docs-code { background: rgba(15, 23, 42, 0.92); color: #e7fbff; }
+      .docs-btn {
+        appearance: none;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        padding: 0.5rem 0.85rem;
+        font: inherit;
+        font-size: 0.84rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: #f8fafc;
+        background: #1e293b;
+      }
+      .docs-btn:hover { filter: brightness(1.08); }
+      .docs-btn:focus-visible { outline: 2px solid var(--frost-focus, #a5f3fc); outline-offset: 3px; }
+      .frost_light .docs-btn { background: #e8f7f8; color: #1f2937; border-color: rgba(15, 118, 110, 0.25); }
+      .docs-btn[aria-checked="true"] { background: #0e7490; color: #f8fafc; border-color: transparent; }
+      .builder {
+        display: grid;
+        grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+        gap: 1rem;
+        align-items: start;
+      }
+      #builder-controls { display: grid; gap: 0.85rem; }
+      #builder-controls fieldset {
+        margin: 0;
+        padding: 0.8rem;
+        border: 1px solid var(--current-border, rgba(255,255,255,0.16));
+        border-radius: 12px;
+      }
+      #builder-controls legend { padding: 0 0.3rem; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+      .ctrl { display: grid; grid-template-columns: 1fr auto; gap: 0.15rem 0.6rem; margin: 0.35rem 0; font-size: 0.86rem; }
+      .ctrl input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: #14b8a6; }
+      .ctrl-color { grid-template-columns: 1fr auto; align-items: center; }
+      .ctrl-val { font-variant-numeric: tabular-nums; color: var(--current-text-secondary); }
+      .preset-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+      .stage-card { display: grid; gap: 0.8rem; }
+      .stage {
+        position: relative;
+        min-height: 280px;
+        border-radius: 22px;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at 18% 30%, rgba(125, 240, 224, 0.95), transparent 36%),
+          radial-gradient(circle at 82% 18%, rgba(139, 92, 246, 0.9), transparent 34%),
+          radial-gradient(circle at 62% 82%, rgba(56, 189, 248, 0.85), transparent 40%),
+          linear-gradient(160deg, #0f172a, #115e59 48%, #312e81);
+      }
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(2px);
+        opacity: 0.85;
+      }
+      .orb-a { width: 120px; height: 120px; right: 12%; bottom: 18%; background: rgba(255,255,255,0.28); }
+      .orb-b { width: 70px; height: 70px; left: 14%; top: 18%; background: rgba(253, 224, 71, 0.45); }
+      #preview-btn { position: relative; z-index: 1; min-width: 10rem; }
+      .contrast {
+        margin: 0;
+        font-weight: 600;
+        font-size: 0.92rem;
+      }
+      .contrast.pass { color: #34d399; }
+      .contrast.fail { color: #fb7185; }
+      .frost_light .contrast.pass { color: #047857; }
+      .frost_light .contrast.fail { color: #be123c; }
+      .note { margin: 0; color: var(--current-text-muted); font-size: 0.88rem; }
+      footer {
+        padding: 1rem 0 2rem;
+        color: var(--current-text-muted);
+        font-size: 0.9rem;
+        line-height: 1.55;
+      }
+      footer a { color: inherit; }
+      @media (max-width: 860px) {
+        .hero, .builder, .compare { grid-template-columns: 1fr; }
+        .top { position: static; }
+        .brand { order: 1; }
+        .theme-switch { order: 2; }
+        .nav { order: 3; width: 100%; }
+      }
+      @media (prefers-reduced-transparency: reduce) {
+        .top { -webkit-backdrop-filter: none; backdrop-filter: none; }
+        .frost_dark .top { background: #12101a; }
+        .frost_light .top { background: #f4fbfc; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .docs-btn { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div id="app" class="docs-root frost_dark">
+      <div class="wrap">
+        <header class="top">
+          <a class="brand" href="#main">
+            <span class="mark" aria-hidden="true">
+              <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+                <path d="M17 2 L30 12 L25 30 L9 30 L4 12 Z" stroke="#67e8f9" stroke-width="1.4" fill="rgba(103,232,249,0.16)"/>
+                <path d="M17 7 L24 14 L21 26 L13 26 L10 14 Z" stroke="#a5f3fc" stroke-width="1" fill="rgba(255,255,255,0.18)"/>
+              </svg>
+            </span>
+            Frost Glass
+          </a>
+          <nav class="nav" aria-label="Page">
+            <a href="#components">Components</a>
+            <a href="#api">Class map</a>
+            <a href="#builder">Builder</a>
+            <a href="https://github.com/newjordan/Frost-Glass">GitHub</a>
+          </nav>
+          <div class="theme-switch" role="radiogroup" aria-label="Theme">
+            <button type="button" class="docs-btn" id="theme-dark" role="radio" aria-checked="true">Dark</button>
+            <button type="button" class="docs-btn" id="theme-light" role="radio" aria-checked="false">Light</button>
+          </div>
+        </header>
+
+        <main id="main">
+          <section class="hero">
+            <div>
+              <p class="kicker">Pure CSS · MIT · v1.1.0</p>
+              <h1>Frost that stays readable.</h1>
+              <p class="lede">
+                A glassmorphism library with light and dark themes. Blur where the browser can do it, solid color where it cannot, and one button vocabulary shared with the bbuilder studies.
+              </p>
+              <div class="row">
+                <button type="button" class="frost-btn frost-btn-action">Action</button>
+                <button type="button" class="frost-btn frost-btn-raised">Raised</button>
+                <button type="button" class="frost-btn frost-btn-action-danger">Danger</button>
+                <a class="docs-btn" href="#builder">Open the builder</a>
+              </div>
+            </div>
+            <div class="frost-card">
+              <p class="kicker">Quick start</p>
+              <pre class="docs-code"><code>&lt;link rel="stylesheet" href="frost-glass.min.css"&gt;
+
+&lt;div class="frost_dark"&gt;
+  &lt;button class="frost-btn frost-btn-action"&gt;
+    Click me
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+          </section>
+
+          <section class="section" id="components">
+            <h2>Components</h2>
+            <p class="intro">
+              Theme comes from an ancestor: <code>frost_dark</code> or <code>frost_light</code>. The buttons below use the canonical names. The legacy <code>frostdark-button-*</code> and <code>frostlight-button-*</code> classes still paint the same glass.
+            </p>
+            <div class="gallery">
+              <article class="frost-card panel">
+                <h3>Quiet buttons</h3>
+                <div class="row">
+                  <button type="button" class="frost-btn frost-btn-primary">Primary</button>
+                  <button type="button" class="frost-btn frost-btn-secondary">Secondary</button>
+                  <button type="button" class="frost-btn frost-btn-outline">Outline</button>
+                  <button type="button" class="frost-btn frost-btn-ghost">Ghost</button>
+                </div>
+              </article>
+              <article class="frost-card panel">
+                <h3>Tinted states</h3>
+                <div class="row">
+                  <button type="button" class="frost-btn frost-btn-success">Success</button>
+                  <button type="button" class="frost-btn frost-btn-danger">Danger</button>
+                  <button type="button" class="frost-btn frost-btn-glass">Glass</button>
+                </div>
+              </article>
+              <article class="frost-card panel">
+                <h3>Field</h3>
+                <div class="stack">
+                  <label for="demo-email">Email</label>
+                  <div id="demo-field" class="frostdark-input-container">
+                    <input id="demo-email" class="frostdark-input-field" type="email" placeholder="you@example.com" autocomplete="email" />
+                  </div>
+                </div>
+              </article>
+              <article class="frost-card panel">
+                <h3>Navigation</h3>
+                <nav class="frost-nav" aria-label="Sample">
+                  <a class="frost-nav-item active" href="#components">Dashboard</a>
+                  <a class="frost-nav-item" href="#api">Class map</a>
+                  <a class="frost-nav-item" href="#builder">Builder</a>
+                </nav>
+              </article>
+            </div>
+            <div class="compare">
+              <figure class="frost-card">
+                <button type="button" id="legacy-action" class="frostdark-button-action">Legacy name</button>
+                <figcaption id="legacy-caption">frostdark-button-action</figcaption>
+              </figure>
+              <figure class="frost-card">
+                <button type="button" class="frost-btn frost-btn-action">Canonical name</button>
+                <figcaption>frost-btn frost-btn-action</figcaption>
+              </figure>
+            </div>
+          </section>
+
+          <section class="section" id="api">
+            <h2>One button vocabulary</h2>
+            <p class="intro">
+              Frost Glass grew signature controls as <code>frostdark-button-*</code> and <code>frostlight-button-*</code>. The shared component file, and the private bbuilder repo, use <code>frost-btn-*</code>. Both names are in the stylesheet now. New markup should use the canonical column. Put it inside <code>frost_dark</code> or <code>frost_light</code>.
+            </p>
+            <div class="frost-card table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Canonical</th>
+                    <th>Legacy dark</th>
+                    <th>Legacy light</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Base layout</td>
+                    <td><code>frost-btn</code></td>
+                    <td colspan="2">Included in the legacy button rules</td>
+                  </tr>
+                  <tr>
+                    <td>Glass action</td>
+                    <td><code>frost-btn-action</code></td>
+                    <td><code>frostdark-button-action</code></td>
+                    <td><code>frostlight-button-action</code></td>
+                  </tr>
+                  <tr>
+                    <td>Raised glass</td>
+                    <td><code>frost-btn-raised</code></td>
+                    <td><code>frostdark-button-raised</code></td>
+                    <td><code>frostlight-button-raised</code></td>
+                  </tr>
+                  <tr>
+                    <td>Glass danger</td>
+                    <td><code>frost-btn-action-danger</code></td>
+                    <td><code>frostdark-button-action-danger</code></td>
+                    <td><code>frostlight-button-action-danger</code></td>
+                  </tr>
+                  <tr>
+                    <td>Small / icon</td>
+                    <td><code>frost-btn-action-sm</code> · <code>frost-btn-action-icon</code></td>
+                    <td><code>frostdark-button-action-sm</code> · <code>frostdark-button-action-icon</code></td>
+                    <td><code>frostlight-button-action-sm</code> · <code>frostlight-button-action-icon</code></td>
+                  </tr>
+                  <tr>
+                    <td>Action row</td>
+                    <td><code>frost-btn-action-group</code></td>
+                    <td><code>frostdark-button-group</code></td>
+                    <td><code>frostlight-button-group</code></td>
+                  </tr>
+                  <tr>
+                    <td>Quiet set</td>
+                    <td><code>frost-btn-primary</code> <code>secondary</code> <code>outline</code> <code>ghost</code></td>
+                    <td colspan="2">Same classes. This is the set bbuilder already documents.</td>
+                  </tr>
+                  <tr>
+                    <td>Tinted</td>
+                    <td><code>frost-btn-danger</code> <code>frost-btn-success</code></td>
+                    <td colspan="2">Not aliases of the glass action buttons.</td>
+                  </tr>
+                  <tr>
+                    <td>Parametric glass</td>
+                    <td><code>frost-btn-glass</code></td>
+                    <td colspan="2">Alias <code>button--glass</code> from the bbuilder studies.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="section" id="builder">
+            <h2>Button builder</h2>
+            <p class="intro">
+              Tune the parametric glass button. Presets started as Frosted, Crystal, Jelly, Chrome, and Dark Glass in the bbuilder notes. The readout checks the label against both the frosted preview and the solid color used when blur is turned off.
+            </p>
+            <div class="builder">
+              <form class="frost-card" id="builder-controls" aria-label="Button builder"></form>
+              <div class="stage-card">
+                <div class="stage" id="stage">
+                  <span class="orb orb-a" aria-hidden="true"></span>
+                  <span class="orb orb-b" aria-hidden="true"></span>
+                  <button type="button" class="frost-btn-glass" id="preview-btn">Primary action</button>
+                </div>
+                <p class="contrast" id="contrast" aria-live="polite">Checking contrast…</p>
+                <p class="note" id="transparency-note" hidden>
+                  Reduced transparency is on, so this browser is showing the solid fallback instead of the blur.
+                </p>
+                <div class="row">
+                  <button type="button" class="docs-btn" id="fix-contrast">Use accessible text</button>
+                  <button type="button" class="docs-btn" id="copy-vars">Copy variables</button>
+                  <button type="button" class="docs-btn" id="copy-standalone">Copy standalone CSS</button>
+                </div>
+                <pre class="docs-code" id="css-out"></pre>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer>
+          <p>
+            Frost Glass by Frosty40. Theme scenes were extracted from SpeakMCP. The parametric button — gloss, reflection stripe, rim, elevation, and the five presets — is adapted from the bbuilder studies, which point at the reflection, anti-aliasing, and SDF-normal chapters of <cite>Visualizing Equations, Shaders, and Procedural Shapes</cite>.
+          </p>
+          <p>MIT licensed. <a href="https://github.com/newjordan/Frost-Glass">github.com/newjordan/Frost-Glass</a></p>
+        </footer>
+      </div>
+    </div>
+    <script src="builder.js"></script>
+    <script>
+      (function () {
+        var app = document.getElementById("app");
+        var darkBtn = document.getElementById("theme-dark");
+        var lightBtn = document.getElementById("theme-light");
+        var field = document.getElementById("demo-field");
+        var email = document.getElementById("demo-email");
+        var legacy = document.getElementById("legacy-action");
+        var caption = document.getElementById("legacy-caption");
+
+        function apply(theme) {
+          var light = theme === "frost_light";
+          app.classList.toggle("frost_light", light);
+          app.classList.toggle("frost_dark", !light);
+          darkBtn.setAttribute("aria-checked", light ? "false" : "true");
+          lightBtn.setAttribute("aria-checked", light ? "true" : "false");
+          field.className = light ? "frostlight-input-container" : "frostdark-input-container";
+          email.className = light ? "frostlight-input-field" : "frostdark-input-field";
+          legacy.className = light ? "frostlight-button-action" : "frostdark-button-action";
+          caption.textContent = light ? "frostlight-button-action" : "frostdark-button-action";
+          try { localStorage.setItem("frost-theme", theme); } catch (e) {}
+        }
+
+        darkBtn.addEventListener("click", function () { apply("frost_dark"); });
+        lightBtn.addEventListener("click", function () { apply("frost_light"); });
+
+        var stored = null;
+        try { stored = localStorage.getItem("frost-theme"); } catch (e) {}
+        var prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+        apply(stored || (prefersLight ? "frost_light" : "frost_dark"));
+      })();
+    </script>
+  </body>
+</html>

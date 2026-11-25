@@ -1,0 +1,124 @@
+/**
+ * Parametric glass button
+ * =======================
+ *
+ * One theme-agnostic button driven by custom properties. The docs builder
+ * edits these variables and can export them.
+ *
+ * .button--glass is the class name used by the bbuilder studies. It is an
+ * alias of .frost-btn-glass so both repos can share markup.
+ *
+ * Layering (base tint, gloss, angled reflection stripe, inset rim, elevation)
+ * is adapted from Frosty40's bbuilder glass-button notes. Those notes map the
+ * stripe to a reflection normal — n = (-sin a, cos a) — and cite the
+ * reflection, anti-aliasing, and SDF-normal chapters of
+ * "Visualizing Equations, Shaders, and Procedural Shapes".
+ * The Frosted, Crystal, Jelly, Chrome, and Dark Glass starting points in the
+ * docs come from that same prep document.
+ */
+
+.frost-btn-glass,
+.button--glass {
+  --btn-radius: 16px;
+  --btn-pad-x: 20px;
+  --btn-pad-y: 12px;
+  --blur: 10px;
+  --sat: 120%;
+  --bg1: rgba(6, 182, 212, 0.32);
+  --bg2: rgba(12, 48, 82, 0.26);
+  --border-color: rgba(6, 182, 212, 0.45);
+  --border-w: 1px;
+  --rim-alpha: 0.22;
+  --rim-width: 2px;
+  --text: #f4feff;
+  --gloss: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.08) 18%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  --reflect-angle: 30deg;
+  --reflect-width: 8%;
+  --reflect-alpha: 0.28;
+  --elev-offset: 4.5px;
+  --elev-blur: 9px;
+  --elev-alpha: 0.21;
+  /* Opaque color behind the translucent tint. Shows through when blur is off. */
+  --fg-solid: #0e4f63;
+  --text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius: var(--btn-radius);
+  border: var(--border-w) solid var(--border-color);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  text-decoration: none;
+  text-shadow: var(--text-shadow);
+  cursor: pointer;
+  background-color: var(--fg-solid);
+  background-image:
+    linear-gradient(
+      var(--reflect-angle),
+      transparent calc(50% - var(--reflect-width) / 2),
+      rgba(255, 255, 255, var(--reflect-alpha)) 50%,
+      transparent calc(50% + var(--reflect-width) / 2)
+    ),
+    var(--gloss),
+    linear-gradient(135deg, var(--bg1), var(--bg2));
+  background-blend-mode: screen, screen, normal;
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+  backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+  box-shadow:
+    0 var(--elev-offset) var(--elev-blur) rgba(0, 0, 0, var(--elev-alpha)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 0 var(--rim-width) rgba(255, 255, 255, var(--rim-alpha));
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+.frost-btn-glass:hover,
+.button--glass:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.frost-btn-glass:active,
+.button--glass:active {
+  transform: translateY(0) scale(0.99);
+  filter: brightness(0.98);
+}
+
+.frost-btn-glass:focus-visible,
+.button--glass:focus-visible {
+  outline: 2px solid var(--frost-focus, #a5f3fc);
+  outline-offset: 3px;
+}
+
+.frost-btn-glass:disabled,
+.button--glass:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .frost-btn-glass,
+  .button--glass {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-image: none;
+    background-color: var(--fg-solid);
+  }
+}
